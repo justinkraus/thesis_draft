@@ -604,19 +604,19 @@ var svg3 = d3.select('.container-3 #graph').html('').append("svg")
 
 //poloygon sizes
 //these two set all
-var topLeftX = width/5
+var topLeftX = width/4.5
 var topY = height/1.5
 // top right polygon
-var topRightX = topLeftX + (width/6 * 2)
+var topRightX = topLeftX + (width/6 * 2.25)
 // bottom vars
-var botRightX = topLeftX + (width/5.5)
-var botLeftX = topLeftX - (width/5.5)
-var botY = topY + topY/4
+var botRightX = topLeftX + (width/6 * 1.25)
+var botLeftX = topLeftX - (width/6 * 1.25)
+var botY = topY + topY/3
 
 //spaces between polygons
-var squareSpace = (height/1.4)/6
+var squareSpace = (height/1.4)/4
 // additional offset of first polygon
-var poly1Yoffset = squareSpace
+var poly1Yoffset = squareSpace/2
 
 var poly1 = [[{x: topLeftX, y:topY + poly1Yoffset}, {x: topRightX, y:topY + poly1Yoffset}, {x: botRightX, y:botY + poly1Yoffset}, {x: botLeftX, y:botY + poly1Yoffset}]]
 var poly2 = [[{x: topLeftX, y:topY - (squareSpace)}, {x: topRightX, y:topY - (squareSpace)}, {x: botRightX, y:botY - (squareSpace)}, {x: botLeftX, y:botY - (squareSpace)}]]
@@ -659,7 +659,44 @@ var poly4var = svg3.append('path')
 .attr('fill', 'blue')
 .style('opacity', .90);
 
-// level definitions
+
+// Create full text block on white polygon
+var fixedText = svg3.append('text')
+.attr("class", "fixedText")
+.attr("x", (topLeftX + botRightX)/2.8)
+.attr("y", (topY + botY)/2 + poly1Yoffset/1.5)
+.attr("dy", "0em")
+.style('font-size', 12)
+.style('opacity', 0)
+.html(function (d){ 
+  return "<tspan x='100' dy='1.2em'>" + "The turtle sat on a log." + "</tspan>" 
+       + "<tspan x='100' dy='1.2em'>" + "A fish swam under the log." + "</tspan>";
+});
+
+
+// comprehension level titles
+
+var leveltitles = [{"levelNumber":1, "text": "Linguistic Representation"},
+                 {"levelNumber":2, "text": "Propostional Abstraction"},
+                 {"levelNumber":3, "text": "Situation Model"}]
+
+svg3.selectAll('text')
+.select('text')
+.data(leveltitles)
+.enter()
+.append('text')
+.attr("id", function(d){return "leveltitle"+d.levelNumber})
+.attr("class", "leveltitle")
+.attr("x", topRightX)
+.attr("y", function(d){return topY - (squareSpace * d.levelNumber) })
+.attr("dy", ".9em")
+.style('font-size', 12)
+.style('opacity', 0)
+.text(function(d){return d.text})
+
+
+
+// comprehension level definitions
 
 var defs = [{"levelNumber":1, "text": "Words and sentence structure"},
                  {"levelNumber":2, "text": "How words relate to one another"},
@@ -679,6 +716,55 @@ svg3.selectAll('text')
 .style('opacity', 0)
 .text(function(d){return d.text})
 
+// comprehension level examples
+
+var examples = [{"levelNumber":1,"innerLevel":1, "img": './images/fish.svg', "text": 'fish', "width": 30, "height": 30},
+                 {"levelNumber":1,"innerLevel":2, "img": './images/turtle.svg', "text": 'turtle', "width": 30, "height": 30},
+                 {"levelNumber":1,"innerLevel":3, "img": './images/log.svg', "text": 'log', "width": 30, "height": 30},
+                 {"levelNumber":2,"innerLevel":1, "img": './images/turtle_fish.svg', "text": 'log', "width": 50, "height": 60},
+                 {"levelNumber":3,"innerLevel":0, "img": './images/log_scene.svg', "text": 'log', "width": 100, "height": 100}
+                 ]
+
+svg3.selectAll('image')
+.select('image')
+.data(examples)
+.enter()
+.append('image')
+.attr("id", function(d){return "exampleimgs"+d.levelNumber+d.innerLevel})
+.attr("class", "exampleimgs")
+.attr("x", topRightX)
+.attr("y", function(d){return topY - (squareSpace * d.levelNumber) + (d.innerLevel * 22) })
+// .attr("dy", function(d){return 2 * d.levelNumber + "em" })
+.attr("width", function(d){return d.width})
+.attr("height", function(d){return d.height})
+.style('opacity', 0)
+.attr("xlink:href", function(d){return d.img})
+// .text(function(d){return d.text})
+
+//
+
+// lines
+// var lines = [0,1,2,3,4,5,6]
+
+
+// svg3.selectAll("g")
+// .append('line')
+//   .each(function(d,i))
+//   .data(lines)
+//   .attr('d', pathData)
+//   .attr('class', "lines")
+//   .attr('fill', "none")
+//   .attr('stroke', 'black');
+
+// var poly1var = svg3.append('path')
+// .data(poly1)
+// .attr("class", "poly1")
+// .attr('d', lineFunc)
+// .attr('stroke', 'grey')
+// .attr('fill', 'white')
+// .style('opacity', .66);
+
+
 
 // trigger graph scroll
 
@@ -692,22 +778,32 @@ var gs4 = d3.graphScroll()
 //titles 
 svg3.append('text')
 .attr("class", "Construction")
-.attr("x", botRightX)
+.attr("x", topLeftX - topLeftX/2 )
 .attr("y", 0)
 .attr("dy", '1em')
-.style('font-size', 32)
+.style('font-size', 28)
 .style('fill', "grey")
 .text("Construction-Integration")
 
 //polygon opacity transitions
 
-poly1OP = [0,0,1,1]
-poly23OP = [0,.66,.66,.33]
-ploy4OP = [0,.66,.66,1]
+poly1OP = [0,0,1,1,1]
+poly23OP = [0,.66,.66,.33,0]
+ploy4OP = [0,.66,.66,1,0]
+
+// white polygon size transition
+poly1size = [
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]]
+            ].map(function(d){ return 'M' + d.join(' L ') })
 
 poly1var.transition().duration(1000)
             .style('opacity', poly1OP[i])
-          .transition();
+            .attr('d', poly1size[i])
+            .transition();
 
 poly2var.transition().duration(1000)
             .style('opacity', poly23OP[i])
@@ -722,91 +818,27 @@ poly4var.transition().duration(1000)
           .transition();
 
 
-// Create full text block on white polygon
-var fixedText = svg3.append('text')
-.attr("class", "fixedText")
-.attr("x", (topLeftX + botRightX)/2.8)
-.attr("y", (topY + botY)/2 + poly1Yoffset/1.5)
-.attr("dy", "0em")
-.style('font-size', 12)
-.html(function (d){ 
-  return "<tspan x='100' dy='1.2em'>" + "The turtle sat on a log." + "</tspan>" 
-       + "<tspan x='100' dy='1.2em'>" + "A fish swam under the log." + "</tspan>";
-});
+// fixed text transition
+fixedtextOP = [0,0,1,1,0]
 
 fixedText.transition().duration(1000)
-            .style('opacity', poly1OP[i])
+            .style('opacity', fixedtextOP[i])
           .transition();
 
-// Level Titles
-var ling = svg3.append('text')
-.attr("class", "leveltitles")
-.attr("x", topRightX)
-.attr("y", topY - (squareSpace))
-.attr("dy", ".9em")
-.style('font-size', 12)
-.style('opacity', 0)
-.text("Linguistic Representation")
 
-var prop = svg3.append('text')
-.attr("class", "leveltitles")
-.attr("x", topRightX)
-.attr("y", topY - (squareSpace * 2))
-.attr("dy", ".9em")
-.style('font-size', 12)
-.style('opacity', 0)
-.text("Propostional Abstraction")
+//transition for the level titles
+leveltitlesOP = [0,1,1,1,0]
 
-var situ = svg3.append('text')
-.attr("class", "leveltitles")
-.attr("x", topRightX)
-.attr("y", topY - (squareSpace * 3))
-.attr("dy", ".9em")
-.style('font-size', 12)
-.style('opacity', 0)
-.text("Situation Model")
-
-var leveltitles = svg3.selectAll(".leveltitles")
-leveltitlesOP = [0,0,1,1]
+var leveltitles = svg3.selectAll(".leveltitle")
 
 leveltitles.transition().duration(1000)
             .style('opacity', leveltitlesOP[i])
           .transition();
 
 
-// Level Definitions
-// var lingdef = svg3.append('text')
-// .attr("class", "leveldefs")
-// .attr("x", topRightX)
-// .attr("y", topY - (squareSpace))
-// .attr("dy", "3em")
-// .style('font-size', 10)
-// .style('opacity', 0)
-// .text("Words and sentence structure")
-
-// var propdef = svg3.append('text')
-// .attr("class", "leveldefs")
-// .attr("x", topRightX)
-// .attr("y", topY - (squareSpace * 2))
-// .attr("dy", "3em")
-// .style('font-size', 10)
-// .style('opacity', 0)
-// .text("How words relate to one another")
-
-// var modeldef = svg3.append('text')
-// .attr("class", "leveldefs")
-// .attr("x", topRightX)
-// .attr("y", topY - (squareSpace * 3))
-// .attr("dy", "3em")
-// .style('font-size', 10)
-// .style('opacity', 0)
-// .text("Integrate with prior knowledge")
-
-
-
 //transition for the level definitions
 
-leveldefsOP = [0,0,1,0]
+leveldefsOP = [0,1,0,0,0]
 
 var leveldefs = svg3.selectAll(".leveldef")
 
@@ -814,11 +846,21 @@ leveldefs.transition().duration(1000)
             .style('opacity', leveldefsOP[i])
           .transition();
 
+// transition for the level examples
+levelexsOP = [0,0,1,0,0]
+
+var levelexs = svg3.selectAll(".exampleimgs")
+
+levelexs.transition().duration(1000)
+            .style('opacity', levelexsOP[i])
+          .transition();
+
+
 //animation of the "floating" text
 
 if (document.getElementById('container-3-3').className == "graph-scroll-active") {
 // Floating text array
-textArray = ["The ", "  turtle", "sat", "on", "a", "log. ", "A ", "fish ", " swam ", "    under ", "   the ", "   log "]
+textArray = [" The ", "  turtle ", " sat ", " on ", " a ", " log. ", " A ", " fish ", " swam  ", "    under ", "   the  ", "   log. "]
 
 // Floating text function loop 
 // create arrays
@@ -829,8 +871,8 @@ svg3.each(function(d){
     .style("fill", "white")
     .style('opacity', 0.8)
     // .attr("x", (((topLeftX + botRightX)/6) + ((topRightX + botLeftX)/6) + (i*10)))
-    .attr("x", (((topLeftX + botRightX)/8) + ((topRightX + botLeftX)/8) + ((((((textArray[i==0?textArray.length-1:i-1].length) + textArray[i].length) * 2))))))
-    .attr("y", ((topY + botY)/2) - 10 + poly1Yoffset)
+    .attr("x", (((topLeftX + botRightX)/6) + ((topRightX + botLeftX)/8) + ((((((textArray[i==0?textArray.length-1:i-1].length) + textArray[i].length) * 4))))))
+    .attr("y", ((topY + botY)/2) - 20 + poly1Yoffset)
     .style('font-size', 12)
     .style('width', "100px")
     .text(function(d) {return textArray[i]})
@@ -840,35 +882,50 @@ svg3.each(function(d){
   repeat();
   //chained transition of floating text
   // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
-  function repeat(){
+    function repeat(){
   d3.selectAll(".letters")
   .transition()
-      .duration(5000)
-      .delay(function(d,i) { return (i * 300)})
+      // .duration(10000)
+      .delay(function(d,i) { return (i * 400)})
       .on("start", function repeat() {
         d3.active(this)
         .attr("y", ((topY + botY)/2) - 10 + poly1Yoffset)
         .style('opacity', 0.8)
         .transition()
+        .duration(5000)
+        .ease(d3.easeQuadOut)
         .attr("y", (topY - (squareSpace * 4)/1.3))
         .style('opacity', 0)
         .transition()
         .style('opacity', 0)
         .attr("y", ((topY + botY)/2) - 10 + poly1Yoffset)
         .transition()
+        .duration(800)
         .on("start", repeat);
       })
   };
 
-
 })
 // examples 
 
-
-
-
-
 }
+else {
+  d3.selectAll(".letters")
+  .remove()
+}
+
+//lines part
+linesOP = [0,0,0,0,1]
+
+var levelexs = svg3.selectAll(".lines")
+
+levelexs.transition().duration(1000)
+            .style('opacity', linesOP[i])
+          .transition();
+
+
+
+
 })
 
 
