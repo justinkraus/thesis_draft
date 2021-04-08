@@ -741,28 +741,149 @@ svg3.selectAll('image')
 .attr("xlink:href", function(d){return d.img})
 // .text(function(d){return d.text})
 
-//
-
-// lines
-// var lines = [0,1,2,3,4,5,6]
+// reading lines on white polygon
+var lines = [[0,1,2,3,4,5,6,7,8,9,10]]
 
 
-// svg3.selectAll("g")
-// .append('line')
-//   .each(function(d,i))
-//   .data(lines)
-//   .attr('d', pathData)
-//   .attr('class', "lines")
-//   .attr('fill', "none")
-//   .attr('stroke', 'black');
+svg3.selectAll('g')
+    .data(lines)
+  .enter().append('g')
+    .each(function(d,i){
+        d3.select(this).selectAll('g')
+        .data(d)
+      .enter().append('line')
+        .attr("class", "readinglines")
+        .attr('x1', function(d,j) { return topLeftX + width/20; })
+        .attr('y1', function(d,j) { return topY - (squareSpace * 3) + (height/20 * 2) + (j*height/15); })
+        .attr('x2', function(d,j) { return (topRightX + topRightX/4) - width/20; })
+        .attr('y2', function(d,j) { return topY - (squareSpace * 3) + (height/20 * 2) + (j*height/15); })
+        .style('stroke', 'black')
+        .style("stroke-width", 1.5)
+        .style("opacity", 0)
+    });
 
-// var poly1var = svg3.append('path')
-// .data(poly1)
-// .attr("class", "poly1")
-// .attr('d', lineFunc)
-// .attr('stroke', 'grey')
-// .attr('fill', 'white')
-// .style('opacity', .66);
+// circles by line
+//original idea to redo nested variable:
+//https://stackoverflow.com/questions/32974794/update-display-in-loop-when-drawing-many-d3-svg-objects
+//implementation
+//https://bl.ocks.org/cagrimmett/07f8c8daea00946b9e704e3efcbd5739
+
+function gridData() {
+    var data = new Array();
+    var xpos = topLeftX + width/20; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
+    var ypos = topY - (squareSpace * 3) + (height/20 * 2);
+    var radius = Math.random() * (6 - 15) + 15
+    var rowheight = 10
+    var circleNum = 1;
+
+    // iterate for rows 
+    for (var row = 0; row < 11; row++) {
+        data.push( new Array() );
+
+        // iterate for cells/columns inside rows
+        for (var column = 0; column < 10; column++) {
+            data[row].push({
+                x: xpos,
+                y: ypos,
+                r: radius,
+                c: circleNum
+            })
+            // increment the x position. I.e. move it over
+            xpos += Math.random() * (20 - 25) + width/20;
+            radius = Math.random() * (6 - 15) + 15
+            circleNum += (row + column)
+
+        }
+        // reset the x position after a row is complete
+        xpos = topLeftX + width/20;
+        radius = Math.random() * (6 - 15) + 15;
+        // increment the y position for the next row. Move it down 
+        ypos += (height/30 * 2); 
+    }
+    return data;
+}
+
+//run the gridData function
+var gridData = gridData();    
+
+var row = svg3.selectAll(".row")
+    .data(gridData)
+    .enter().append("g")
+    .attr("class", "row");
+
+var column = row.selectAll(".circle")
+    .data(function(d) { return d; })
+    .enter().append("circle")
+    .attr("class","linearcircle")
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
+    .attr("r", function(d) { return d.r; })
+    // .attr("id", function(d,i) {return "circle" + d[i]})
+    .attr("id", function(d) {return "circle"+d.c})
+    .style("fill", "#fff")
+    .style("stroke", "#222")
+    .style("opacity", 0);
+
+// circles for skimming lines
+function skimData() {
+    var data = new Array();
+    var xpos = topLeftX + width/20; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
+    var ypos = topY - (squareSpace * 3) + (height/20 * 2);
+    var radius = Math.random() * (6 - 15) + 15
+    var rowheight = 10
+    var circleNum = 1;
+    var columnNum = 8
+
+    // iterate for rows 
+    for (var row = 0; row < 11; row++) {
+        data.push( new Array() );
+
+        // iterate for cells/columns inside rows
+        for (var column = 0; column < columnNum; column++) {
+            data[row].push({
+                x: xpos,
+                y: ypos,
+                r: radius,
+                c: circleNum
+            })
+            // increment the x position. I.e. move it over
+            xpos += Math.random() * (20 - 25) + width/16;
+            radius = Math.random() * (6 - 15) + 15
+            circleNum += (row + column)
+
+        }
+        // reset the x position after a row is complete
+        xpos = topLeftX + width/20;
+        radius = Math.random() * (6 - 15) + 15;
+        // increment the y position for the next row. Move it down 
+        ypos += (height/30 * 2); 
+        columnNum -= 1
+        columnNum = (columnNum>0)? columnNum:1;
+
+    }
+    return data;
+}
+
+//run the gridData function
+var skimData = skimData();    
+
+var skimrow = svg3.selectAll(".rowskim")
+    .data(skimData)
+    .enter().append("g")
+    .attr("class", "row");
+
+var skimcolumn = skimrow.selectAll(".circle")
+    .data(function(d) { return d; })
+    .enter().append("circle")
+    .attr("class","skimcircle")
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
+    .attr("r", function(d) { return d.r; })
+    // .attr("id", function(d,i) {return "circle" + d[i]})
+    .attr("id", function(d) {return "circle"+d.c})
+    .style("fill", "#fff")
+    .style("stroke", "#222")
+    .style("opacity", 0);
 
 
 
@@ -787,9 +908,9 @@ svg3.append('text')
 
 //polygon opacity transitions
 
-poly1OP = [0,0,1,1,1]
-poly23OP = [0,.66,.66,.33,0]
-ploy4OP = [0,.66,.66,1,0]
+poly1OP = [0,0,1,1,1,1,1,1]
+poly23OP = [0,.66,.66,.33,0,0,0]
+ploy4OP = [0,.66,.66,1,0,0,0]
 
 // white polygon size transition
 poly1size = [
@@ -797,6 +918,8 @@ poly1size = [
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]],
              [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
@@ -819,7 +942,7 @@ poly4var.transition().duration(1000)
 
 
 // fixed text transition
-fixedtextOP = [0,0,1,1,0]
+fixedtextOP = [0,0,1,1,0,0,0]
 
 fixedText.transition().duration(1000)
             .style('opacity', fixedtextOP[i])
@@ -827,7 +950,7 @@ fixedText.transition().duration(1000)
 
 
 //transition for the level titles
-leveltitlesOP = [0,1,1,1,0]
+leveltitlesOP = [0,1,1,1,0,0,0]
 
 var leveltitles = svg3.selectAll(".leveltitle")
 
@@ -838,7 +961,7 @@ leveltitles.transition().duration(1000)
 
 //transition for the level definitions
 
-leveldefsOP = [0,1,0,0,0]
+leveldefsOP = [0,1,0,0,0,0,0]
 
 var leveldefs = svg3.selectAll(".leveldef")
 
@@ -847,7 +970,7 @@ leveldefs.transition().duration(1000)
           .transition();
 
 // transition for the level examples
-levelexsOP = [0,0,1,0,0]
+levelexsOP = [0,0,1,0,0,0,0]
 
 var levelexs = svg3.selectAll(".exampleimgs")
 
@@ -914,16 +1037,36 @@ else {
   .remove()
 }
 
-//lines part
-linesOP = [0,0,0,0,1]
+//lines transitions
+linesOP = [0,0,0,0,1,1]
 
-var levelexs = svg3.selectAll(".lines")
+var levelexs = svg3.selectAll(".readinglines")
 
-levelexs.transition().duration(1000)
+levelexs.transition().duration(1500)
             .style('opacity', linesOP[i])
           .transition();
 
+//linear circles transition
+linearcirclesOP = [0,0,0,0,0,1,0]
 
+var linearcircles = svg3.selectAll(".linearcircle")
+
+linearcircles.transition().duration(1500)
+          .style('opacity', linearcirclesOP[i])
+          .transition()
+           .delay(function(d, i) { return (i * 100) + (d.r); })
+           .style("fill", "blue");
+
+// skim circles transition
+skimcirclesOP = [0,0,0,0,0,0,1]
+
+var skimcircles = svg3.selectAll(".skimcircle")
+
+skimcircles.transition().duration(1500)
+          .style('opacity', skimcirclesOP[i])
+          .transition()
+           .delay(function(d, i) { return (i * 100) + (d.r); })
+           .style("fill", "blue");
 
 
 })
