@@ -383,42 +383,45 @@ var svg2 = d3.select('.container-2 #graph').html('').append("svg")
     .attr("transform",
           "translate(" + margin2.left + "," + margin2.top + ")");
 
+// draw comprehension rects
 
-var backgroundColors = svg2.append("g")
-            .attr("class", "background3")
+var compreRects = [{"rectNumber": 1, "y": 0, "height": height/10, "fill": "#238443", "label": "Advanced"},
+                   {"rectNumber": 2, "y": height/10, "height": height/3.6, "fill": "#78c679", "label": "Proficient"},
+                   {"rectNumber": 3, "y": height/10 + height/3.6, "height": height/4.5, "fill": "#c2e699", "label": "Basic"},
+                   {"rectNumber": 4, "y": height/10 + height/3.6 + height/4.5, "height": height/3.85, "fill": "#ffffcc", "label": "Below Basic" }]
 
-var redBox = backgroundColors.append("rect")
-  .attr("x", 0)
-  .attr("y", 0)
-  .attr("width", width)
-  .attr("height", height/10)
-  .attr("fill", "green")
-  .attr("opacity", 0.6);
+var background = svg2.append("g")
 
-var greenBox = backgroundColors.append("rect")
-  .attr("x", 0)
-  .attr("y", height/10)
-  .attr("width", width)
-  .attr("height", height/3.6)
-  .attr("fill", "green")
-  .attr("opacity", 0.4);
+background.selectAll('rect')
+.data(compreRects)
+.enter()
+.append('rect')
+.attr("id", function(d){return "rectNum" + d.rectNumber})
+.attr("class", "background")
+.attr("x", 0)
+.attr("y", function(d){return d.y})
+.attr("width", INNER_WIDTH2)
+.attr("height", function(d){return d.height})
+.attr("fill", function(d){return d.fill})
+.attr("opacity", 0)
 
-var yellowBox = backgroundColors.append("rect")
-  .attr("x", 0)
-  .attr("y", height/10 + height/3.6)
-  .attr("width", width)
-  .attr("height", height/4.5)
-  .attr("fill", "green")
-  .attr("opacity", 0.2);
+// comprehension labels
 
-var blueBox = backgroundColors.append("rect")
-  .attr("x", 0)
-  .attr("y", height/10 + height/3.6 + height/4.5)
-  .attr("width", width)
-  .attr("height", height/2.5)
-  .attr("fill", "green")
-  .attr("opacity", 0.05);
-  
+svg2.selectAll('text')
+.select('text')
+.data(compreRects)
+.enter()
+.append('text')
+.attr("id", function(d){return "labelNum"+ d.rectNumber})
+.attr("class", "background")
+.attr("x", INNER_WIDTH2/3)
+.attr("y", function(d){return d.y})
+.attr("dy", "1.5em")
+.style('font-size', "1em")
+.style("fill", "grey")
+.style('opacity', 0)
+.text(function(d){return d.label})
+
 
 var gs3 = d3.graphScroll()
   .container(d3.select('.container-2'))
@@ -426,6 +429,7 @@ var gs3 = d3.graphScroll()
   .eventId('uniqueId3')  // namespace for scroll and resize events
   .sections(d3.selectAll('.container-2 #sections > div'))
   .on('active', function(i){
+
 
 d3.csv("NAEP_scores.csv", function(data) {
 
@@ -545,12 +549,14 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
 
   // background opacity
-  var backgroundOP = [0, 0, 0, 1]
-  var backgroundselect = svg2.selectAll(".background3")
+  var backgroundOP = [.75, .66, .66 ,.66]
 
-        backgroundselect.transition().duration(500)
-            .style('opacity', backgroundOP[i])
-          .transition();
+  var backgroundselect = svg2.selectAll(".background")
+  
+  backgroundselect.transition().duration(500)
+      .style('opacity', backgroundOP[i])
+    .transition();
+  
 
     function animateLine() {
       var l = this.getTotalLength();
@@ -558,6 +564,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       return function(t) { return i(t); };
     }
   
+
+
   // Add the x Axis
   svg2.append("g")
       .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
@@ -573,15 +581,6 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   })
 
 
-var margin2 = {top: 20, right: 80, bottom: 50, left: 70};
-var INNER_WIDTH2  = width - margin2.left - margin2.right;
-var INNER_HEIGHT2 = height - margin2.top - margin2.bottom;
-
-var svg2 = d3.select('.container-2 #graph').html('').append("svg")
-    .attrs({width: width, height: height})
-  .append("g")
-    .attr("transform",
-          "translate(" + margin2.left + "," + margin2.top + ")");
 
 // ----------------------------------------------------------
 // graph #3 - comprehension
