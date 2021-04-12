@@ -36,182 +36,96 @@ function render(){
                   .attr("x", 0)
                   .attr("y", 0 );
 
-  var wireimg = svg1.append('image')
-                    .attr("xlink:href", './images/AP.png')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 50 );
+  // Load readability images
+  // Readability image dataset
+  var readImgs = [{"group":1, "name": "NP", "img": './images/newspaper.svg', "x": 0, "y": 0},
+                {"group":1, "name": "AP", "img": './images/AP.png', "x": 0, "y": 1},
+                 {"group":1, "name": "WSJ", "img": './images/WSJ.svg', "x": 0, "y": 2},
+                 {"group":1, "name": "NYT", "img": './images/nyt.svg', "x": 0, "y": 3},
+                 {"group":2, "name": "NYTBS", "img": './images/nytbs.png', "x": 0, "y": 4},
+                 {"group":2, "name": "HSENG", "img": './images/hseng.svg', "x": 0, "y": 5},
+                 {"group":2, "name": "IP", "img": './images/inspolicy.svg', "x": 0, "y": 6},
+                 {"group":3, "name": "Twitter", "img": './images/twitter.svg', "x": 0, "y": 7},
+                 {"group":3, "name": "FB", "img": './images/facebook.svg', "x": 0, "y": 8},
+                 ]
 
-  var newsimg = svg1.append('image')
-                    .attr("xlink:href", './images/newspaper.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 0 );
+  // Load readability image dataset
+  svg1.selectAll('image')
+  .select('image')
+  .data(readImgs)
+  .enter()
+  .append('image')
+  .attr("id", function(d){return d.name})
+  .attr("class", function(d){return "group"+ d.group})
+  .attr("x", function(d){return d.x})
+  .attr("y", function(d){return d.y * INNER_HEIGHT/10})
+  .attr("width", INNER_WIDTH/10)
+  .attr("height", INNER_HEIGHT/10)
+  .style('opacity', 0)
+  .attr("xlink:href", function(d){return d.img})
 
-  var wsjImg = svg1.append('image')
-                    .attr("xlink:href", './images/WSJ.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 100 );
+  // Create gridlines
+  // gridlines dataset
+  var gridLineData = [{"lineNum": 0, "x1": 0, "y1": 0, "x2": 0, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
+                    {"lineNum": 1, "x1": 1, "y1": 0, "x2": 1, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
+                    {"lineNum": 2, "x1": 2, "y1": 0, "x2": 2, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
+                    {"lineNum": 3, "x1": 3, "y1": 0, "x2": 3, "y2": 1, "stroke": "lightcoral", "strokewidth": 3, "dasharray": "10,2.5"},
+                    {"lineNum": 4, "x1": 4, "y1": 0, "x2": 4, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
+                    {"lineNum": 5, "x1": 5, "y1": 0, "x2": 5, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
+                    {"lineNum": 6, "x1": 6, "y1": 0, "x2": 6, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"}]
 
-  var nytImg = svg1.append('image')
-                    .attr("xlink:href", './images/nyt.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 150 );
+  // Draw gridlines
+  svg1.selectAll('g')
+  .select('g')
+  .data(gridLineData)
+  .enter()
+  .append('line')
+  .attr("id", function(d){return d.lineNum})
+  .attr("class", "grid")
+  .attr("x1", function(d){return (INNER_WIDTH/6) * d.x1})
+  .attr("y1", function(d){return d.y1})
+  .attr("x2", function(d){return (INNER_WIDTH/6) * d.x2})
+  .attr("y2", function(d){return (INNER_HEIGHT/10 * 9) + (d.y2* INNER_HEIGHT/10)})
+  .style('opacity', 0)
+  .style("stroke", function(d){return d.stroke})
+  .style("stroke-width", function(d){return d.strokewidth})
+  .style("stroke-dasharray", function(d){return (d.dasharray)})
 
-  var nytbsImg = svg1.append('image')
-                    .attr("xlink:href", './images/nytbs.png')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 200 );
+  // gridlabels dataset
+  var gridLabelData = [{"group": "level" ,"labelNum": 1, "x": 0, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "Post-graduate"},
+                       {"group": "level" ,"labelNum": 2, "x": 1, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "Graduate"},
+                       {"group": "level" ,"labelNum": 3, "x": 2, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "College"},
+                       {"group": "level" ,"labelNum": 4, "x": 3, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Senior"},
+                       {"group": "level" ,"labelNum": 5, "x": 4, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Freshman"},
+                       {"group": "level" ,"labelNum": 6, "x": 5, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "Middle School"},
+                       {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.5, "fill": "lightcoral", "fontsize": "1.25em", "text": "Readable"},
+                       {"group": "readable" ,"labelNum": 8, "x": 4.5, "y": 1.75, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "More Readable"},
+                       {"group": "readable" ,"labelNum": 9, "x": 0.5, "y": 1.75, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "Less Readable"}]
 
-  var hsImg = svg1.append('image')
-                    .attr("xlink:href", './images/hseng.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 250 );
+  svg1.selectAll('g')
+  .select('g')
+  .data(gridLabelData)
+  .enter()
+  .append('text')
+  .attr("id", function(d){return d.labelNum})
+  .attr("class", "grid")
+  .attr("x", function(d){return (((INNER_WIDTH/6 * d.x) + (INNER_WIDTH/6 * (d.x+1)))/2)})
+  .attr("y", function(d){return (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * d.y)})
+  // .attr("dy",function(d){return "1" * d.y + "em"})
+  .text(function(d){return d.text})
+  .style('opacity', 0)
+  .style('font-size', function(d){return d.fontsize})
+  .style('fill', function(d){return d.fill})
+  .style("text-anchor", "middle")
 
-  var insImg = svg1.append('image')
-                    .attr("xlink:href", './images/inspolicy.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 300 );
 
-  var twitterImg = svg1.append('image')
-                    .attr("xlink:href", './images/twitter.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 350 );
-
-  var facebookImg = svg1.append('image')
-                    .attr("xlink:href", './images/facebook.svg')
-                    .attr("width", 50)
-                    .attr("height", 50)
-                    .attr("x", 0)
-                    .attr("y", 400 );
-
-  // Create gridlines for graph 1
-  var gridlines = svg1.append("g")
-      .attr("class", "gridlines")
-
-  // middle gridline
-  gridlines.append('line')
-      .style("stroke", "lightgreen")
-      .style("stroke-width", 5)
-      .attr("x1", INNER_WIDTH/2)
-      .attr("y1", 0)
-      .attr("x2", INNER_WIDTH/2)
-      .attr("y2", INNER_HEIGHT); 
-
-  //readability sectors
-    gridlines.append('line')
-      .style("stroke", "darkgrey")
-      .style("stroke-width", 2.5)
-      .attr("x1", INNER_WIDTH/6)
-      .attr("y1", 0)
-      .attr("x2", INNER_WIDTH/6)
-      .attr("y2", INNER_HEIGHT + 25); 
-
-    gridlines.append('line')
-      .style("stroke", "darkgrey")
-      .style("stroke-width", 2.5)
-      .attr("x1", INNER_WIDTH/6 * 2)
-      .attr("y1", 0)
-      .attr("x2", INNER_WIDTH/6 * 2)
-      .attr("y2", INNER_HEIGHT + 25);
-
-    gridlines.append('line')
-      .style("stroke", "darkgrey")
-      .style("stroke-width", 2.5)
-      .attr("x1", INNER_WIDTH/6 * 4)
-      .attr("y1", 0)
-      .attr("x2", INNER_WIDTH/6 * 4)
-      .attr("y2", INNER_HEIGHT + 25); 
-
-    gridlines.append('line')
-      .style("stroke", "darkgrey")
-      .style("stroke-width", 2.5)
-      .attr("x1", INNER_WIDTH/6 * 5)
-      .attr("y1", 0)
-      .attr("x2", INNER_WIDTH/6 * 5)
-      .attr("y2", INNER_HEIGHT + 25); 
-
-  var gridLabels2 = svg1.append("g")
-      .attr("class", "gridLabel2")
-
-    gridLabels2.append("text")
-      .attr("x", INNER_WIDTH/6 * 2.45)
-      .attr("y", INNER_HEIGHT + 15)
-      .text("Danger Line");
-
-  var gridLabels = svg1.append("g")
-      .attr("class", "gridLabel");
-
-    gridLabels.append("text")
-      .attr("x", INNER_WIDTH/6 * .1)
-      .attr("y", INNER_HEIGHT + 25)
-      .text("Post-graduate");
-
-    gridLabels.append("text")
-      .attr("x", INNER_WIDTH/6 * 1.25)
-      .attr("y", INNER_HEIGHT + 25)
-      .text("Graduate");
-
-    gridLabels.append("text")
-      .attr("x", INNER_WIDTH/6 * 2.3)
-      .attr("y", INNER_HEIGHT + 25)
-      .text("College");
-
-    gridLabels.append("text")
-      .attr("x", INNER_WIDTH/6 * 3.2)
-      .attr("y", INNER_HEIGHT + 25)
-      .text("H.S. Senior");
-
-    gridLabels.append("text")
-      .attr("x", INNER_WIDTH/6 * 4.15)
-      .attr("y", INNER_HEIGHT + 25)
-      .text("H.S. Freshman");
-
-    gridLabels.append("text")
-      .attr("x", INNER_WIDTH/6 * 5.15)
-      .attr("y", INNER_HEIGHT + 25)
-      .text("Middle School");
-
-  var gridLabels1 = svg1.append("g")
-      .attr("class", "gridLabel1")
-
-    gridLabels1.append("text")
-      .attr("x", INNER_WIDTH/6 * 3.1)
-      .attr("y", INNER_HEIGHT + 45)
-      .text("More Readable >");
-
-    gridLabels1.append("text")
-      .attr("x", INNER_WIDTH/6 * 1.75)
-      .attr("y", INNER_HEIGHT + 45)
-      .text("< Less Readable");
-
-   var gridlinesSelect = svg1.selectAll(".gridlines")
-   var gridLabelsSelect = svg1.selectAll(".gridLabel")
-   var gridLabels1Select = svg1.selectAll(".gridLabel1")
-   var gridLabels2Select = svg1.selectAll(".gridLabel2")
+   var gridSelect = svg1.selectAll(".grid")
 
     // grid opacity
     var gridOP = [0, 1, 1, 1, 1]
     // Opacity array
     var readableOP = [1, 0, 0, 0, 0]
-    // Opacity of news Sources
-    var newsOpacity = [0, 1, 1, 1]
-    // Opacity of secondary sources
-    var secondaryOpacity = [0, 0, 1, 1]
+
 
   // scrolling functionality
 
@@ -231,134 +145,146 @@ function render(){
           .transition();
 
         //gridlines opacity transition
-
-        gridlinesSelect.transition().duration(100)
+        gridSelect.transition().duration(100)
             .style('opacity', gridOP[i])
           .transition();
 
-        gridLabelsSelect.transition().duration(100)
-            .style('opacity', gridOP[i])
-          .transition();
+        // transitions for readable sources
 
-        gridLabels1Select.transition().duration(100)
-            .style('opacity', gridOP[i])
-          .transition();
+        // Set opacity values 
 
-        gridLabels2Select.transition().duration(100)
-            .style('opacity', gridOP[i])
-          .transition();
+        // Opacity of news Sources
+        var newsOpacity = [0, 1, 1, 1]
+        // Opacity of secondary sources
+        var secondaryOpacity = [0, 0, 1, 1]
+        // Opacity of Social Media
+        var socialOP = [0, 0, 0, 1]
 
-        //newsWires
-          var wirePos = [width/30 * 6,
-                          width/30 * 6,
+        // Group 1 - newspapers
+        // --------------------------
+
+        //General Newspapers
+        var newsPos = [width/30 * 16,
+                          width/30 * 21,
+                          width/30 * 21,
+                          width/30 * 21,
+                          width/30 * 21][i]
+
+        var npimg = svg1.select('#NP')
+
+        npimg.transition().duration(500)
+            .style('opacity', newsOpacity[i])
+            .transition().duration(1000)
+            .attr("x", newsPos);
+
+        //AP
+        var wirePos = [width/30 * 6,
+                          width/30 * 16,
                           width/30 * 16,
                           width/30 * 16,
                           width/30 * 16][i]
 
-        wireimg.transition().duration(1000)
-            .attr("x", wirePos)
+        var apImg = svg1.select('#AP')
+
+        apImg.transition().duration(500)
             .style('opacity', newsOpacity[i])
-          .transition();
+            .transition().duration(1000)
+            .attr("x", wirePos);
 
-        //newspapers
-
-        var newsPos = [width/30 * 16,
-                          width/30 * 16,
-                          width/30 * 21,
-                          width/30 * 21,
-                          width/30 * 21][i]
-
-        newsimg.transition().duration(1000)
-            .attr("x", newsPos)
-            .style('opacity', newsOpacity[i])
-          .transition();
-
+        // WSJ
         var wsjPos = [width/30 * 16,
-                          width/30 * 16,
+                          width/30 * 21,
                           width/30 * 21,
                           width/30 * 21,
                           width/30 * 21][i]
 
-        wsjImg.transition().duration(1000)
-            .attr("x", wsjPos)
-            .style('opacity', newsOpacity[i])
-          .transition();
+        var wsjImg = svg1.select('#WSJ')
 
+        wsjImg.transition().duration(500)
+            .style('opacity', newsOpacity[i])
+            .transition().duration(1000)
+            .attr("x", wsjPos);
+
+        //NYT
         var nytPos = [width/30 * 16,
-                          width/30 * 16,
+                          width/30 * 21,
                           width/30 * 21,
                           width/30 * 21,
                           width/30 * 21][i]
 
-        nytImg.transition().duration(1000)
-            .attr("x", nytPos)
+        var nytImg = svg1.select('#NYT')
+
+        nytImg.transition().duration(500)
             .style('opacity', newsOpacity[i])
-          .transition();
+            .transition().duration(1000)
+            .attr("x", nytPos);
 
+        // Group 2 - Secondary Sources
+        // --------------------------
 
-        //secondary sources
+        // NYTBS
         var nytbsPos = [width/30 * 21,
                           width/30 * 21,
                           width/30 * 26,
                           width/30 * 26,
                           width/30 * 26][i]
 
-        nytbsImg.transition().duration(1000)
-            .attr("x", nytbsPos)
-            .style('opacity', secondaryOpacity[i])
-          .transition();
+        var nytbsImg = svg1.select('#NYTBS')
 
+        nytbsImg.transition().duration(500)
+            .style('opacity', secondaryOpacity[i])
+            .transition().duration(1000)
+            .attr("x", nytbsPos);
+
+        // HS English
         var hsengPos = [width/30 * 21,
                           width/30 * 21,
                           width/30 * 26,
                           width/30 * 26,
                           width/30 * 26][i]
 
-        hsImg.transition().duration(1000)
-            .attr("x", hsengPos)
-            .style('opacity', secondaryOpacity[i])
-          .transition();
+        var hsImg = svg1.select('#HSENG')
 
+        hsImg.transition().duration(500)
+            .style('opacity', secondaryOpacity[i])
+            .transition().duration(1000)
+            .attr("x", hsengPos);
+
+        // Insurance Policies
         var insPos = [width/30 * 6,
                           width/30 * 6,
                           width/30 * 21,
                           width/30 * 21,
                           width/30 * 21][i]
 
-        insImg.transition().duration(1000)
-            .attr("x", insPos)
+        var insImg = svg1.select('#IP')
+
+        insImg.transition().duration(500)
             .style('opacity', secondaryOpacity[i])
-          .transition();
+            .transition().duration(1000)
+            .attr("x", insPos);
 
-        var twitterPos = [width/30 * 26,
+        // Social Media 
+        var socialPos = [width/30 * 26,
                           width/30 * 26,
                           width/30 * 26,
                           width/30 * 26,
                           width/30 * 26][i]
 
-        var socialOP = [0, 0, 0, 1.0]
+        var socialImg = svg1.selectAll('.group3')
 
-        twitterImg.transition().duration(1000)
-            .attr("x", twitterPos)
+        socialImg.transition().duration(1000)
+            .attr("x", socialPos)
             .style('opacity', socialOP[i])
           .transition();
-        
-        var facebookPos = [width/30 * 26,
-                          width/30 * 26,
-                          width/30 * 26,
-                          width/30 * 26,
-                          width/30 * 26][i]
 
-        facebookImg.transition().duration(1000)
-            .attr("x", facebookPos)
-            .style('opacity', socialOP[i])
-          .transition();
+
       })
 
 // --------------------------------------------
 // GRAPH 2
 
-var margin2 = {top: 20, right: 80, bottom: 50, left: 70};
+var margin2 = {top: 50, right: 80, bottom: 50, left: 70};
 var INNER_WIDTH2  = width - margin2.left - margin2.right;
 var INNER_HEIGHT2 = height - margin2.top - margin2.bottom;
 
@@ -388,7 +314,7 @@ var svg2 = d3.select('.container-2 #graph').html('').append("svg")
 var compreRects = [{"rectNumber": 1, "y": 0, "height": height/10, "fill": "#238443", "label": "Advanced"},
                    {"rectNumber": 2, "y": height/10, "height": height/3.6, "fill": "#78c679", "label": "Proficient"},
                    {"rectNumber": 3, "y": height/10 + height/3.6, "height": height/4.5, "fill": "#c2e699", "label": "Basic"},
-                   {"rectNumber": 4, "y": height/10 + height/3.6 + height/4.5, "height": height/3.85, "fill": "#ffffcc", "label": "Below Basic" }]
+                   {"rectNumber": 4, "y": height/10 + height/3.6 + height/4.5, "height": height/5, "fill": "#ffffcc", "label": "Below Basic" }]
 
 var background = svg2.append("g")
 
@@ -414,13 +340,42 @@ svg2.selectAll('text')
 .append('text')
 .attr("id", function(d){return "labelNum"+ d.rectNumber})
 .attr("class", "background")
-.attr("x", INNER_WIDTH2/3)
-.attr("y", function(d){return d.y})
-.attr("dy", "1.5em")
-.style('font-size', "1em")
+.attr("x", 0)
+.attr("y", function(d){return d.y + (d.height/2)})
+.attr("dy", ".5em")
+.style('font-size', "2em")
 .style("fill", "grey")
 .style('opacity', 0)
 .text(function(d){return d.label})
+
+// axis labels
+  // Add X axis label:
+svg2.append("text")
+    .attr("text-anchor", "middle")
+    .attr("x", INNER_WIDTH2/2)
+    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/10 )
+    .text("Year")
+    .style('font-size', "1em")
+    .attr("class", "chartlabel");
+
+  // Add Y axis label:
+svg2.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", 0-INNER_WIDTH2/20)
+    .attr("y", INNER_HEIGHT2/2 )
+    .text("Score")
+    .style('font-size', "1em")
+    .attr("class", "chartlabel");
+
+svg2.append("text")
+    // .attr("text-anchor", "end")
+    .attr("x", 0)
+    .attr("y", 0-margin2.top/2)
+    .text("12th Grade Reading Comprehension")
+    .style('font-size', "1.25em")
+    .attr("class", "chartlabel");
+
+
 
 
 var gs3 = d3.graphScroll()
@@ -548,7 +503,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', lineOP[i])
     .transition();
 
-  // background opacity
+  // background rectangles and label opacity
   var backgroundOP = [.75, .66, .66 ,.66]
 
   var backgroundselect = svg2.selectAll(".background")
@@ -557,6 +512,15 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', backgroundOP[i])
     .transition();
   
+  // background rectangles and label opacity
+  var labelOP = [0, 1, 1 , 1]
+
+  var labelselect = svg2.selectAll(".chartlabel")
+  
+  labelselect.transition().duration(500)
+      .style('opacity', labelOP[i])
+    .transition();
+
 
     function animateLine() {
       var l = this.getTotalLength();
@@ -571,12 +535,22 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
       .call(d3.axisBottom(x)
       .ticks(5)
-      .tickFormat(d3.format("d")));
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
 
   // Add the y Axis
   svg2.append("g")
-      .call(d3.axisLeft(y));
-    
+      .call(d3.axisLeft(y)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+  
+  var axisSelect = svg2.selectAll(".axisticks")
+
+  axisSelect.transition().duration(500)
+      .style('opacity', lineOP[i])
+    .transition();
+
     });
   })
 
