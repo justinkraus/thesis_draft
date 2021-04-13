@@ -45,8 +45,12 @@ function render(){
                  {"group":2, "name": "NYTBS", "img": './images/nytbs.png', "x": 0, "y": 4},
                  {"group":2, "name": "HSENG", "img": './images/hseng.svg', "x": 0, "y": 5},
                  {"group":2, "name": "IP", "img": './images/inspolicy.svg', "x": 0, "y": 6},
-                 {"group":3, "name": "Twitter", "img": './images/twitter.svg', "x": 0, "y": 7},
-                 {"group":3, "name": "FB", "img": './images/facebook.svg', "x": 0, "y": 8},
+                 {"group":3, "name": "Twitter", "img": './images/twitter.svg', "x": 26, "y": 7},
+                 {"group":3, "name": "FB", "img": './images/facebook1.svg', "x": 26, "y": 8},
+                 {"group":3, "name": "ACA", "img": './images/aca.svg', "x": 11, "y": 6},
+                 {"group":3, "name": "SEC", "img": './images/sec10k.svg', "x": 6, "y": 5},
+                 {"group":3, "name": "HLR", "img": './images/hlr.svg', "x": 6, "y": 3},
+                 {"group":3, "name": "SCIJ", "img": './images/scij.svg', "x": 1, "y": 4}
                  ]
 
   // Load readability image dataset
@@ -57,7 +61,8 @@ function render(){
   .append('image')
   .attr("id", function(d){return d.name})
   .attr("class", function(d){return "group"+ d.group})
-  .attr("x", function(d){return d.x})
+  // .attr("x", function(d){return (width/30 * 26) * d.x})
+  .attr("x", function(d){return width/30 * d.x})
   .attr("y", function(d){return d.y * INNER_HEIGHT/10})
   .attr("width", INNER_WIDTH/10)
   .attr("height", INNER_HEIGHT/10)
@@ -265,16 +270,16 @@ function render(){
             .attr("x", insPos);
 
         // Social Media 
-        var socialPos = [width/30 * 26,
-                          width/30 * 26,
-                          width/30 * 26,
-                          width/30 * 26,
-                          width/30 * 26][i]
+        // var socialPos = [width/30 * 26,
+        //                   width/30 * 26,
+        //                   width/30 * 26,
+        //                   width/30 * 26,
+        //                   width/30 * 26][i]
 
         var socialImg = svg1.selectAll('.group3')
 
         socialImg.transition().duration(1000)
-            .attr("x", socialPos)
+            // .attr("x", socialPos)
             .style('opacity', socialOP[i])
           .transition();
 
