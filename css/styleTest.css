@@ -2,6 +2,12 @@
   height:100vh;
 }
 
+#titletype {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 100px;
+}
+
 /*#topbar{
   fill:black;
   content: "";
@@ -16,8 +22,6 @@
 }*/
 
 body{
-  max-width: 80vw;
-  margin: 0.5vw auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -32,12 +36,15 @@ h1, h2{
 
 
 #container{
+/*  max-width: 80vw;
+  margin: 0.5vw auto;*/
   position: relative;
+  background-color: blue;
 }
 
 #sections{
-  width: 35vw;
-  
+  width: 30vw;
+  margin-left: 10vw;
 }
 
 #sections > div{
@@ -54,18 +61,106 @@ h1, h2{
 }
 
 #graph{
-  margin-left: 40px;
-  width: 40vw;
+  margin-right: 10vw;
+  margin-left: 42.5vw;
+  width: 45vw;
   position: -webkit-sticky;
   position: sticky;
 /*  added top % here to bump graph down a bit*/
-  top: 10%;
-  float: right;
+  top: 5%;
+  /*margin-right: 10vw;*/ 
+  float: left;
 /*    -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     transform: translateY(-50%);*/
 }
 
+/*widescreen*/
+@media (max-width: 3440px)  {
+#graph{
+  margin-right: 10vw;
+  margin-left: 42.5vw;
+  width: 40vw;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5%; 
+  float: left;
+}
+
+#sections{
+  width: 30vw;
+  margin-left: 10vw;
+}
+
+#sections > div{
+  background: white;
+  opacity: .05;
+  margin-bottom: 25vh;
+}
+#sections > div:last-child{
+  margin-bottom: 10vh;
+}
+#sections > div.graph-scroll-active{
+  opacity: 1;
+  background-color: pink;
+}
+
+  pre{
+    overflow: hidden;
+  }
+
+  h1{
+    margin: 10px;
+  }
+}
+
+
+
+
+
+/*laptop upto widescreen*/
+@media (max-width: 1680px)  {
+#graph{
+  margin-right: 10vw;
+  margin-left: 42.5vw;
+  width: 46vw;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5%; 
+  float: left;
+}
+
+#sections{
+  width: 30vw;
+  margin-left: 10vw;
+}
+
+#sections > div{
+  background: white;
+  opacity: .05;
+  margin-bottom: 25vh;
+}
+#sections > div:last-child{
+  margin-bottom: 10vh;
+}
+#sections > div.graph-scroll-active{
+  opacity: 1;
+  background-color: pink;
+}
+
+  pre{
+    overflow: hidden;
+  }
+
+  h1{
+    margin: 10px;
+  }
+}
+
+
+
+
+/*mobile*/
 @media (max-width: 925px)  {
   #graph{
     width: 100%;
@@ -76,7 +171,7 @@ h1, h2{
   #sections{
     width: auto;
     position: relative;
-    margin: 0px auto;
+    margin: 0px auto; 
   }
 
   #sections > div{

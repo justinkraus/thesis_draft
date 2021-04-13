@@ -1,10 +1,11 @@
-
 var oldWidth = 0
 function render(){
   if (oldWidth == innerWidth) return
   oldWidth = innerWidth
 
-  var width = height = d3.select('#graph').node().offsetWidth
+  // var width = height = d3.select('#graph').node().offsetWidth
+  var height = d3.select('#graph').node().offsetWidth
+  var width = height + (height/16)
   var r = width/16
 
 
@@ -104,8 +105,8 @@ function render(){
                        {"group": "level" ,"labelNum": 5, "x": 4, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Freshman"},
                        {"group": "level" ,"labelNum": 6, "x": 5, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "Middle School"},
                        {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.5, "fill": "lightcoral", "fontsize": "1.25em", "text": "Readable"},
-                       {"group": "readable" ,"labelNum": 8, "x": 4.5, "y": 1.75, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "More Readable"},
-                       {"group": "readable" ,"labelNum": 9, "x": 0.5, "y": 1.75, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "Less Readable"}]
+                       {"group": "readable" ,"labelNum": 8, "x": 4.5, "y": 1.5, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "More Readable"},
+                       {"group": "readable" ,"labelNum": 9, "x": 0.5, "y": 1.5, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "Less Readable"}]
 
   svg1.selectAll('g')
   .select('g')
@@ -391,7 +392,7 @@ var gs3 = d3.graphScroll()
   .on('active', function(i){
 
 
-d3.csv("NAEP_scores.csv", function(data) {
+d3.csv("NAEP_scores1.csv", function(data) {
 
   color3.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }))
 
@@ -420,7 +421,41 @@ d3.csv("NAEP_scores.csv", function(data) {
 
   // national average
   // natlOP = [0,1,1]
+// draw national average line
+if (document.getElementById('container-2-0').className == "graph-scroll-active") {
+  d3.selectAll(".line")
+  .remove()
+
+  d3.selectAll(".line1")
+  .remove()
+
+  d3.selectAll(".axisticks")
+  .remove()
+  
+  }
+
 if (document.getElementById('container-2-1').className == "graph-scroll-active") {
+
+  d3.selectAll(".line1")
+  .remove()
+
+    // Add the x Axis
+  svg2.append("g")
+      .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+      .call(d3.axisBottom(x)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+
+  // Add the y Axis
+  svg2.append("g")
+      .call(d3.axisLeft(y)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+
+
+
   var path = svg2.selectAll(".bracket").append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
@@ -463,15 +498,32 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   if (document.getElementById('container-2-2').className == "graph-scroll-active") {
 
+        // Add the x Axis
+  svg2.append("g")
+      .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+      .call(d3.axisBottom(x)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+
+  // Add the y Axis
+  svg2.append("g")
+      .call(d3.axisLeft(y)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+
     var path1 = svg2.selectAll(".bracket").append("path")
       .attr("class", "line1")
       .attr("d", function(d) { return line(d.values); })
       .style("stroke-width", function(d) { if (d.name == "National Avg") 
-                                        {return "0"}
-                                      else {return "2.5";}
+                                        {return "5"}
+                                      else {return "5";}
                                          })
       .style("stroke", function(d) { if (d.name == "10th%" || d.name == "25th%" ) 
                                         {return "red"}
+                                      else if (d.name == "National Avg") 
+                                        {return "orange"}
                                       else {return "steelblue";}
                                          })
       .attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
@@ -535,20 +587,20 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   
 
 
-  // Add the x Axis
-  svg2.append("g")
-      .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
-      .call(d3.axisBottom(x)
-      .ticks(5)
-      .tickFormat(d3.format("d")))
-      .attr("class", "axisticks");
+  // // Add the x Axis
+  // svg2.append("g")
+  //     .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+  //     .call(d3.axisBottom(x)
+  //     .ticks(5)
+  //     .tickFormat(d3.format("d")))
+  //     .attr("class", "axisticks");
 
-  // Add the y Axis
-  svg2.append("g")
-      .call(d3.axisLeft(y)
-      .ticks(5)
-      .tickFormat(d3.format("d")))
-      .attr("class", "axisticks");
+  // // Add the y Axis
+  // svg2.append("g")
+  //     .call(d3.axisLeft(y)
+  //     .ticks(5)
+  //     .tickFormat(d3.format("d")))
+  //     .attr("class", "axisticks");
   
   var axisSelect = svg2.selectAll(".axisticks")
 
