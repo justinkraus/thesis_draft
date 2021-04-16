@@ -104,9 +104,9 @@ function render(){
                        {"group": "level" ,"labelNum": 4, "x": 3, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Senior"},
                        {"group": "level" ,"labelNum": 5, "x": 4, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Freshman"},
                        {"group": "level" ,"labelNum": 6, "x": 5, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "Middle School"},
-                       {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.5, "fill": "Coral", "fontsize": "1.25em", "text": "Readable"},
-                       {"group": "readable" ,"labelNum": 8, "x": 4.5, "y": 1.5, "fill": "SteelBlue", "fontsize": "1em", "text": "More Readable"},
-                       {"group": "readable" ,"labelNum": 9, "x": 0.5, "y": 1.5, "fill": "Crimson", "fontsize": "1em", "text": "Less Readable"}]
+                       {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.5, "fill": "lightcoral", "fontsize": "1.25em", "text": "Readable"},
+                       {"group": "readable" ,"labelNum": 8, "x": 4.5, "y": 1.5, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "More Readable"},
+                       {"group": "readable" ,"labelNum": 9, "x": 0.5, "y": 1.5, "fill": "DarkSeaGreen", "fontsize": "1em", "text": "Less Readable"}]
 
   svg1.selectAll('g')
   .select('g')
@@ -290,7 +290,7 @@ function render(){
 // --------------------------------------------
 // GRAPH 2
 
-var margin2 = {top: 50, right: 100, bottom: 50, left: 70};
+var margin2 = {top: 50, right: 80, bottom: 50, left: 70};
 var INNER_WIDTH2  = width - margin2.left - margin2.right;
 var INNER_HEIGHT2 = height - margin2.top - margin2.bottom;
 
@@ -316,11 +316,11 @@ var svg2 = d3.select('.container-2 #graph').html('').append("svg")
           "translate(" + margin2.left + "," + margin2.top + ")");
 
 // draw comprehension rects
+// {"rectNumber": 1, "y": 0, "height": height/10, "fill": "#238443", "label": "Advanced"},
 
-var compreRects = [{"rectNumber": 1, "y": 0, "height": height/10, "fill": "#238443", "label": "advanced"},
-                   {"rectNumber": 2, "y": height/10, "height": height/3.6, "fill": "#78c679", "label": "proficient"},
-                   {"rectNumber": 3, "y": height/10 + height/3.6, "height": height/4.5, "fill": "#c2e699", "label": "basic"},
-                   {"rectNumber": 4, "y": height/10 + height/3.6 + height/4.5, "height": height/5, "fill": "white", "label": "below basic" }]
+var compreRects = [{"rectNumber": 2, "y": 0, "height": height/7, "fill": "#78c679", "label": "Proficient"},
+                   {"rectNumber": 3, "y": height/7, "height": height/2.75, "fill": "#c2e699", "label": "Basic"},
+                   {"rectNumber": 4, "y": height/7+height/2.75, "height": height/2.75, "fill": "white", "label": "Below Basic" }]
 
 var background = svg2.append("g")
 
@@ -346,12 +346,11 @@ svg2.selectAll('text')
 .append('text')
 .attr("id", function(d){return "labelNum"+ d.rectNumber})
 .attr("class", "background")
-.attr("x", INNER_WIDTH2/2)
+.attr("x", 0)
 .attr("y", function(d){return d.y + (d.height/2)})
 .attr("dy", ".5em")
 .style('font-size', "2em")
 .style("fill", "grey")
-.attr("text-anchor", "middle")
 .style('opacity', 0)
 .text(function(d){return d.label})
 
@@ -360,26 +359,26 @@ svg2.selectAll('text')
 svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/12 )
+    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/10 )
     .text("Year")
-    .style('font-size', "1.25em")
+    .style('font-size', "1em")
     .attr("class", "chartlabel");
 
   // Add Y axis label:
 svg2.append("text")
     .attr("text-anchor", "end")
-    .attr("x", 0-INNER_WIDTH2/40)
+    .attr("x", 0-INNER_WIDTH2/20)
     .attr("y", INNER_HEIGHT2/2 )
     .text("Score")
-    .style('font-size', "1.25em")
+    .style('font-size', "1em")
     .attr("class", "chartlabel");
 
 svg2.append("text")
     // .attr("text-anchor", "end")
     .attr("x", 0)
-    .attr("y", 0-margin2.top/4)
-    .text("12th Grade Reading Comprehension")
-    .style('font-size', "1.5em")
+    .attr("y", 0-margin2.top/2)
+    .text("4th Grade Reading Comprehension")
+    .style('font-size', "1.25em")
     .attr("class", "chartlabel");
 
 
@@ -393,7 +392,7 @@ var gs3 = d3.graphScroll()
   .on('active', function(i){
 
 
-d3.csv("NAEP_scores1.csv", function(data) {
+d3.csv("NAEP_grade8.csv", function(data) {
 
   color3.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }))
 
@@ -401,14 +400,14 @@ d3.csv("NAEP_scores1.csv", function(data) {
     return {
       name: name,
       values: data.map(function(d) {
-        return {date: +d.year, score: +d[name]};
+        return {date: +d.Year, score: +d[name]};
       })
     };
   });
 
   // Scale the range of the data
-  x.domain([1992, 2019]);
-  y.domain([200, 360]);
+  x.domain([2002, 2019]);
+  y.domain([230, 280]);
 
   var bracket = svg2.selectAll(".bracket")
       .data(brackets)
@@ -432,9 +431,6 @@ if (document.getElementById('container-2-0').className == "graph-scroll-active")
 
   d3.selectAll(".axisticks")
   .remove()
-
-  d3.selectAll(".stateDot")
-  .remove()
   
   }
 
@@ -449,35 +445,33 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .call(d3.axisBottom(x)
       .ticks(5)
       .tickFormat(d3.format("d")))
-      .attr("class", "axisticks")
-      .style("font-size", ".9em");
+      .attr("class", "axisticks");
 
   // Add the y Axis
   svg2.append("g")
       .call(d3.axisLeft(y)
       .ticks(5)
       .tickFormat(d3.format("d")))
-      .attr("class", "axisticks")
-      .style("font-size", ".9em");;
+      .attr("class", "axisticks");
 
 
 
   var path = svg2.selectAll(".bracket").append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
-      .style("stroke-width", function(d) { if (d.name == "National Avg") 
+      .style("stroke-width", function(d) { if (d.name == "National") 
                                         {return "6"}
                                       else {return "0";}
                                          })
-      .style("stroke", function(d) { if (d.name == "National Avg") 
-                                        {return "Coral"}
+      .style("stroke", function(d) { if (d.name == "National") 
+                                        {return "orange"}
                                       else {return "steelblue";}
                                          })
       .attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
       .style("fill", "none")
       .transition()
       .delay(function(d, i) { return i * 0; })
-      .duration(2500)
+      .duration(1950)
       .ease(d3.easeSin)
       .attrTween("stroke-dasharray", animateLine)
       .style('opacity', 1);
@@ -487,13 +481,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.score) + ")"; })
       .attr("x", 3)
       .attr("dy", ".2em")
-      .style("font-size", function(d) { if (d.name == "National Avg") 
-                                        {return "1em"}
+      .style("font-size", function(d) { if (d.name == "National") 
+                                        {return "10"}
                                       else {return "0";}
                                          })
       .text(function(d) { return d.name; })
       .transition()
-      .duration(2500)
+      .duration(1950)
       .ease(d3.easeSin);
 
   }
@@ -510,38 +504,36 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .call(d3.axisBottom(x)
       .ticks(5)
       .tickFormat(d3.format("d")))
-      .attr("class", "axisticks")
-      .style("font-size", ".9em");
+      .attr("class", "axisticks");
 
   // Add the y Axis
   svg2.append("g")
       .call(d3.axisLeft(y)
       .ticks(5)
       .tickFormat(d3.format("d")))
-      .attr("class", "axisticks")
-      .style("font-size", ".9em");
+      .attr("class", "axisticks");
 
     var path1 = svg2.selectAll(".bracket").append("path")
       .attr("class", "line1")
       .attr("d", function(d) { return line(d.values); })
-      .style("stroke-width", function(d) { if (d.name == "National Avg" || d.name == "10th%" || d.name == "25th%" || d.name == "75th%" || d.name == "90th%") 
+      .style("stroke-width", function(d) { if (d.name == "National Avg") 
                                         {return "5"}
-                                      else {return "0";}
+                                      else {return "5";}
                                          })
       .style("stroke", function(d) { if (d.name == "10th%" || d.name == "25th%" ) 
-                                        {return "Crimson"}
-                                      else if (d.name == "National Avg") 
-                                        {return "Coral"}
-                                      else {return "SteelBlue";}
+                                        {return "red"}
+                                      else if (d.name == "National") 
+                                        {return "orange"}
+                                      else {return "steelblue";}
                                          })
       .attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
       .style("fill", "none")
-      .attr("opacity", percentOP[i])
       .transition()
       .delay(function(d, i) { return i * 0; })
-      .duration(2500)
+      .duration(1950)
       .ease(d3.easeSin)
-      .attrTween("stroke-dasharray", animateLine);
+      .attrTween("stroke-dasharray", animateLine)
+      .attr("opacity", percentOP[i]);
 
   
 
@@ -550,61 +542,66 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.score) + ")"; })
       .attr("x", 3)
       .attr("dy", ".2em")
-      .style("font-size", "1em")
+      .style("font-size", "10px")
       .text(function(d) { return d.name; })
       .transition()
       .duration(1950)
       .ease(d3.easeSin);
-
-  // state_dot_data = [{ "year": 2013, "state":  "Arkansas", "score": 284.5562147},
-  //               {  "year": 2013, "state":  "Connecticut", "score": 298.7901622},
-  //               {  "year": 2013, "state":  "Florida", "score": 285.7552624},
-  //               {  "year": 2013, "state":  "Idaho", "score": 292.4917561},
-  //               {  "year": 2013, "state":  "Illinois", "score": 289.2159054},
-  //               {  "year": 2013, "state":  "Iowa", "score":  291.0484288},
-  //               {  "year": 2013, "state":  "Massachusetts", "score": 292.8363498},
-  //               {  "year": 2013, "state":  "Michigan", "score": 288.1832906},
-  //               {  "year": 2013, "state":  "New Hampshire", "score": 294.9296776},
-  //               {  "year": 2013, "state":  "New Jersey", "score": 291.7800742},
-  //               {  "year": 2013, "state":  "South Dakota", "score": 291.9113057},
-  //               {  "year": 2013, "state":  "Tennessee", "score": 282.4105559},
-  //               {  "year": 2013, "state":  "West Virginia", "score": 280.2149731}
-  //             ]
-
-  state_dot_data = [{ "year": 2013, "state":  "Arkansas", "score": 284.5562147},
-                {  "year": 2013, "state":  "Connecticut", "score": 298.7901622},
-                {  "year": 2013, "state":  "Massachusetts", "score": 292.8363498},
-                {  "year": 2013, "state":  "West Virginia", "score": 280.2149731}
-              ]
-
-  // add in scatter plot dots
-
-  var stateDots = svg2.append('g')
-                  .selectAll('g')
-                  .data(state_dot_data)
-                  .enter()
-                  .append('g')
-
-  stateDots.append("circle")
-      .attr("cx", function (d) { return x(d.year); } )
-      .attr("cy", function (d) { return y(d.score); } )
-      .attr("r", 3)
-      .attr("class", "stateDot")
-      .style("fill", "Coral")
-      .attr("opacity", 0)
-
-  stateDots.append("text")
-    .attr("x", function (d) { return x(d.year); })
-    .attr("y", function (d) { return y(d.score); } )
-    .attr("dy", ".5em")
-    .attr("dx", ".5em")
-    .style("font-size", ".9em")
-    .attr("class", "stateDot")
-    .attr("opacity", 0)
-    .text(function(d) { return d.state; })
-
-
     }
+
+  if (document.getElementById('container-2-3').className == "graph-scroll-active") {
+
+        // Add the x Axis
+  svg2.append("g")
+      .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+      .call(d3.axisBottom(x)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+
+  // Add the y Axis
+  svg2.append("g")
+      .call(d3.axisLeft(y)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks");
+
+    var path1 = svg2.selectAll(".bracket").append("path")
+      .attr("class", "line1")
+      .attr("d", function(d) { return line(d.values); })
+      .style("stroke-width", function(d) { if (d.name == "National Avg") 
+                                        {return "5"}
+                                      else {return "5";}
+                                         })
+      .style("stroke", function(d) { if (d.name == "10th%" || d.name == "25th%" ) 
+                                        {return "red"}
+                                      else if (d.name == "National") 
+                                        {return "orange"}
+                                      else {return "steelblue";}
+                                         })
+      .attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
+      .style("fill", "none")
+      .transition()
+      .delay(function(d, i) { return i * 0; })
+      .duration(1950)
+      .ease(d3.easeSin)
+      .attrTween("stroke-dasharray", animateLine)
+      .attr("opacity", percentOP[i]);
+
+  
+
+  svg2.selectAll(".bracket").append("text")
+      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.score) + ")"; })
+      .attr("x", 3)
+      .attr("dy", ".2em")
+      .style("font-size", "10px")
+      .text(function(d) { return d.name; })
+      .transition()
+      .duration(1950)
+      .ease(d3.easeSin);
+    }
+
 
   // grid opacity and transition
   var lineOP = [0, 1, 1, 1]
@@ -618,7 +615,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
 
   // background rectangles and label opacity
-  var backgroundOP = [.75, .60, .60 ,.60]
+  var backgroundOP = [.75, .66, .66 ,.66]
 
   var backgroundselect = svg2.selectAll(".background")
   
@@ -635,14 +632,6 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', labelOP[i])
     .transition();
 
-  // state dot OP
-  var stateOP = [0, 0, 0 , 1]
-
-  var stateSelect = svg2.selectAll(".stateDot")
-  
-  stateSelect.transition().duration(500)
-      .style('opacity', stateOP[i])
-    .transition();
 
     function animateLine() {
       var l = this.getTotalLength();
@@ -650,6 +639,22 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       return function(t) { return i(t); };
     }
   
+
+
+  // // Add the x Axis
+  // svg2.append("g")
+  //     .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+  //     .call(d3.axisBottom(x)
+  //     .ticks(5)
+  //     .tickFormat(d3.format("d")))
+  //     .attr("class", "axisticks");
+
+  // // Add the y Axis
+  // svg2.append("g")
+  //     .call(d3.axisLeft(y)
+  //     .ticks(5)
+  //     .tickFormat(d3.format("d")))
+  //     .attr("class", "axisticks");
   
   var axisSelect = svg2.selectAll(".axisticks")
 
@@ -683,25 +688,24 @@ var svg3 = d3.select('.container-3 #graph').html('').append("svg")
 
 //poloygon sizes
 //these two set all
-var topLeftX = width/5
-var topY = height/1.4
+var topLeftX = width/4.5
+var topY = height/1.5
 // top right polygon
-var topRightX = topLeftX + (width/6 * 1.75)
+var topRightX = topLeftX + (width/6 * 2.25)
 // bottom vars
-var botRightX = topLeftX + (width/6 * 1)
-var botLeftX = topLeftX - (width/6 * 1)
-var botY = topY + topY/4
+var botRightX = topLeftX + (width/6 * 1.25)
+var botLeftX = topLeftX - (width/6 * 1.25)
+var botY = topY + topY/3
 
 //spaces between polygons
-var squareSpace = (height/1.4)/4.5
+var squareSpace = (height/1.4)/4
 // additional offset of first polygon
-var poly1Yoffset = squareSpace/2.5
+var poly1Yoffset = squareSpace/2
 
 var poly1 = [[{x: topLeftX, y:topY + poly1Yoffset}, {x: topRightX, y:topY + poly1Yoffset}, {x: botRightX, y:botY + poly1Yoffset}, {x: botLeftX, y:botY + poly1Yoffset}]]
 var poly2 = [[{x: topLeftX, y:topY - (squareSpace)}, {x: topRightX, y:topY - (squareSpace)}, {x: botRightX, y:botY - (squareSpace)}, {x: botLeftX, y:botY - (squareSpace)}]]
 var poly3 = [[{x: topLeftX, y:topY - (squareSpace * 2)}, {x: topRightX, y:topY - (squareSpace * 2)}, {x: botRightX, y:botY - (squareSpace * 2)}, {x: botLeftX, y:botY - (squareSpace * 2)}]]
 var poly4 = [[{x: topLeftX, y:topY - (squareSpace * 3)}, {x: topRightX, y:topY - (squareSpace * 3)}, {x: botRightX, y:botY - (squareSpace * 3)}, {x: botLeftX, y:botY - (squareSpace * 3)}]]
-var poly5 = [[{x: topLeftX, y:topY - (squareSpace * 4) - poly1Yoffset}, {x: topRightX, y:topY - (squareSpace * 4) - poly1Yoffset}, {x: botRightX, y:botY - (squareSpace * 4) - poly1Yoffset}, {x: botLeftX, y:botY - (squareSpace * 4) - poly1Yoffset}]]
 
 var lineFunc = d3.line()
   .x(function(d) {return d.x })
@@ -720,7 +724,7 @@ var poly2var = svg3.append('path')
 .attr("class", "poly2")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'SteelBlue')
+.attr('fill', 'blue')
 .style('opacity', .33);
 
 var poly3var = svg3.append('path')
@@ -728,7 +732,7 @@ var poly3var = svg3.append('path')
 .attr("class", "poly3")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'SteelBlue')
+.attr('fill', 'blue')
 .style('opacity', .66);
 
 var poly4var = svg3.append('path')
@@ -736,53 +740,22 @@ var poly4var = svg3.append('path')
 .attr("class", "poly34")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'SteelBlue')
-.style('opacity', .90);
-
-var poly5var = svg3.append('path')
-.data(poly5)
-.attr("class", "poly5")
-.attr('d', lineFunc)
-.attr('stroke', 'black')
-.attr('fill', 'white')
+.attr('fill', 'blue')
 .style('opacity', .90);
 
 
 // Create full text block on white polygon
-svg3.append('text')
-.attr("class", "polytitle")
-.attr("x", (topRightX))
-.attr("y", (topY + botY)/2 + poly1Yoffset/1.75)
-.attr("dy", "1em")
-.style('font-size', "1.5em")
-.style('fill', "grey")
+var fixedText = svg3.append('text')
+.attr("class", "fixedText")
+.attr("x", (topLeftX + botRightX)/2.8)
+.attr("y", (topY + botY)/2 + poly1Yoffset/1.5)
+.attr("dy", "0em")
+.style('font-size', 12)
 .style('opacity', 0)
-.text("Written Text");
-
-//polygon titles 
-// comprehension poly top
-svg3.append('text')
-.attr("class", "polytitle")
-.attr("x", (topRightX))
-.attr("y", ((topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset))/3)
-.attr("dy", '1em')
-.attr("transform", "skewY(180)")
-.style('font-size', "1.5em")
-.style('fill', "grey")
-.text("Comprehension")
-
-// construction-integration middle
-svg3.append('text')
-.attr("class", "cititle")
-.attr("x", (topRightX))
-.attr("y", (topY - (squareSpace * 3)/1.75))
-.attr("dy", '1em')
-.attr("transform", "skewY(180)")
-.style('font-size', "1.5em")
-.style('fill', "grey")
-.text("Construction-Integration")
-
-
+.html(function (d){ 
+  return "<tspan x='100' dy='1.2em'>" + "The turtle sat on a log." + "</tspan>" 
+       + "<tspan x='100' dy='1.2em'>" + "A fish swam under the log." + "</tspan>";
+});
 
 
 // comprehension level titles
@@ -801,7 +774,7 @@ svg3.selectAll('text')
 .attr("x", topRightX)
 .attr("y", function(d){return topY - (squareSpace * d.levelNumber) })
 .attr("dy", ".9em")
-.style('font-size', "1.25em")
+.style('font-size', 12)
 .style('opacity', 0)
 .text(function(d){return d.text})
 
@@ -823,18 +796,17 @@ svg3.selectAll('text')
 .attr("x", topRightX)
 .attr("y", function(d){return topY - (squareSpace * d.levelNumber) })
 .attr("dy", "3em")
-.style('font-size', "1em")
+.style('font-size', 10)
 .style('opacity', 0)
 .text(function(d){return d.text})
 
 // comprehension level examples
-// {"levelNumber":1,"innerLevel":1, "img": './images/fish.svg', "text": 'fish', "width": 30, "height": 30},
-//                  {"levelNumber":1,"innerLevel":2, "img": './images/turtle.svg', "text": 'turtle', "width": 30, "height": 30},
-//                  {"levelNumber":1,"innerLevel":3, "img": './images/log.svg', "text": 'log', "width": 30, "height": 30},
 
-var examples = [ {"levelNumber":1,"innerLevel":2, "img": './images/tfl_def.svg', "text": 'log', "width": 200, "height": 80},
-                 {"levelNumber":2,"innerLevel":.5, "img": './images/turtle_fish.svg', "text": 'log', "width": 200, "height": 80},
-                 {"levelNumber":3,"innerLevel":1, "img": './images/log_scene.svg', "text": 'log', "width": 200, "height": 90}
+var examples = [{"levelNumber":1,"innerLevel":1, "img": './images/fish.svg', "text": 'fish', "width": 30, "height": 30},
+                 {"levelNumber":1,"innerLevel":2, "img": './images/turtle.svg', "text": 'turtle', "width": 30, "height": 30},
+                 {"levelNumber":1,"innerLevel":3, "img": './images/log.svg', "text": 'log', "width": 30, "height": 30},
+                 {"levelNumber":2,"innerLevel":1, "img": './images/turtle_fish.svg', "text": 'log', "width": 50, "height": 60},
+                 {"levelNumber":3,"innerLevel":0, "img": './images/log_scene.svg', "text": 'log', "width": 100, "height": 100}
                  ]
 
 svg3.selectAll('image')
@@ -1008,13 +980,21 @@ var gs4 = d3.graphScroll()
   .sections(d3.selectAll('.container-3 #sections > div'))
   .on('active', function(i){
 
-
+//titles 
+svg3.append('text')
+.attr("class", "Construction")
+.attr("x", topLeftX - topLeftX/2 )
+.attr("y", 0)
+.attr("dy", '1em')
+.style('font-size', 28)
+.style('fill', "grey")
+.text("Construction-Integration")
 
 //polygon opacity transitions
 
-poly1OP = [1,1,1,1,1,1,1,1]
-poly23OP = [1,.66,.66,.33,0,0,0]
-ploy4OP = [1,.66,.66,1,0,0,0]
+poly1OP = [0,0,1,1,1,1,1,1]
+poly23OP = [0,.66,.66,.33,0,0,0]
+ploy4OP = [0,.66,.66,1,0,0,0]
 
 // white polygon size transition
 poly1size = [
@@ -1027,25 +1007,6 @@ poly1size = [
              [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
-poly2size = [
-             [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]]
-            ].map(function(d){ return 'M' + d.join(' L ') })
-
-poly4size = [
-             [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]]
-            ].map(function(d){ return 'M' + d.join(' L ') })
-
 poly1var.transition().duration(1000)
             .style('opacity', poly1OP[i])
             .attr('d', poly1size[i])
@@ -1053,8 +1014,7 @@ poly1var.transition().duration(1000)
 
 poly2var.transition().duration(1000)
             .style('opacity', poly23OP[i])
-            .transition().duration(1000)
-            .attr('d', poly2size[i]);
+          .transition();
 
 poly3var.transition().duration(1000)
             .style('opacity', poly23OP[i])
@@ -1062,30 +1022,13 @@ poly3var.transition().duration(1000)
 
 poly4var.transition().duration(1000)
             .style('opacity', ploy4OP[i])
-            .transition().duration(1000)
-            .attr('d', poly4size[i]);
-
-poly5var.transition().duration(1000)
-            .style('opacity', ploy4OP[i])
           .transition();
 
 
-// polys 1 and 5 text transition
-fixedtextOP = [1,1,1,1,0,0,0]
+// fixed text transition
+fixedtextOP = [0,0,1,1,0,0,0]
 
-var polyText = svg3.selectAll(".polytitle")
-
-polyText.transition().duration(1000)
-            .style('opacity', fixedtextOP[i])
-          .transition();
-
-//poly 3 title text transition
-
-cititleOP = [1,0,0,0,0,0,0]
-
-var ciText = svg3.selectAll(".cititle")
-
-ciText.transition().duration(1000)
+fixedText.transition().duration(1000)
             .style('opacity', fixedtextOP[i])
           .transition();
 
@@ -1135,9 +1078,9 @@ svg3.each(function(d){
     .style("fill", "white")
     .style('opacity', 0.8)
     // .attr("x", (((topLeftX + botRightX)/6) + ((topRightX + botLeftX)/6) + (i*10)))
-    .attr("x", (((topLeftX + botRightX)/4) + ((topRightX + botLeftX)/8) + ((((((textArray[i==0?textArray.length-1:i-1].length) + textArray[i].length) * 4))))))
-    .attr("y", ((topY + botY)/2) - 30 + poly1Yoffset)
-    .style('font-size', "1em")
+    .attr("x", (((topLeftX + botRightX)/6) + ((topRightX + botLeftX)/8) + ((((((textArray[i==0?textArray.length-1:i-1].length) + textArray[i].length) * 4))))))
+    .attr("y", ((topY + botY)/2) - 20 + poly1Yoffset)
+    .style('font-size', 12)
     .style('width', "100px")
     .text(function(d) {return textArray[i]})
     // .html(function(d) {return textArray[i]})
