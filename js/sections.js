@@ -717,7 +717,8 @@ var poly1var = svg3.append('path')
 
 var poly2var = svg3.append('path')
 .data(poly2)
-.attr("class", "poly2")
+// .attr("class", "poly2")
+.attr("class", "polygon")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
 .attr('fill', 'SteelBlue')
@@ -725,7 +726,8 @@ var poly2var = svg3.append('path')
 
 var poly3var = svg3.append('path')
 .data(poly3)
-.attr("class", "poly3")
+// .attr("class", "poly3")
+.attr("class", "polygon")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
 .attr('fill', 'SteelBlue')
@@ -733,7 +735,8 @@ var poly3var = svg3.append('path')
 
 var poly4var = svg3.append('path')
 .data(poly4)
-.attr("class", "poly34")
+// .attr("class", "poly34")
+.attr("class", "polygon")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
 .attr('fill', 'SteelBlue')
@@ -742,14 +745,26 @@ var poly4var = svg3.append('path')
 var poly5var = svg3.append('path')
 .data(poly5)
 .attr("class", "poly5")
+// .attr("class", "polygon")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
 .attr('fill', 'white')
 .style('opacity', .90);
 
 
-// Create full text block on white polygon
-svg3.append('text')
+//polygon titles 
+// poly top - understanding
+var poly5title = svg3.append('text')
+.attr("class", "polytitle")
+.attr("x", (topRightX))
+.attr("y", ((topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset))/3)
+.attr("dy", '1em')
+.style('font-size', "1.5em")
+.style('fill', "grey")
+.text("Reader Understanding")
+
+// poly bottom - text 
+var poly1title = svg3.append('text')
 .attr("class", "polytitle")
 .attr("x", (topRightX))
 .attr("y", (topY + botY)/2 + poly1Yoffset/1.75)
@@ -757,32 +772,17 @@ svg3.append('text')
 .style('font-size', "1.5em")
 .style('fill', "grey")
 .style('opacity', 0)
-.text("Written Text");
+.text("Text");
 
-//polygon titles 
-// comprehension poly top
-svg3.append('text')
-.attr("class", "polytitle")
-.attr("x", (topRightX))
-.attr("y", ((topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset))/3)
-.attr("dy", '1em')
-.attr("transform", "skewY(180)")
-.style('font-size', "1.5em")
-.style('fill', "grey")
-.text("Comprehension")
-
-// construction-integration middle
+// poly mid - comprehension
 svg3.append('text')
 .attr("class", "cititle")
 .attr("x", (topRightX))
-.attr("y", (topY - (squareSpace * 3)/1.75))
+.attr("y", (topY - (squareSpace * 2)))
 .attr("dy", '1em')
-.attr("transform", "skewY(180)")
 .style('font-size', "1.5em")
 .style('fill', "grey")
 .text("Construction-Integration")
-
-
 
 
 // comprehension level titles
@@ -827,31 +827,29 @@ svg3.selectAll('text')
 .style('opacity', 0)
 .text(function(d){return d.text})
 
-// comprehension level examples
-// {"levelNumber":1,"innerLevel":1, "img": './images/fish.svg', "text": 'fish', "width": 30, "height": 30},
-//                  {"levelNumber":1,"innerLevel":2, "img": './images/turtle.svg', "text": 'turtle', "width": 30, "height": 30},
-//                  {"levelNumber":1,"innerLevel":3, "img": './images/log.svg', "text": 'log', "width": 30, "height": 30},
 
-var examples = [ {"levelNumber":1,"innerLevel":2, "img": './images/tfl_def.svg', "text": 'log', "width": 200, "height": 80},
-                 {"levelNumber":2,"innerLevel":.5, "img": './images/turtle_fish.svg', "text": 'log', "width": 200, "height": 80},
-                 {"levelNumber":3,"innerLevel":1, "img": './images/log_scene.svg', "text": 'log', "width": 200, "height": 90}
-                 ]
+// previous svg turtle frog  examples
 
-svg3.selectAll('image')
-.select('image')
-.data(examples)
-.enter()
-.append('image')
-.attr("id", function(d){return "exampleimgs"+d.levelNumber+d.innerLevel})
-.attr("class", "exampleimgs")
-.attr("x", topRightX)
-.attr("y", function(d){return topY - (squareSpace * d.levelNumber) + (d.innerLevel * 22) })
-// .attr("dy", function(d){return 2 * d.levelNumber + "em" })
-.attr("width", function(d){return d.width})
-.attr("height", function(d){return d.height})
-.style('opacity', 0)
-.attr("xlink:href", function(d){return d.img})
-// .text(function(d){return d.text})
+// var examples = [ {"levelNumber":1,"innerLevel":2, "img": './images/tfl_def.svg', "text": 'log', "width": 200, "height": 80},
+//                  {"levelNumber":2,"innerLevel":.5, "img": './images/turtle_fish.svg', "text": 'log', "width": 200, "height": 80},
+//                  {"levelNumber":3,"innerLevel":1, "img": './images/log_scene.svg', "text": 'log', "width": 200, "height": 90}
+//                  ]
+
+// svg3.selectAll('image')
+// .select('image')
+// .data(examples)
+// .enter()
+// .append('image')
+// .attr("id", function(d){return "exampleimgs"+d.levelNumber+d.innerLevel})
+// .attr("class", "exampleimgs")
+// .attr("x", topRightX)
+// .attr("y", function(d){return topY - (squareSpace * d.levelNumber) + (d.innerLevel * 22) })
+// // .attr("dy", function(d){return 2 * d.levelNumber + "em" })
+// .attr("width", function(d){return d.width})
+// .attr("height", function(d){return d.height})
+// .style('opacity', 0)
+// .attr("xlink:href", function(d){return d.img})
+// // .text(function(d){return d.text})
 
 // reading lines on white polygon
 var lines = [[0,1,2,3,4,5,6,7,8,9,10]]
@@ -865,14 +863,16 @@ svg3.selectAll('g')
         .data(d)
       .enter().append('line')
         .attr("class", "readinglines")
-        .attr('x1', function(d,j) { return topLeftX + width/20; })
-        .attr('y1', function(d,j) { return topY - (squareSpace * 3) + (height/20 * 2) + (j*height/15); })
-        .attr('x2', function(d,j) { return (topRightX + topRightX/4) - width/20; })
-        .attr('y2', function(d,j) { return topY - (squareSpace * 3) + (height/20 * 2) + (j*height/15); })
+        .attr('x1', function(d,j) { return topLeftX + width/10; })
+        .attr('y1', function(d,j) { return topY - (squareSpace * 4) + (height/20 * 2) + (j*height/15); })
+        .attr('x2', function(d,j) { return (topRightX + topRightX/1.5) - width/10; })
+        .attr('y2', function(d,j) { return topY - (squareSpace * 4) + (height/20 * 2) + (j*height/15); })
         .style('stroke', 'black')
         .style("stroke-width", 1.5)
         .style("opacity", 0)
     });
+
+// [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
 
 // circles by line
 //original idea to redo nested variable:
@@ -882,8 +882,8 @@ svg3.selectAll('g')
 
 function gridData() {
     var data = new Array();
-    var xpos = topLeftX + width/20; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
-    var ypos = topY - (squareSpace * 3) + (height/20 * 2);
+    var xpos = topLeftX + width/10; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
+    var ypos = topY - (squareSpace * 4) + (height/20 * 2);
     var radius = Math.random() * (6 - 15) + 15
     var rowheight = 10
     var circleNum = 1;
@@ -907,7 +907,7 @@ function gridData() {
 
         }
         // reset the x position after a row is complete
-        xpos = topLeftX + width/20;
+        xpos = topLeftX + width/10;
         radius = Math.random() * (6 - 15) + 15;
         // increment the y position for the next row. Move it down 
         ypos += (height/30 * 2); 
@@ -939,8 +939,8 @@ var column = row.selectAll(".circle")
 // circles for skimming lines
 function skimData() {
     var data = new Array();
-    var xpos = topLeftX + width/20; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
-    var ypos = topY - (squareSpace * 3) + (height/20 * 2);
+    var xpos = topLeftX + width/10; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
+    var ypos = topY - (squareSpace * 4) + (height/20 * 2);
     var radius = Math.random() * (6 - 15) + 15
     var rowheight = 10
     var circleNum = 1;
@@ -965,7 +965,7 @@ function skimData() {
 
         }
         // reset the x position after a row is complete
-        xpos = topLeftX + width/20;
+        xpos = topLeftX + width/10;
         radius = Math.random() * (6 - 15) + 15;
         // increment the y position for the next row. Move it down 
         ypos += (height/30 * 2); 
@@ -1016,15 +1016,25 @@ poly1OP = [1,1,1,1,1,1,1,1]
 poly23OP = [1,.66,.66,.33,0,0,0]
 ploy4OP = [1,.66,.66,1,0,0,0]
 
-// white polygon size transition
+// polygon size transition
 poly1size = [
+             [[topLeftX, topY - (squareSpace * 1.65)], [topRightX, topY - (squareSpace * 1.65)], [botRightX, botY - (squareSpace * 1.65)], [botLeftX, botY - (squareSpace * 1.65)]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX + topRightX/4, topY - (squareSpace * 3)], [topRightX + topRightX/4, botY + poly1Yoffset], [topLeftX, botY + poly1Yoffset]]
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]]
+            ].map(function(d){ return 'M' + d.join(' L ') })
+
+
+poly5size = [
+              [[topLeftX, topY - (squareSpace * 2.35)], [topRightX, topY - (squareSpace * 2.35)], [botRightX, botY - (squareSpace * 2.35)], [botLeftX, botY - (squareSpace * 2.35)]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
 poly2size = [
@@ -1048,8 +1058,8 @@ poly4size = [
 
 poly1var.transition().duration(1000)
             .style('opacity', poly1OP[i])
+            .transition().duration(1000)
             .attr('d', poly1size[i])
-            .transition();
 
 poly2var.transition().duration(1000)
             .style('opacity', poly23OP[i])
@@ -1067,7 +1077,26 @@ poly4var.transition().duration(1000)
 
 poly5var.transition().duration(1000)
             .style('opacity', ploy4OP[i])
-          .transition();
+          .transition().duration(1000)
+            .attr('d', poly5size[i]);
+
+// polygon title text transitions
+
+poly5titlesize = [
+                [[topY - (squareSpace * 2.35)]],
+                [[(topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset)/3]],
+                [[(topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset)/3]],
+                [[(topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset)/3]],
+                [[(topY - (squareSpace * 4) - poly1Yoffset) + (botY - (squareSpace * 4) - poly1Yoffset)/3]]
+]
+
+poly1titlesize = [
+                [[topY - (squareSpace * 1.65)]],
+                [[(topY + botY)/2 + (poly1Yoffset/1.75)]],
+                [[(topY + botY)/2 + (poly1Yoffset/1.75)]],
+                [[(topY + botY)/2 + (poly1Yoffset/1.75)]],
+                [[(topY + botY)/2 + (poly1Yoffset/1.75)]]
+]
 
 
 // polys 1 and 5 text transition
@@ -1075,9 +1104,16 @@ fixedtextOP = [1,1,1,1,0,0,0]
 
 var polyText = svg3.selectAll(".polytitle")
 
-polyText.transition().duration(1000)
+poly5title.transition().duration(500)
             .style('opacity', fixedtextOP[i])
-          .transition();
+          .transition().duration(1000)
+            .attr('y', poly5titlesize[i]);
+
+poly1title.transition().duration(500)
+            .style('opacity', fixedtextOP[i])
+          .transition().duration(1000)
+            .attr('y', poly1titlesize[i]);
+
 
 //poly 3 title text transition
 
@@ -1085,8 +1121,8 @@ cititleOP = [1,0,0,0,0,0,0]
 
 var ciText = svg3.selectAll(".cititle")
 
-ciText.transition().duration(1000)
-            .style('opacity', fixedtextOP[i])
+ciText.transition().duration(500)
+            .style('opacity', cititleOP[i])
           .transition();
 
 
@@ -1095,18 +1131,18 @@ leveltitlesOP = [0,1,1,1,0,0,0]
 
 var leveltitles = svg3.selectAll(".leveltitle")
 
-leveltitles.transition().duration(1000)
+leveltitles.transition().duration(3000)
             .style('opacity', leveltitlesOP[i])
           .transition();
 
 
 //transition for the level definitions
 
-leveldefsOP = [0,1,0,0,0,0,0]
+leveldefsOP = [0,1,1,1,0,0,0]
 
 var leveldefs = svg3.selectAll(".leveldef")
 
-leveldefs.transition().duration(1000)
+leveldefs.transition().duration(3000)
             .style('opacity', leveldefsOP[i])
           .transition();
 
@@ -1122,61 +1158,45 @@ levelexs.transition().duration(1000)
 
 //animation of the "floating" text
 
-if (document.getElementById('container-3-3').className == "graph-scroll-active") {
-// Floating text array
-textArray = [" The ", "  turtle ", " sat ", " on ", " a ", " log. ", " A ", " fish ", " swam  ", "    under ", "   the  ", "   log. "]
+// if (document.getElementById('container-3-2').className == "graph-scroll-active") {
 
-// Floating text function loop 
-// create arrays
-svg3.each(function(d){
-  for(var i = 0; i < textArray.length; i++){
-    d3.select(this).append('text')
-    // .attr('with-space-preserve', true)
-    .style("fill", "white")
-    .style('opacity', 0.8)
-    // .attr("x", (((topLeftX + botRightX)/6) + ((topRightX + botLeftX)/6) + (i*10)))
-    .attr("x", (((topLeftX + botRightX)/4) + ((topRightX + botLeftX)/8) + ((((((textArray[i==0?textArray.length-1:i-1].length) + textArray[i].length) * 4))))))
-    .attr("y", ((topY + botY)/2) - 30 + poly1Yoffset)
-    .style('font-size', "1em")
-    .style('width', "100px")
-    .text(function(d) {return textArray[i]})
-    // .html(function(d) {return textArray[i]})
-    .attr("class", "letters")
-  }
-  repeat();
-  //chained transition of floating text
-  // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
-    function repeat(){
-  d3.selectAll(".letters")
-  .transition()
-      // .duration(10000)
-      .delay(function(d,i) { return (i * 400)})
-      .on("start", function repeat() {
-        d3.active(this)
-        .attr("y", ((topY + botY)/2) - 10 + poly1Yoffset)
-        .style('opacity', 0.8)
-        .transition()
-        .duration(5000)
-        .ease(d3.easeQuadOut)
-        .attr("y", (topY - (squareSpace * 4)/1.3))
-        .style('opacity', 0)
-        .transition()
-        .style('opacity', 0)
-        .attr("y", ((topY + botY)/2) - 10 + poly1Yoffset)
-        .transition()
-        .duration(800)
-        .on("start", repeat);
-      })
-  };
+//   var polygons = svg3.selectAll(".polygon")
 
-})
-// examples 
+//   // polygons.transition().duration(100).delay(1000)
 
-}
-else {
-  d3.selectAll(".letters")
-  .remove()
-}
+
+// // Floating text array
+
+// // Floating text function loop 
+// // create arrays
+//   repeat();
+//   //chained transition of floating text
+//   // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
+//     function repeat(){
+
+    
+
+//     polygons.transition().duration(800)
+//     .delay(function(d,i) { return (i * 800)})
+//     .style('opacity', 0.66)
+//     .transition().duration(100)
+//     .style('opacity', 0.33)
+//     .transition().duration(100)
+//     .style('opacity', 0.66)
+//     .delay(800)
+//     .on("start", repeat);
+
+//   };
+
+// // examples 
+
+// }
+// else {
+//   d3.selectAll(".letters")
+//   .remove()
+// }
+
+
 
 //lines transitions
 linesOP = [0,0,0,0,1,1]
