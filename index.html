@@ -10,10 +10,10 @@
   <h1>TL;DR</h1>
   <h2>Writen English is becoming more readable,</h2>
   <h2>Why is reading comprehension falling?</h2>
-  <div id ="titletype">
-<!--     <div id="app"></div>
-    <div id="app2"></div> -->
-  </div>
+
+  <textarea id="message" name="message" oninput="countChars(this);"></textarea>
+  <div id ="typeArea" oninput="countChars(this);"></div>
+  <p id="charNum">0 characters</p>
 </div>
 <div id='topbar'>&nbsp;</div>
 <div id='container' class='container-1'>
@@ -123,41 +123,28 @@
   <div id='graph'></div>
     <div id='sections'>
       <div>
-      <h3>Model of Comprehension</h3>
-      While there is no universally accepted model of how reading comprehension works, cognitive psychologist Walter Kintsch has gained acclaim for his construction-integration model. In this model comprehension is defined as not just the decoding of words and sentences but also making connections of ideas and deriving meaning from a written text.
+      <h3>Reading Comprehension</h3>
+      Reading comprehension is the process of reading text to understand its meaning to integrate with what the reader already knows. 
       </div>
       <div id='container-3-2'>
-        In this model, there are three levels that work in parallel to process and meaning out of text.
-        <h4>Linguistic Representation</h4>
-        The surface form of the text representing the exact words and syntatctic structures of the text.
-        <h4>Propostional Abstraction</h4>
-        How words and ideas within the text combine to form a semantic idea, essentially the relationship of words in a text. This forms the textbase, the interconnected representation of the propositions, linked through shared arguments.
-        <h4>Situation Model</h4>
-        The highest level of text comprehension that involves integrating ideas represented in the first two levels with prior knowledge.
+      <h3>Construction-Integration</h3> 
+        In the construction-integration model, the comprehension process is shown in blue to represent the three levels that work in parallel to process and meaning out of text.
+        The white areas represent the start from text to understanding by the reader.
       </div>
       <div id='container-3-3'>
-      <h3>Examples of Text Comprehension</h3>
-      Here using a basic sentence pair we explore how text comprehension works
-      <h4>Words and sentence structure</h4>
-      Define objects in the sentence
-      <h4>How words relate to one another</h4>
-      Deriving simple semantic conclusion that the turtle is above the fish
-      <h4>Integrate with prior knowledge</h4>
-      Using previous knowledge to create a mental image
-      </div>
-      <div>
         <h3>Impact of Readability</h3>
-        Readability will have the most impact on the lower levels of processing, making it easier to process words and derive meaning. However the highest level of integration where previous knowledge is derived requires drawing on a previous knowledge.
+        <p>Readability will have the most impact on the lower levels of processing, where the actual text meaning is constrcuted.</p>
+        <p>However in the situation model, where the text meaning is integrated with prior knowledge, benefits can only be derived with a greater knowledge base.</p>
       </div>
       <div>
-        <h3>Macro Text</h3>
-        Obviously in this simple example things are pretty immeadiate but for longer form texts things become more challenging.
+        <h3>Longform Text</h3>
+        Additional challenges are presented in the construction level when text increases in length as it creates additional relationships and words to define.
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
       </div>
-      <div>
+      <div id='container-3-5'>
         <h3>Linear Reading</h3>
         Typical linear reading follows a pattern like this, the blue circles represent time spent looking. Larger circles mean more time viewing.
         <p>&nbsp;</p>
@@ -165,9 +152,18 @@
         <p>&nbsp;</p>
         <p>&nbsp;</p>
       </div>
-      <div>
+      <div id='container-3-6'>
         <h3>Digital Skim Reading</h3>
         Digital reading follows a skimming pattern that forms an "F" like shape as time goes on, for longer forms of text a lot of the text is ultimately not read.
+        This method is very effective at finding information online but not as effective when it comes to reading longer forms of text.
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+      </div>
+      <div>
+        <h3>Carry-over</h3>
+        Some educators suspect this skim reading is carrying over to all forms of reading, not surprising given how screens have become the dominant medium for reading.
       </div>
     </div>
 
@@ -181,5 +177,41 @@
 <script src="typewriter.js"></script>
 <script src ="js/sections.js"></script>
 <script src ="js/titletyper.js"></script>
+<script>
 
+// write to dom element
+
+var element = document.getElementById('typeArea');
+
+element.addEventListener('DOMCharacterDataModified', this.countChars);
+
+// document.addEventListener('DOMContentLoaded', function(event) {})
+
+var str = "<p>This is my text with an with an image ewdhjhwkdnkan awjdljalmdlaw !</p>",
+    i = 0,
+    isTag,
+    text;
+
+(function type() {
+    text = str.slice(0, ++i);
+    if (text === str) return;
+
+    document.getElementById('typeArea').innerHTML = text;
+
+    var char = text.slice(-1);
+    if( char === '<' ) isTag = true;
+    if( char === '>' ) isTag = false;
+
+    if (isTag) return type();
+    setTimeout(type, 80);
+}());
+
+
+// count characters and pass to charNum counter
+// https://www.codexworld.com/live-character-counter-javascript/
+function countChars(obj){
+    document.getElementById("charNum").innerHTML = obj.value.length+' characters';
+}
+
+</script>
 

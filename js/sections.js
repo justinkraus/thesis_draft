@@ -30,12 +30,48 @@ function render(){
       .append('g')
         .attr('transform', 'translate(' + MARGIN.left + ',' + MARGIN.top + ')');
 
-  var readableimg = svg1.append('image')
-                  .attr("xlink:href", './images/readableExample.svg')
-                  .attr("width", 500)
-                  .attr("height", 450)
-                  .attr("x", 0)
-                  .attr("y", 0 );
+//readability defined text blocks
+
+svg1.append('text')
+.attr("class", "readableText")
+// .attr("x", width/2)
+.attr("y", height/3)
+.attr("dy", "0em")
+// .style('font-size', "1.5em")
+.style('opacity', 0)
+.html(function (d){ 
+  return "<tspan x='2em' dy ='1em' style='font-size: 2em; fill: crimson;'>" + "Less Readable" + "</tspan>"
+       + "<tspan x='5em' dy ='1.5em' style='font-size: 1em; fill: crimson;'>" + "Longer Words" + "</tspan>"
+       + "<tspan x='5em' dy ='1em' style='font-size: 1em; fill: crimson;'>" + "Longer Sentences" + "</tspan>";
+});
+
+svg1.append('text')
+.attr("class", "readableText")
+// .attr("x", width/2)
+.attr("y", height/3)
+.attr("dy", "0em")
+// .style('font-size', "1.5em")
+.style('opacity', 0)
+.html(function (d){ 
+  return "<tspan x='12em' dy ='1em' style='font-size: 2em; fill: SteelBlue;'>" + "More Readable" + "</tspan>"
+       + "<tspan x='25em' dy ='1.5em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Words" + "</tspan>"
+       + "<tspan x='25em' dy ='1em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Sentences" + "</tspan>";
+});
+
+// svg1.append('text')
+// .attr("class", "readableText")
+// // .attr("x", width/2)
+// .attr("y", height/3)
+// .attr("dy", "0em")
+// // .style('font-size', "1.5em")
+// .style('opacity', 0)
+// .html(function (d){ 
+//   return "<tspan x='9em' dy ='1em' style='font-size: 2em; fill: Coral;'>" + "Readable" + "</tspan>"
+//        + "<tspan x='18em' dy ='1.5em' style='font-size: 1em; fill: Coral;'>" + "Target Readability to reach most readers" + "</tspan>";
+// });
+
+
+
 
   // Load readability images
   // Readability image dataset
@@ -144,8 +180,10 @@ function render(){
       .on('active', function(i){
 
         
-        // Readable SVG Transitions      
-        readableimg.transition().duration(100)
+        // Readable SVG Transitions
+        readableTextAll = svg1.selectAll('.readableText')
+
+        readableTextAll.transition().duration(100)
             .attr("x", 0)
             .style('opacity', readableOP[i])
           .transition();
@@ -1013,15 +1051,15 @@ var gs4 = d3.graphScroll()
 //polygon opacity transitions
 
 poly1OP = [1,1,1,1,1,1,1,1]
-poly23OP = [1,.66,.66,.33,0,0,0]
-ploy4OP = [1,.66,.66,1,0,0,0]
+poly23OP = [1,.66,.33,0,0,0,0]
+ploy4OP = [1,.66,.66,0,0,0,0]
 
 // polygon size transition
 poly1size = [
              [[topLeftX, topY - (squareSpace * 1.65)], [topRightX, topY - (squareSpace * 1.65)], [botRightX, botY - (squareSpace * 1.65)], [botLeftX, botY - (squareSpace * 1.65)]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
              [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
              [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
              [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]]
@@ -1100,7 +1138,7 @@ poly1titlesize = [
 
 
 // polys 1 and 5 text transition
-fixedtextOP = [1,1,1,1,0,0,0]
+fixedtextOP = [0,1,1,0,0,0,0]
 
 var polyText = svg3.selectAll(".polytitle")
 
@@ -1127,22 +1165,22 @@ ciText.transition().duration(500)
 
 
 //transition for the level titles
-leveltitlesOP = [0,1,1,1,0,0,0]
+leveltitlesOP = [0,1,1,0,0,0,0]
 
 var leveltitles = svg3.selectAll(".leveltitle")
 
-leveltitles.transition().duration(3000)
+leveltitles.transition().duration(1500)
             .style('opacity', leveltitlesOP[i])
           .transition();
 
 
 //transition for the level definitions
 
-leveldefsOP = [0,1,1,1,0,0,0]
+leveldefsOP = [0,1,1,0,0,0,0]
 
 var leveldefs = svg3.selectAll(".leveldef")
 
-leveldefs.transition().duration(3000)
+leveldefs.transition().duration(1500)
             .style('opacity', leveldefsOP[i])
           .transition();
 
@@ -1199,7 +1237,7 @@ levelexs.transition().duration(1000)
 
 
 //lines transitions
-linesOP = [0,0,0,0,1,1]
+linesOP = [0,0,0,1,1,1]
 
 var levelexs = svg3.selectAll(".readinglines")
 
@@ -1207,8 +1245,12 @@ levelexs.transition().duration(1500)
             .style('opacity', linesOP[i])
           .transition();
 
+
 //linear circles transition
-linearcirclesOP = [0,0,0,0,0,1,0]
+if (document.getElementById('container-3-5').className == "graph-scroll-active") {
+
+// linearcirclesOP = [0,0,0,0,1,0,0]
+linearcirclesOP = [1,1,1,1,1,1,1]
 
 var linearcircles = svg3.selectAll(".linearcircle")
 
@@ -1217,9 +1259,21 @@ linearcircles.transition().duration(1500)
           .transition()
            .delay(function(d, i) { return (i * 100) + (d.r); })
            .style("fill", "blue");
+}
+else {
+var linearcircles = svg3.selectAll(".linearcircle")
+
+linearcircles.transition().duration(100)
+          .style('opacity', 0)
+          .style("fill", "white");
+}
+
 
 // skim circles transition
-skimcirclesOP = [0,0,0,0,0,0,1]
+if (document.getElementById('container-3-6').className == "graph-scroll-active") {
+skimcirclesOP = [1,1,1,1,1,1,1]
+
+// skimcirclesOP = [0,0,0,0,0,1,0]
 
 var skimcircles = svg3.selectAll(".skimcircle")
 
@@ -1228,7 +1282,14 @@ skimcircles.transition().duration(1500)
           .transition()
            .delay(function(d, i) { return (i * 100) + (d.r); })
            .style("fill", "blue");
+}
+else {
+var linearcircles = svg3.selectAll(".skimcircle")
 
+linearcircles.transition().duration(100)
+          .style('opacity', 0)
+          .style("fill", "white");
+}
 
 })
 
