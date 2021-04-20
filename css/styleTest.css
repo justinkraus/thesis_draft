@@ -1,3 +1,5 @@
+/*css for non-scrolling elements*/
+
 #titleSlide{
   height:100vh;
 }
@@ -6,6 +8,26 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 100px;
+}
+
+.impactText {
+  margin: auto 10vw;
+}
+
+/*css for the readability calculations*/
+
+#readableOne {
+  width: 50%;
+}
+
+#readableOne{
+  font-size: .66em;
+}
+
+#charNum {
+  position: absolute;
+  top: 75%;
+  font-size: 1.5em;
 }
 
 /*#topbar{
@@ -49,7 +71,7 @@ p {
 /*  max-width: 80vw;
   margin: 0.5vw auto;*/
   position: relative;
-  background-color: grey;
+/*  background-color: grey;*/
 }
 
 #sections{
@@ -67,7 +89,7 @@ p {
 }
 #sections > div.graph-scroll-active{
   opacity: 1;
-  background-color: pink;
+/*  background-color: pink;*/
 }
 
 #graph{
@@ -113,7 +135,7 @@ p {
 }
 #sections > div.graph-scroll-active{
   opacity: 1;
-  background-color: pink;
+  /*background-color: pink;*/
 }
 
   pre{
@@ -156,7 +178,7 @@ p {
 }
 #sections > div.graph-scroll-active{
   opacity: 1;
-  background-color: pink;
+  /*background-color: pink;*/
 }
 
   pre{
@@ -212,5 +234,5 @@ circle{
 }
 
 svg{
-  background-color: #eee;
+ /* background-color: #eee;*/
 }

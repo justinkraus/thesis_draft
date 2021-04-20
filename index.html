@@ -8,14 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Domine:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
 </head>
-<div id="titleSlide">
+<div id="titleSlide" class='impactText'>
   <h1>TL;DR</h1>
   <h2>Writen English is becoming more readable,</h2>
   <h2>Why is reading comprehension falling?</h2>
 
   <!-- <body onload="typeWriter();"> -->
-  <div id ="typeArea" onload="countChars(this);"></div>
-  <p id="charNum">0 characters</p>
+  <div id="readableOne">
+    <div id="typeAreaOne" onload="countChars(this);"></div>
+    <div id="charNum"></div>
+  </div>
 </div>
 <div id='topbar'>&nbsp;</div>
 <div id='container' class='container-1'>
@@ -72,10 +74,11 @@
   </div>
 
 </div>
+<div class='impactText'>
 <h2>The objective of readability is to improve understanding.</h2>
 <h2>Lets take a look at how reading comprehension has changed within the US</h2>
 &nbsp;
-
+</div>
 <div id='container' class='container-2'>
   <div id='graph'></div>
 
@@ -153,11 +156,22 @@
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
+         <p>&nbsp;</p>
+          <p>&nbsp;</p>
+           <p>&nbsp;</p>
+           <p>&nbsp;</p>
+           <p>&nbsp;</p>
+           <p>&nbsp;</p>
       </div>
       <div id='container-3-6'>
         <h3>Digital Skim Reading</h3>
         Digital reading follows a skimming pattern that forms an "F" like shape as time goes on, for longer forms of text a lot of the text is ultimately not read.
         This method is very effective at finding information online but not as effective when it comes to reading longer forms of text.
+        Filler text
+        Filler text
+        Filler text
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
@@ -171,8 +185,9 @@
 
 </div>
 
+<div class='impactText'>
 <h1 id='source'>The End</h1>
-
+</div>
 
 <script src="d3v4+jetpack.js"></script>
 <script src="graph-scroll.js"></script>
@@ -183,73 +198,63 @@
 
 // write to dom element
 
-var element = document.getElementById('typeArea');
-
-// element.addEventListener('DOMCharacterDataModified', countChars(event));
-
-// document.addEventListener('DOMContentLoaded', function(event) {})
-
-// https://stackoverflow.com/questions/22180457/typewriter-effect-for-html-with-javascript
-
-// var wikiArticles = [["This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !",
-//                   i = 0,
-//                   isTag,
-//                   text],
-//                     "ANOTHER text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
-//                   ]
- // var str = "This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
-
-// var str = "This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !",
-//     i = 0,
-//     isTag,
-//     text;
-
-// wikiArticles.forEach(function(str){
-// (function type() {
-//     text = str.slice(0, ++i);
-//     if (text === str) return;
-
-//     document.getElementById('typeArea').innerHTML = text;
-
-//     var char = text.slice(-1);
-//     if( char === '<' ) isTag = true;
-//     if( char === '>' ) isTag = false;
-
-//     if (isTag) return type();
-//     setTimeout(type, 80);
-// }())
-// })
-// ;
+var element = document.getElementById('typeAreaOne');
 
 
-
-// lower answer
+// Text typing
+// lower answer for original formula
 // https://stackoverflow.com/questions/11665484/converting-a-recursive-function-into-an-asynchronous-cps-implementation-javascr
 
-
-window.addEventListener('DOMContentLoaded', () => {
-
-var start = 0
-// var text = "This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
-var textArray = ["This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"]
-// var textArray = ["ZWhis is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !",
-//                 "ANOTHER text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
-//                 ]
-var speed = 1000;
-
-
-// textArray.forEach(typeWriter);
-for(var i=0; i < textArray.length; i++) {
-
-  while (start < textArray[i].length) {
-
-    document.querySelector('#typeArea').innerHTML += textArray[i].charAt(start);
-    start++;
-  }
-  setTimeout(speed);
-
+// create sleep function
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
-})
+
+// event listener to begin typer function when content is loaded
+window.addEventListener('DOMContentLoaded', () => typer(), false);
+
+// typer function calling, triggers the writing
+async function typer() {
+
+// variables for function
+var start = 0
+
+var textArray = [
+"Earth is the planet we live on. It is the third planet from the Sun. It is the only planet known to have life on it. The Earth formed around 4.5 billion years ago. It is one of four rocky planets on the inside of the Solar System. The other three are Mercury, Venus, and Mars. The large mass of the Sun makes Earth move around it, just as the mass of Earth makes the moon move around it. Earth also turns around in space, so that different parts face the Sun at different times. Earth goes around the Sun once (one year) for every 365​ 1⁄4 times it turns around (one day). Earth is the only planet in the Solar System that has a large amount of liquid water. About 74% of the surface of Earth is covered by liquid or frozen water. Because of this, people sometimes call it the blue planet. Because of its water, Earth is home to millions of species of plants and animals which require water to survive The things that live on Earth have changed its surface greatly. For example, early cyanobacteria changed the air and gave it oxygen. The living part of Earth's surface is called the biosphere.",
+  "A tree is a tall plant with a trunk and branches made of wood. Trees can live for many years. The oldest tree ever discovered is approximately 5,000 years old and the oldest tree from the UK is about 1,000. The four main parts of a tree are the roots, the trunk, the branches, and the leaves. The roots of a tree are usually under the ground. However, this is not always true. The roots of the mangrove tree are often under water. A single tree has many roots. The roots carry nutrients and water from the ground through the trunk and branches to the leaves of the tree. They can also breathe in air. Sometimes, roots are specialized into aerial roots, which can also provide support, as is the case with the banyan tree. The trunk is the main body of the tree. The trunk is covered with bark which protects it from damage. Branches grow from the trunk. They spread out so that the leaves can get more sunlight. The leaves of a tree are green most of the time, but they can come in many colors, shapes and sizes. The leaves take in sunlight and use water and food from the roots to make the tree grow, and to reproduce. Trees and shrubs take in water and carbon dioxide and give out oxygen with sunlight to form sugars. This is the opposite of what animals do in respiration. Plants also do some respiration using oxygen the way animals do. They need oxygen as well as carbon dioxide to live. Trees are renewable resources because, if cut down, other trees can grow in their place."
+                ]
+var speed = 25;
+var pause = 1000;
+
+// for loop to iterate array string
+for(var i=0; i < textArray.length; i++) {
+  // set the text area blank
+  document.querySelector('#typeAreaOne').innerHTML = " ";
+  console.log(i)
+  console.log(start)
+  // loop individual characters until entire length
+  while (start < textArray[i].length) {
+    document.querySelector('#typeAreaOne').innerHTML += textArray[i].charAt(start);
+    start++;
+    await sleep(speed);
+      if (start === textArray[i].length){
+        await sleep(pause);
+        start = 0
+        break
+      }
+    continue
+    }
+  }
+}
+
+// })
+
+
+// original working for a single text string
+
+// var start = 0
+// var text = "This is my text with no other text. The quick brown fox jumps over the lazy dog. Here are some more words. And there are some other words, other words, and yet here we are again with other words!"
+// var speed = 150;
 
 // function typeWriter() {
 //   if (start < text.length) {
@@ -270,7 +275,7 @@ function countChars(){
     var sentences = element.innerHTML.split(". ").length
     var words = element.innerHTML.split(" ").length
     var chars = element.innerHTML.match(/[a-zA-Z]/g).length;
-    var ari = (4.71 * (chars / words)) + (0.5 * (words/sentences)) - 21.43
+    var ari = Math.round(((4.71 * (chars / words)) + (0.5 * (words/sentences)) - 21.43) * 10) / 10
     // console.log(chars)
     document.getElementById("charNum").innerHTML = chars +' characters' + '<br>' + words + ' words' + '<br>' + sentences + ' sentences' + '<br>' + ari + ' Automated Readability Index'
 

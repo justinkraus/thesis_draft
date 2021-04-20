@@ -829,7 +829,7 @@ var poly1var = svg3.append('path')
 .attr("class", "poly1")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'white')
+.attr('fill', 'WhiteSmoke')
 .style('opacity', .66);
 
 var poly2var = svg3.append('path')
@@ -865,7 +865,7 @@ var poly5var = svg3.append('path')
 // .attr("class", "polygon")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'white')
+.attr('fill', 'WhiteSmoke')
 .style('opacity', .90);
 
 
@@ -1130,8 +1130,8 @@ var gs4 = d3.graphScroll()
 //polygon opacity transitions
 
 poly1OP = [1,1,1,1,1,1,1,1]
-poly23OP = [1,.66,.33,0,0,0,0]
-ploy4OP = [1,.66,.66,0,0,0,0]
+poly23OP = [1,.66,.66,0,0,0,0]
+ploy4OP = [1,.66,.33,0,0,0,0]
 
 // polygon size transition
 poly1size = [
