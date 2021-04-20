@@ -32,43 +32,76 @@ function render(){
 
 //readability defined text blocks
 
-svg1.append('text')
-.attr("class", "readableText")
-// .attr("x", width/2)
-.attr("y", height/3)
-.attr("dy", "0em")
-// .style('font-size', "1.5em")
-.style('opacity', 0)
-.html(function (d){ 
-  return "<tspan x='2em' dy ='1em' style='font-size: 2em; fill: crimson;'>" + "Less Readable" + "</tspan>"
-       + "<tspan x='5em' dy ='1.5em' style='font-size: 1em; fill: crimson;'>" + "Longer Words" + "</tspan>"
-       + "<tspan x='5em' dy ='1em' style='font-size: 1em; fill: crimson;'>" + "Longer Sentences" + "</tspan>";
-});
+  var readableText = [{"group": "moreReadable" , "x": 32, "y": 4, "dy": 1.25, "fill": "SteelBlue", "fontsize": "1em", "text": "Shorter Words"},
+                       {"group": "moreReadable" , "x": 32, "y": 4, "dy": 2.25, "fill": "SteelBlue", "fontsize": "1em", "text": "Shorter Sentences"},
+                       {"group": "lessReadable" , "x": 10, "y": 2, "dy": 1.25, "fill": "Crimson", "fontsize": "1em", "text": "Longer Words"},
+                       {"group": "lessReadable" , "x": 10, "y": 2,"dy": 2.25, "fill": "Crimson", "fontsize": "1em", "text": "Longer Sentences"}]
 
-svg1.append('text')
-.attr("class", "readableText")
-// .attr("x", width/2)
-.attr("y", height/3)
-.attr("dy", "0em")
-// .style('font-size', "1.5em")
-.style('opacity', 0)
-.html(function (d){ 
-  return "<tspan x='12em' dy ='1em' style='font-size: 2em; fill: SteelBlue;'>" + "More Readable" + "</tspan>"
-       + "<tspan x='25em' dy ='1.5em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Words" + "</tspan>"
-       + "<tspan x='25em' dy ='1em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Sentences" + "</tspan>";
-});
+  svg1.selectAll('g')
+  .select('g')
+  .data(readableText)
+  .enter()
+  .append('text')
+  // .attr("id", function(d){return d.group})
+  .attr("class", "readableText")
+  .attr("x", function(d){return INNER_WIDTH/6 * d.y})
+  .attr("y", function(d){return (INNER_HEIGHT/3)})
+  .attr("dy",function(d){return d.dy + "em"})
+  // .attr("dy", "1.2em")
+  .text(function(d){return d.text})
+  .style('opacity', 0)
+  // .style('font-size', '1.5em')
+  .style('fill', function(d){return d.fill})
+  .style("text-anchor", "middle")
+
 
 // svg1.append('text')
 // .attr("class", "readableText")
-// // .attr("x", width/2)
-// .attr("y", height/3)
+// .attr("x", INNER_WIDTH/3.75)
+// .attr("y", INNER_HEIGHT/3)
 // .attr("dy", "0em")
+// .attr("dx", "-1em")
+// // .style('font-size', "1.5em")
+// .style('opacity', 0)
+// .attr("text-anchor", "start")
+// .html(function (d){ 
+//   return "<tspan dy ='1.5em' style='font-size: 1em; fill: crimson;'>" + "Longer Words" + "</tspan>"
+//        + "<tspan dx= '-14%' dy ='1.25em' style='font-size: 1em; fill: crimson;'>" + "Longer Sentences" + "</tspan>";
+// });
+
+// svg1.append('text')
+// .attr("class", "readableText")
+// .attr("x", INNER_WIDTH/4 * 2.35)
+// .attr("y", INNER_HEIGHT/3)
+// // .attr("dy", "0em")
+// .attr("dx", "-1em")
+// .attr("text-anchor", "start")
 // // .style('font-size', "1.5em")
 // .style('opacity', 0)
 // .html(function (d){ 
-//   return "<tspan x='9em' dy ='1em' style='font-size: 2em; fill: Coral;'>" + "Readable" + "</tspan>"
-//        + "<tspan x='18em' dy ='1.5em' style='font-size: 1em; fill: Coral;'>" + "Target Readability to reach most readers" + "</tspan>";
+//   return "<tspan dy ='1.5em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Words" + "</tspan>"
+//        + "<tspan dx= '-15%' dy ='1.25em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Sentences" + "</tspan>";
 // });
+
+  // gridlabels dataset
+  var readableTitle = [{"group": "moreReadable" , "x": 32, "y": 2, "fill": "SteelBlue", "fontsize": "1em", "text": "More Readable"},
+                       {"group": "lessReadable" , "x": 10, "y": 2, "fill": "Crimson", "fontsize": "1em", "text": "Less Readable"}]
+
+  svg1.selectAll('g')
+  .select('g')
+  .data(readableTitle)
+  .enter()
+  .append('text')
+  .attr("id", function(d){return d.group})
+  .attr("class", "readableTitle")
+  .attr("x", function(d){return INNER_WIDTH/d.x})
+  // .attr("y", function(d){return (INNER_HEIGHT/3)})
+  // .attr("dy",function(d){return "1" * d.y + "em"})
+  .text(function(d){return d.text})
+  .style('opacity', 0)
+  // .style('font-size', '1.5em')
+  .style('fill', function(d){return d.fill})
+  .style("text-anchor", "middle")
 
 
 
@@ -111,7 +144,7 @@ svg1.append('text')
   var gridLineData = [{"lineNum": 0, "x1": 0, "y1": 0, "x2": 0, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
                     {"lineNum": 1, "x1": 1, "y1": 0, "x2": 1, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
                     {"lineNum": 2, "x1": 2, "y1": 0, "x2": 2, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
-                    {"lineNum": 3, "x1": 3, "y1": 0, "x2": 3, "y2": 1, "stroke": "lightcoral", "strokewidth": 3, "dasharray": "10,2.5"},
+                    {"lineNum": 3, "x1": 3, "y1": 0, "x2": 3, "y2": .75, "stroke": "lightcoral", "strokewidth": 3, "dasharray": "10,2.5"},
                     {"lineNum": 4, "x1": 4, "y1": 0, "x2": 4, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
                     {"lineNum": 5, "x1": 5, "y1": 0, "x2": 5, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
                     {"lineNum": 6, "x1": 6, "y1": 0, "x2": 6, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"}]
@@ -140,9 +173,8 @@ svg1.append('text')
                        {"group": "level" ,"labelNum": 4, "x": 3, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Senior"},
                        {"group": "level" ,"labelNum": 5, "x": 4, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "H.S. Freshman"},
                        {"group": "level" ,"labelNum": 6, "x": 5, "y": .5, "fill": "darkgrey", "fontsize": ".66em", "text": "Middle School"},
-                       {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.5, "fill": "Coral", "fontsize": "1.25em", "text": "Readable"},
-                       {"group": "readable" ,"labelNum": 8, "x": 4.5, "y": 1.5, "fill": "SteelBlue", "fontsize": "1em", "text": "More Readable"},
-                       {"group": "readable" ,"labelNum": 9, "x": 0.5, "y": 1.5, "fill": "Crimson", "fontsize": "1em", "text": "Less Readable"}]
+                       {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.2, "fill": "Coral", "fontsize": "1.25em", "text": "Readable"},
+                       {"group": "danger" ,"labelNum": 7, "x": 2.5, "y": 1.4, "fill": "Coral", "fontsize": ".66em", "text": "Threshold for General Population"},]
 
   svg1.selectAll('g')
   .select('g')
@@ -180,16 +212,59 @@ svg1.append('text')
       .on('active', function(i){
 
         
-        // Readable SVG Transitions
-        readableTextAll = svg1.selectAll('.readableText')
+        // Readable Text Transitions
+        var readableTextAll = svg1.selectAll('.readableText')
 
         readableTextAll.transition().duration(100)
-            .attr("x", 0)
             .style('opacity', readableOP[i])
           .transition();
 
+        // Readable Title Transitions
+
+          var readabletitleOP = [1, 1, 1, 1, 1]
+          var readabletitleSize = ['1.5em', '1em', '1em', '1em', '1em']
+
+          var moreReadableX = [[INNER_WIDTH/6 * 4],
+                               [INNER_WIDTH/6 * 5],
+                               [INNER_WIDTH/6 * 5],
+                               [INNER_WIDTH/6 * 5]]
+
+          var moreReadableY = [INNER_HEIGHT/3,
+                              (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5),
+                              (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5),
+                              (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5)]
+
+          var lessReadableX = [[INNER_WIDTH/6 * 2],
+                               [INNER_WIDTH/6 * 1],
+                               [INNER_WIDTH/6 * 1],
+                               [INNER_WIDTH/6 * 1]]
+
+          var lessReadableY = [INNER_HEIGHT/3,
+                              (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5),
+                              (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5),
+                              (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5)]
+
+
+         var moreReadable = svg1.selectAll('#moreReadable')
+         var lessReadable = svg1.selectAll('#lessReadable')
+
+         moreReadable.transition().duration(500)
+            .style('opacity', readabletitleOP[i])
+            .attr('font-size', readabletitleSize[i])
+            .attr("x", moreReadableX[i])
+            .attr("y", moreReadableY[i])
+            .transition();
+
+         lessReadable.transition().duration(500)
+            .attr("x", lessReadableX[i])
+            .attr("y", lessReadableY[i])
+            .style('opacity', readabletitleOP[i])
+            .attr('font-size', readabletitleSize[i])
+          .transition();
+
+
         //gridlines opacity transition
-        gridSelect.transition().duration(100)
+        gridSelect.transition().duration(750)
             .style('opacity', gridOP[i])
           .transition();
 
@@ -325,6 +400,10 @@ svg1.append('text')
 
       })
 
+
+
+
+
 // --------------------------------------------
 // GRAPH 2
 
@@ -398,7 +477,7 @@ svg2.selectAll('text')
 svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/12 )
+    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/16 )
     .text("Year")
     .style('font-size', "1.25em")
     .attr("class", "chartlabel");
@@ -431,7 +510,7 @@ var gs3 = d3.graphScroll()
   .on('active', function(i){
 
 
-d3.csv("NAEP_scores1.csv", function(data) {
+d3.csv("NAEP_scores3.csv", function(data) {
 
   color3.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }))
 
@@ -645,7 +724,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     }
 
   // grid opacity and transition
-  var lineOP = [0, 1, 1, 1]
+  var lineOP = [0, 1, 1, 1, 1]
 
   var linesSelect = svg2.selectAll(".bracket")
   // var linesSelect2 = svg2.selectAll(".gridLabel")
@@ -656,7 +735,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
 
   // background rectangles and label opacity
-  var backgroundOP = [.75, .60, .60 ,.60]
+  var backgroundOP = [.75, .60, .60 , .60, .60]
 
   var backgroundselect = svg2.selectAll(".background")
   
@@ -665,7 +744,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
   
   // background rectangles and label opacity
-  var labelOP = [0, 1, 1 , 1]
+  var labelOP = [0, 1, 1, 1, 1]
 
   var labelselect = svg2.selectAll(".chartlabel")
   
@@ -674,7 +753,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
 
   // state dot OP
-  var stateOP = [0, 0, 0 , 1]
+  var stateOP = [0, 0, 0, 1, 1]
 
   var stateSelect = svg2.selectAll(".stateDot")
   
@@ -749,7 +828,7 @@ var poly1var = svg3.append('path')
 .data(poly1)
 .attr("class", "poly1")
 .attr('d', lineFunc)
-.attr('stroke', 'grey')
+.attr('stroke', 'black')
 .attr('fill', 'white')
 .style('opacity', .66);
 
