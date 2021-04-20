@@ -13,8 +13,8 @@
   <h2>Writen English is becoming more readable,</h2>
   <h2>Why is reading comprehension falling?</h2>
 
-  <textarea id="message" name="message" oninput="countChars(this);"></textarea>
-  <div id ="typeArea" oninput="countChars(this);"></div>
+  <!-- <body onload="typeWriter();"> -->
+  <div id ="typeArea" onload="countChars(this);"></div>
   <p id="charNum">0 characters</p>
 </div>
 <div id='topbar'>&nbsp;</div>
@@ -134,7 +134,7 @@
         The white areas represent the start from text to understanding by the reader.
       </div>
       <div id='container-3-3'>
-        <h3>Impact of Readability</h3>
+        <h3>Readability Impacts Construction</h3>
         <p>Readability will have the most impact on the lower levels of processing, where the actual text meaning is constrcuted.</p>
         <p>However in the situation model, where the text meaning is integrated with prior knowledge, benefits can only be derived with a greater knowledge base.</p>
       </div>
@@ -185,35 +185,99 @@
 
 var element = document.getElementById('typeArea');
 
-element.addEventListener('DOMCharacterDataModified', this.countChars);
+// element.addEventListener('DOMCharacterDataModified', countChars(event));
 
 // document.addEventListener('DOMContentLoaded', function(event) {})
 
-var str = "<p>This is my text with an with an image ewdhjhwkdnkan awjdljalmdlaw !</p>",
-    i = 0,
-    isTag,
-    text;
+// https://stackoverflow.com/questions/22180457/typewriter-effect-for-html-with-javascript
 
-(function type() {
-    text = str.slice(0, ++i);
-    if (text === str) return;
+// var wikiArticles = [["This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !",
+//                   i = 0,
+//                   isTag,
+//                   text],
+//                     "ANOTHER text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
+//                   ]
+ // var str = "This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
 
-    document.getElementById('typeArea').innerHTML = text;
+// var str = "This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !",
+//     i = 0,
+//     isTag,
+//     text;
 
-    var char = text.slice(-1);
-    if( char === '<' ) isTag = true;
-    if( char === '>' ) isTag = false;
+// wikiArticles.forEach(function(str){
+// (function type() {
+//     text = str.slice(0, ++i);
+//     if (text === str) return;
 
-    if (isTag) return type();
-    setTimeout(type, 80);
-}());
+//     document.getElementById('typeArea').innerHTML = text;
+
+//     var char = text.slice(-1);
+//     if( char === '<' ) isTag = true;
+//     if( char === '>' ) isTag = false;
+
+//     if (isTag) return type();
+//     setTimeout(type, 80);
+// }())
+// })
+// ;
+
+
+
+// lower answer
+// https://stackoverflow.com/questions/11665484/converting-a-recursive-function-into-an-asynchronous-cps-implementation-javascr
+
+
+window.addEventListener('DOMContentLoaded', () => {
+
+var start = 0
+// var text = "This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
+var textArray = ["This is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"]
+// var textArray = ["ZWhis is my text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !",
+//                 "ANOTHER text. with an with an. image ewdhjhwkdnkan awjdljalmdlaw !"
+//                 ]
+var speed = 1000;
+
+
+// textArray.forEach(typeWriter);
+for(var i=0; i < textArray.length; i++) {
+
+  while (start < textArray[i].length) {
+
+    document.querySelector('#typeArea').innerHTML += textArray[i].charAt(start);
+    start++;
+  }
+  setTimeout(speed);
+
+}
+})
+
+// function typeWriter() {
+//   if (start < text.length) {
+//     document.querySelector('#typeArea').innerHTML += text.charAt(start);
+//     start++;
+//   }
+//   setTimeout(typeWriter, speed);
+// }
+
+
 
 
 // count characters and pass to charNum counter
 // https://www.codexworld.com/live-character-counter-javascript/
-function countChars(obj){
-    document.getElementById("charNum").innerHTML = obj.value.length+' characters';
-}
+const observer = new MutationObserver(
+function countChars(){
+    // console.log(element.innerHTML.length)
+    var sentences = element.innerHTML.split(". ").length
+    var words = element.innerHTML.split(" ").length
+    var chars = element.innerHTML.match(/[a-zA-Z]/g).length;
+    var ari = (4.71 * (chars / words)) + (0.5 * (words/sentences)) - 21.43
+    // console.log(chars)
+    document.getElementById("charNum").innerHTML = chars +' characters' + '<br>' + words + ' words' + '<br>' + sentences + ' sentences' + '<br>' + ari + ' Automated Readability Index'
+
+})
+
+observer.observe(element, {subtree: true, childList: true});
+
 
 </script>
 
