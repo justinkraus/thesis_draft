@@ -2,6 +2,7 @@
 
 #titleSlide{
   height:100vh;
+  background-color: white;
 }
 
 #titletype {
@@ -11,20 +12,35 @@
 }
 
 .impactText {
-  margin: auto 10vw;
+  margin: auto 14vw auto 10vw;
 }
 
 /*css for the readability calculations*/
 
 #readableOne {
-  width: 50%;
-}
-
-#readableOne{
+  width: 40%;
+  float: left;
   font-size: .66em;
+  overflow: auto;
 }
 
 #charNum {
+  position: absolute;
+  top: 75%;
+  font-size: 1.5em;
+}
+/*section two*/
+
+#readableTwo {
+  width: 40%;
+  height: 35%;
+  float: right;
+  font-size: .66em;
+  overflow-y: auto;
+  display: block;
+}
+
+#charNumTwo {
   position: absolute;
   top: 75%;
   font-size: 1.5em;
@@ -45,6 +61,7 @@
 
 body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: white;
 }
 
 h1{
@@ -71,7 +88,7 @@ p {
 /*  max-width: 80vw;
   margin: 0.5vw auto;*/
   position: relative;
-/*  background-color: grey;*/
+  background-color: grey;
 }
 
 #sections{
@@ -89,7 +106,7 @@ p {
 }
 #sections > div.graph-scroll-active{
   opacity: 1;
-/*  background-color: pink;*/
+  background-color: pink;
 }
 
 #graph{
@@ -234,5 +251,5 @@ circle{
 }
 
 svg{
- /* background-color: #eee;*/
+  background-color: #eee;
 }

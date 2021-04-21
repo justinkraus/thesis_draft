@@ -55,6 +55,34 @@ function render(){
   .style("text-anchor", "middle")
 
 
+// svg1.append('text')
+// .attr("class", "readableText")
+// .attr("x", INNER_WIDTH/3.75)
+// .attr("y", INNER_HEIGHT/3)
+// .attr("dy", "0em")
+// .attr("dx", "-1em")
+// // .style('font-size', "1.5em")
+// .style('opacity', 0)
+// .attr("text-anchor", "start")
+// .html(function (d){ 
+//   return "<tspan dy ='1.5em' style='font-size: 1em; fill: crimson;'>" + "Longer Words" + "</tspan>"
+//        + "<tspan dx= '-14%' dy ='1.25em' style='font-size: 1em; fill: crimson;'>" + "Longer Sentences" + "</tspan>";
+// });
+
+// svg1.append('text')
+// .attr("class", "readableText")
+// .attr("x", INNER_WIDTH/4 * 2.35)
+// .attr("y", INNER_HEIGHT/3)
+// // .attr("dy", "0em")
+// .attr("dx", "-1em")
+// .attr("text-anchor", "start")
+// // .style('font-size', "1.5em")
+// .style('opacity', 0)
+// .html(function (d){ 
+//   return "<tspan dy ='1.5em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Words" + "</tspan>"
+//        + "<tspan dx= '-15%' dy ='1.25em' style='font-size: 1em; fill: SteelBlue;'>" + "Shorter Sentences" + "</tspan>";
+// });
+
   // gridlabels dataset
   var readableTitle = [{"group": "moreReadable" , "x": 32, "y": 2, "fill": "SteelBlue", "fontsize": "1em", "text": "More Readable"},
                        {"group": "lessReadable" , "x": 10, "y": 2, "fill": "Crimson", "fontsize": "1em", "text": "Less Readable"}]
@@ -406,8 +434,10 @@ var svg2 = d3.select('.container-2 #graph').html('').append("svg")
 
 // draw comprehension rects
 
-var compreRects = [{"rectNumber": 2, "y": 0, "height": height/5, "fill": "#78c679", "label": "proficient"},
-                   {"rectNumber": 3, "y": height/5, "height": INNER_HEIGHT2-(margin2.bottom+height/5), "fill": "#c2e699", "label": "basic"}]
+var compreRects = [{"rectNumber": 1, "y": 0, "height": height/10, "fill": "#238443", "label": "advanced"},
+                   {"rectNumber": 2, "y": height/10, "height": height/3.6, "fill": "#78c679", "label": "proficient"},
+                   {"rectNumber": 3, "y": height/10 + height/3.6, "height": height/4.5, "fill": "#c2e699", "label": "basic"},
+                   {"rectNumber": 4, "y": height/10 + height/3.6 + height/4.5, "height": height/5, "fill": "white", "label": "below basic" }]
 
 var background = svg2.append("g")
 
@@ -480,7 +510,7 @@ var gs3 = d3.graphScroll()
   .on('active', function(i){
 
 
-d3.csv("NAEP_scores4.csv", function(data) {
+d3.csv("NAEP_scores3.csv", function(data) {
 
   color3.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }))
 
@@ -494,8 +524,8 @@ d3.csv("NAEP_scores4.csv", function(data) {
   });
 
   // Scale the range of the data
-  x.domain([1984, 2019]);
-  y.domain([270, 310]);
+  x.domain([1992, 2019]);
+  y.domain([200, 360]);
 
   var bracket = svg2.selectAll(".bracket")
       .data(brackets)
@@ -519,6 +549,9 @@ if (document.getElementById('container-2-0').className == "graph-scroll-active")
 
   d3.selectAll(".axisticks")
   .remove()
+
+  d3.selectAll(".stateDot")
+  .remove()
   
   }
 
@@ -528,16 +561,6 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   d3.selectAll(".line1")
   .remove()
-
-  d3.selectAll(".lolliGrid")
-  .remove()
-
-  d3.selectAll(".lolliLine")
-  .remove()
-
-  d3.selectAll(".lolliCircle")
-  .remove()
- 
 
     // Add the x Axis
   svg2.append("g")
@@ -598,7 +621,101 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   percentOP = [0,0,1]
 
-  reading_time = [{"year": 1984, "score":  31},
+  if (document.getElementById('container-2-2').className == "graph-scroll-active") {
+
+        // Add the x Axis
+  svg2.append("g")
+      .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+      .call(d3.axisBottom(x)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks")
+      .style("font-size", ".9em");
+
+  // Add the y Axis
+  svg2.append("g")
+      .call(d3.axisLeft(y)
+      .ticks(5)
+      .tickFormat(d3.format("d")))
+      .attr("class", "axisticks")
+      .style("font-size", ".9em");
+
+    var path1 = svg2.selectAll(".bracket").append("path")
+      .attr("class", "line1")
+      .attr("d", function(d) { return line(d.values); })
+      .style("stroke-width", function(d) { if (d.name == "National Avg" || d.name == "10th%" || d.name == "25th%" || d.name == "75th%" || d.name == "90th%") 
+                                        {return "5"}
+                                      else {return "0";}
+                                         })
+      .style("stroke", function(d) { if (d.name == "10th%" || d.name == "25th%" ) 
+                                        {return "Crimson"}
+                                      else if (d.name == "National Avg") 
+                                        {return "Coral"}
+                                      else {return "SteelBlue";}
+                                         })
+      .attr("stroke-dasharray", function() { return "0," + this.getTotalLength(); })
+      .style("fill", "none")
+      .attr("opacity", percentOP[i])
+      .transition()
+      .delay(function(d, i) { return i * 0; })
+      .duration(2500)
+      .ease(d3.easeSin)
+      .attrTween("stroke-dasharray", animateLine);
+
+  
+
+  svg2.selectAll(".bracket").append("text")
+      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.score) + ")"; })
+      .attr("x", 3)
+      .attr("dy", ".2em")
+      .style("font-size", "1em")
+      .text(function(d) { return d.name; })
+      .transition()
+      .duration(1950)
+      .ease(d3.easeSin);
+
+
+
+  state_dot_data = [{ "year": 2013, "state":  "Arkansas", "score": 284.5562147},
+                {  "year": 2013, "state":  "Connecticut", "score": 298.7901622},
+                {  "year": 2013, "state":  "Massachusetts", "score": 292.8363498},
+                {  "year": 2013, "state":  "West Virginia", "score": 280.2149731}
+              ]
+
+  // add in scatter plot dots
+
+  var stateDots = svg2.append('g')
+                  .selectAll('g')
+                  .data(state_dot_data)
+                  .enter()
+                  .append('g')
+
+  stateDots.append("circle")
+      .attr("cx", function (d) { return x(d.year); } )
+      .attr("cy", function (d) { return y(d.score); } )
+      .attr("r", 3)
+      .attr("class", "stateDot")
+      .style("fill", "Coral")
+      .attr("opacity", 0)
+
+  stateDots.append("text")
+    .attr("x", function (d) { return x(d.year); })
+    .attr("y", function (d) { return y(d.score); } )
+    .attr("dy", ".5em")
+    .attr("dx", ".5em")
+    .style("font-size", ".9em")
+    .attr("class", "stateDot")
+    .attr("opacity", 0)
+    .text(function(d) { return d.state; })
+
+
+    }
+
+  // lollipop graphic
+  if (document.getElementById('container-2-4').className == "graph-scroll-active") {
+
+    reading_time = [{"year": 1984, "score":  31},
                     {"year": 1988, "score":  28},
                     {"year": 1990, "score":  31},
                     {"year": 1992, "score":  27},
@@ -609,20 +726,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
                     {"year": 2008, "score":  20},
                     {"year": 2012, "score":  19},
                   ]
-
- 
-
-  // lollipop graphic
-  if (document.getElementById('container-2-2').className == "graph-scroll-active") {
-
-     // x axis
+    // x axis
     var x2 = d3.scaleBand()
       .range([ 0, INNER_WIDTH2 ])
       .domain(reading_time.map(function(d) { return d.year; }))
-      .padding(1.5);
+      .padding(1);
     svg2.append("g")
       .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
-      .attr("class", "lolliGrid")
       .call(d3.axisBottom(x2))
       .selectAll("text")
         .attr("transform", "translate(-10,0)rotate(-45)")
@@ -633,7 +743,6 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .domain([0, 40])
       .range([ INNER_HEIGHT2, 0]);
     svg2.append("g")
-      .attr("class", "lolliGrid")
       .call(d3.axisLeft(y2));
 
     // Lines
@@ -641,10 +750,9 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .data(reading_time)
       .enter()
       .append("line")
-        .attr("class", "lolliLine")
         .attr("x1", function(d) { return x2(d.year); })
         .attr("x2", function(d) { return x2(d.year); })
-        .attr("y1", function(d) { return y2(0); })
+        .attr("y1", function(d) { return y2(d.score); })
         .attr("y2", y2(0))
         .attr("stroke", "grey")
 
@@ -652,54 +760,16 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .data(reading_time)
       .enter()
       .append("circle")
-        .attr("class", "lolliCircle")
         .attr("cx", function(d) { return x2(d.year); })
-        .attr("cy", function(d) { return y2(0); })
-        .attr("r", "10")
-        .style("fill", "white")
-        .attr("stroke", "coral")
-
-    svg2.append("text")
-    .attr("text-anchor", "middle")
-    .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/16 )
-    .text("Year")
-    .style('font-size', "1.25em")
-    .attr("class", "lolliGrid");
-
-  // Add Y axis label:
-    svg2.append("text")
-        .attr("text-anchor", "end")
-        .attr("x", 0-INNER_WIDTH2/20)
-        .attr("y", INNER_HEIGHT2/2 )
-        .text("%")
-        .style('font-size', "1.25em")
-        .attr("class", "lolliGrid");
-
-    svg2.append("text")
-        // .attr("text-anchor", "end")
-        .attr("x", 0)
-        .attr("y", 0-margin2.top/4)
-        .text("17 Year Olds who Read for Fun")
-        .style('font-size', "1.5em")
-        .attr("class", "lolliGrid");
+        .attr("cy", function(d) { return y2(d.score); })
+        .attr("r", "4")
+        .style("fill", "#69b3a2")
+        .attr("stroke", "black")
 
   }
-
-  if (document.getElementById('container-2-3').className == "graph-scroll-active") {
-   d3.selectAll(".lolliGrid")
-  .remove()
-
-  d3.selectAll(".lolliLine")
-  .remove()
-
-  d3.selectAll(".lolliCircle")
-  .remove()
-  }
-
 
   // grid opacity and transition
-  var lineOP = [0, 1, 0, 0, 0]
+  var lineOP = [0, 1, 1, 1, 1]
 
   var linesSelect = svg2.selectAll(".bracket")
   // var linesSelect2 = svg2.selectAll(".gridLabel")
@@ -710,7 +780,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
 
   // background rectangles and label opacity
-  var backgroundOP = [.75, .60, 0 , 0, 0]
+  var backgroundOP = [.75, .60, .60 , .60, .60]
 
   var backgroundselect = svg2.selectAll(".background")
   
@@ -719,7 +789,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
   
   // background rectangles and label opacity
-  var labelOP = [0, 1, 0, 0, 0]
+  var labelOP = [0, 1, 1, 1, 1]
 
   var labelselect = svg2.selectAll(".chartlabel")
   
@@ -727,36 +797,14 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', labelOP[i])
     .transition();
 
+  // state dot OP
+  var stateOP = [0, 0, 0, 1, 1]
 
-  //lollipop Opacity
-  var lolliOP = [0,0,1,1]
-
-  var lolliGridSelect = svg2.selectAll(".lolliGrid")
-
-  lolliGridSelect.transition().duration(500)
-      .style('opacity', lolliOP[i])
+  var stateSelect = svg2.selectAll(".stateDot")
+  
+  stateSelect.transition().duration(500)
+      .style('opacity', stateOP[i])
     .transition();
-
-  var lolliLineSelect = svg2.selectAll(".lolliLine")
-
-  lolliLineSelect.transition().duration(500)
-      .style('opacity', lolliOP[i])
-      .transition()
-      .delay(function(d,i){ return 200*i; }) 
-      .duration(2000)
-      .attr("y1", function(d) { return y2(d.score); });
-
-
-  var lolliCircleSelect = svg2.selectAll(".lolliCircle")
-
-  lolliCircleSelect.transition().duration(500)
-      .style('opacity', lolliOP[i])
-      .transition()
-      .delay(function(d,i){ return 200*i; })
-      .duration(2000)
-      .attr("cy", function(d) { return y2(d.score); });
-
-
 
     function animateLine() {
       var l = this.getTotalLength();
