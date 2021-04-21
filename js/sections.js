@@ -615,6 +615,12 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   // lollipop graphic
   if (document.getElementById('container-2-2').className == "graph-scroll-active") {
 
+    d3.selectAll(".barGrid")
+    .remove()
+
+    d3.selectAll(".barRect")
+    .remove()
+
      // x axis
     var x2 = d3.scaleBand()
       .range([ 0, INNER_WIDTH2 ])
@@ -630,7 +636,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
     // Add Y axis
     var y2 = d3.scaleLinear()
-      .domain([0, 40])
+      .domain([10, 40])
       .range([ INNER_HEIGHT2, 0]);
     svg2.append("g")
       .attr("class", "lolliGrid")
@@ -644,8 +650,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("class", "lolliLine")
         .attr("x1", function(d) { return x2(d.year); })
         .attr("x2", function(d) { return x2(d.year); })
-        .attr("y1", function(d) { return y2(0); })
-        .attr("y2", y2(0))
+        .attr("y1", function(d) { return y2(10); })
+        .attr("y2", y2(10))
         .attr("stroke", "grey")
 
     svg2.selectAll("mycircle")
@@ -654,7 +660,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .append("circle")
         .attr("class", "lolliCircle")
         .attr("cx", function(d) { return x2(d.year); })
-        .attr("cy", function(d) { return y2(0); })
+        .attr("cy", function(d) { return y2(10); })
         .attr("r", "10")
         .style("fill", "white")
         .attr("stroke", "coral")
@@ -686,6 +692,19 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   }
 
+  reading_profiles = [{"group": "Least Diversified", "below": 53.1, "above": 46.9},
+                      {"group": "Moderately Diversified", "below": 40.4, "above": 59.5},
+                      {"group": "Diversified in Short Texts", "below": 33.3, "above": 66.6},
+                      {"group": "Diversified in Long Texts", "below": 25.3, "above": 74.6}
+                      ]
+
+  // reading_profiles = [
+  //                     '"group","Least Diversified","Moderately Diversified","Diversified in Short Texts","Diversified in Long Texts"',
+  //                     '"below","53.1","40.4","33.3","25.3"',
+  //                     '"above", "46.9", "59.5", "66.6", "74.6"'
+  // ].join('\n');
+
+
   if (document.getElementById('container-2-3').className == "graph-scroll-active") {
    d3.selectAll(".lolliGrid")
   .remove()
@@ -695,8 +714,105 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   d3.selectAll(".lolliCircle")
   .remove()
+
+  var columns = d3.keys(reading_profiles[0])
+  var keys = columns.slice(1,3)
+
+  // console.log(keys)
+
+  // Add X axis
+  var x3 = d3.scaleBand()
+    .rangeRound([0, INNER_WIDTH2])
+    .paddingInner(0.05)
+    .align(0.1);
+
+  // Add Y axis
+  var y3 = d3.scaleLinear()
+    .rangeRound([INNER_HEIGHT2, 0]);
+
+  // var y3 = d3.scaleLinear()
+  //   .domain([0, 100])
+  //   .range([ INNER_HEIGHT2, 0 ]);
+
+
+     // color palette = one color per subgroup
+  var color = d3.scaleOrdinal()
+    .domain(["below", "above"])
+    .range(['red','blue'])
+
+    reading_profiles.sort(function(a, b) { return b.total - a.total; });
+  x3.domain(reading_profiles.map(function(d,i) { return i; }));
+  y3.domain([0, 100]);
+  color.domain(keys);
+
+
+   svg2.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(reading_profiles))
+    .enter().append("g")
+      .attr("fill", function(d) { return color(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("class", "barRect")
+      .attr("x", function(d,i) { return x3(i); })
+      // .attr("y", function(d) { return console.log(d[0]); })
+      .attr("y", function(d) { return y3(d[1]); })
+      .attr("height", function(d) { return y3(d[0]) - y3(d[1]); })
+      .attr("width", x3.bandwidth())
+      .style('opacity', 0);
+
+    // add axises
+
+    svg2.append("g")
+      .attr("class", "barGrid")
+      .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
+      .call(d3.axisBottom(x3).tickFormat(function(d,i) { return reading_profiles[i].group}));
+
+    // add axises
+    svg2.append("g")
+    .attr("class", "barGrid")
+    .call(d3.axisLeft(y3));
+
+    // add axis labels
+    // X axis label
+        svg2.append("text")
+    .attr("text-anchor", "middle")
+    .attr("x", INNER_WIDTH2/2)
+    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/16 )
+    .text("Profile")
+    .style('font-size', "1.25em")
+    .attr("class", "barGrid");
+
+  // Add Y axis label:
+    svg2.append("text")
+        .attr("text-anchor", "end")
+        .attr("x", 0-INNER_WIDTH2/20)
+        .attr("y", INNER_HEIGHT2/2 )
+        .text("%")
+        .style('font-size', "1.25em")
+        .attr("class", "barGrid");
+
+  // add Title label
+    svg2.append("text")
+        // .attr("text-anchor", "end")
+        .attr("x", 0)
+        .attr("y", 0-margin2.top/4)
+        .text("Reading Proficiency by Content Diversity")
+        .style('font-size', "1.5em")
+        .attr("class", "barGrid");
+
   }
 
+  if (document.getElementById('container-2-4').className == "graph-scroll-active") {
+    d3.selectAll(".barGrid")
+    .remove()
+
+    d3.selectAll(".barRect")
+    .remove()
+    }
+
+  // Line Graph
 
   // grid opacity and transition
   var lineOP = [0, 1, 0, 0, 0]
@@ -727,6 +843,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', labelOP[i])
     .transition();
 
+  // Lollipop Graph
 
   //lollipop Opacity
   var lolliOP = [0,0,1,1]
@@ -755,6 +872,21 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .delay(function(d,i){ return 200*i; })
       .duration(2000)
       .attr("cy", function(d) { return y2(d.score); });
+
+  // Stacked Bar Graph
+  var barOP = [0, 0, 0, 1, 0]
+
+  var barGridSelect = svg2.selectAll(".barGrid")
+
+  barGridSelect.transition().duration(500)
+      .style('opacity', barOP[i])
+    .transition();
+
+  var barRectSelect = svg2.selectAll(".barRect")
+
+   barRectSelect.transition().delay(function(d,i){ return 500*i; }).duration(1000)
+      .style('opacity', barOP[i])
+      .transition();
 
 
 
