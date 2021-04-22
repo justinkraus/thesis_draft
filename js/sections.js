@@ -89,10 +89,10 @@ function render(){
                  {"group":2, "name": "IP", "img": './images/inspolicy.svg', "x": 0, "y": 6},
                  {"group":3, "name": "Twitter", "img": './images/twitter.svg', "x": 26, "y": 7},
                  {"group":3, "name": "FB", "img": './images/facebook1.svg', "x": 26, "y": 8},
-                 {"group":3, "name": "ACA", "img": './images/aca.svg', "x": 11, "y": 6},
-                 {"group":3, "name": "SEC", "img": './images/sec10k.svg', "x": 6, "y": 5},
-                 {"group":3, "name": "HLR", "img": './images/hlr.svg', "x": 6, "y": 3},
-                 {"group":3, "name": "SCIJ", "img": './images/scij.svg', "x": 1, "y": 4}
+                 {"group":4, "name": "ACA", "img": './images/aca.svg', "x": 11, "y": 6},
+                 {"group":4, "name": "SEC", "img": './images/sec10k.svg', "x": 6, "y": 5},
+                 {"group":4, "name": "HLR", "img": './images/hlr.svg', "x": 6, "y": 3},
+                 {"group":4, "name": "SCIJ", "img": './images/scij.svg', "x": 1, "y": 4}
                  ]
 
   // Load readability image dataset
@@ -249,7 +249,8 @@ function render(){
         // Opacity of secondary sources
         var secondaryOpacity = [0, 0, 1, 1]
         // Opacity of Social Media
-        var socialOP = [0, 0, 0, 1]
+        var domainOP = [0, 0, 0, 1]
+
 
         // Group 1 - newspapers
         // --------------------------
@@ -366,7 +367,14 @@ function render(){
 
         socialImg.transition().duration(1000)
             // .attr("x", socialPos)
-            .style('opacity', socialOP[i])
+            .style('opacity', secondaryOpacity[i])
+          .transition();
+
+        var domainImg = svg1.selectAll('.group4')
+
+        domainImg.transition().duration(1000)
+            // .attr("x", socialPos)
+            .style('opacity', domainOP[i])
           .transition();
 
 
@@ -379,7 +387,7 @@ function render(){
 // --------------------------------------------
 // GRAPH 2
 
-var margin2 = {top: 50, right: 100, bottom: 50, left: 70};
+var margin2 = {top: 50, right: 100, bottom: 100, left: 100};
 var INNER_WIDTH2  = width - margin2.left - margin2.right;
 var INNER_HEIGHT2 = height - margin2.top - margin2.bottom;
 
@@ -678,7 +686,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("text-anchor", "end")
         .attr("x", 0-INNER_WIDTH2/20)
         .attr("y", INNER_HEIGHT2/2 )
-        .text("%")
+        .text("Percentage of 12th Graders")
         .style('font-size', "1.25em")
         .attr("class", "lolliGrid");
 
@@ -686,7 +694,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         // .attr("text-anchor", "end")
         .attr("x", 0)
         .attr("y", 0-margin2.top/4)
-        .text("17 Year Olds who Read for Fun")
+        .text("12th Graders Who Read for Fun")
         .style('font-size', "1.5em")
         .attr("class", "lolliGrid");
 
@@ -738,7 +746,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
      // color palette = one color per subgroup
   var color = d3.scaleOrdinal()
     .domain(["below", "above"])
-    .range(['red','blue'])
+    .range(['Crimson','SteelBlue'])
 
     reading_profiles.sort(function(a, b) { return b.total - a.total; });
   x3.domain(reading_profiles.map(function(d,i) { return i; }));
@@ -779,19 +787,22 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/16 )
-    .text("Profile")
+    .attr("y", INNER_HEIGHT2+margin2.bottom/2 )
+    .text("Content Diversity")
     .style('font-size', "1.25em")
     .attr("class", "barGrid");
 
   // Add Y axis label:
     svg2.append("text")
         .attr("text-anchor", "end")
+        // .attr("x", 0-INNER_WIDTH2/20)
         .attr("x", 0-INNER_WIDTH2/20)
-        .attr("y", INNER_HEIGHT2/2 )
-        .text("%")
+        // .attr("y", INNER_HEIGHT2/2 )
+        .attr("y", 0 - margin2.left/2 )
+        .text("Percentage of Readers Below or Above Basic Proficiency")
         .style('font-size', "1.25em")
-        .attr("class", "barGrid");
+        .attr("class", "barGrid")
+        .attr("transform", "rotate(-90)");
 
   // add Title label
     svg2.append("text")
@@ -801,6 +812,21 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .text("Reading Proficiency by Content Diversity")
         .style('font-size', "1.5em")
         .attr("class", "barGrid");
+
+
+    // svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/4).attr("width", 80).attr("height", 100).style("fill", "SteelBlue")
+    // svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/2).attr("width", 80).attr("height", 100).style("fill", "Crimson")
+    // // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50)).text("% Above Basic").style("font-size", "15px").attr("alignment-baseline","middle")
+    // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", INNER_HEIGHT2/2).text("% At or Below Basic").style("font-size", "15px").attr("alignment-baseline","middle")
+
+
+    // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50))
+    // .style("font-size", ".9em").attr("alignment-baseline","middle")
+    // .html(function (d){ 
+    // return "<tspan dx='0' dy ='1em''>" + "%" + "</tspan>"
+    //    + "<tspan dx='-10' dy ='1em'>" + "Above" + "</tspan>"
+    //    + "<tspan dx='-30' dy ='1em'>" + "Basic" + "</tspan>";
+    // });
 
   }
 
