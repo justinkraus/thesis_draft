@@ -415,7 +415,7 @@ var svg2 = d3.select('.container-2 #graph').html('').append("svg")
 // draw comprehension rects
 
 var compreRects = [{"rectNumber": 2, "y": 0, "height": height/5, "fill": "#78c679", "label": "proficient"},
-                   {"rectNumber": 3, "y": height/5, "height": INNER_HEIGHT2-(margin2.bottom+height/5), "fill": "#c2e699", "label": "basic"}]
+                   {"rectNumber": 3, "y": height/5, "height": INNER_HEIGHT2-(height/5), "fill": "#c2e699", "label": "basic"}]
 
 var background = svg2.append("g")
 
@@ -455,7 +455,7 @@ svg2.selectAll('text')
 svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/16 )
+    .attr("y", INNER_HEIGHT2+margin2.bottom/2 )
     .text("Year")
     .style('font-size', "1.25em")
     .attr("class", "chartlabel");
@@ -463,11 +463,15 @@ svg2.append("text")
   // Add Y axis label:
 svg2.append("text")
     .attr("text-anchor", "end")
-    .attr("x", 0-INNER_WIDTH2/40)
-    .attr("y", INNER_HEIGHT2/2 )
-    .text("Score")
+    // .attr("x", 0-INNER_WIDTH2/40)
+    // .attr("y", INNER_HEIGHT2/2 )
+    .attr("x", -INNER_HEIGHT/4)
+    .attr("y", 0 - margin2.left/1.5 )
+    .text("Reading Comprehension Score")
     .style('font-size', "1.25em")
-    .attr("class", "chartlabel");
+    .attr("class", "chartlabel")
+    .attr("transform", "rotate(-90)");
+
 
 svg2.append("text")
     // .attr("text-anchor", "end")
@@ -522,9 +526,6 @@ if (document.getElementById('container-2-0').className == "graph-scroll-active")
   d3.selectAll(".line")
   .remove()
 
-  d3.selectAll(".line1")
-  .remove()
-
   d3.selectAll(".axisticks")
   .remove()
   
@@ -533,9 +534,6 @@ if (document.getElementById('container-2-0').className == "graph-scroll-active")
 // original active idea from here https://stackoverflow.com/questions/37447343/d3-js-starting-animations-when-a-section-is-in-view
 
 if (document.getElementById('container-2-1').className == "graph-scroll-active") {
-
-  d3.selectAll(".line1")
-  .remove()
 
   d3.selectAll(".lolliGrid")
   .remove()
@@ -660,7 +658,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("x2", function(d) { return x2(d.year); })
         .attr("y1", function(d) { return y2(10); })
         .attr("y2", y2(10))
-        .attr("stroke", "grey")
+        .attr("stroke", "lightgrey")
 
     svg2.selectAll("mycircle")
       .data(reading_time)
@@ -669,26 +667,43 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("class", "lolliCircle")
         .attr("cx", function(d) { return x2(d.year); })
         .attr("cy", function(d) { return y2(10); })
-        .attr("r", "10")
+        .attr("r", "22")
         .style("fill", "white")
         .attr("stroke", "coral")
+
+    svg2.selectAll("mytext")
+    .data(reading_time)
+    .enter()
+    .append("text")
+      .attr("text-anchor", "middle")
+      .attr("class", "lolliLabel")
+      .attr("x", function(d) { return x2(d.year); })
+      .attr("y", function(d) { return y2(d.score); })
+      .attr("dy", ".25em")
+      .text(function(d) { return d.score + "%"})
+      .style('font-size', ".75em")
+      .style('opacity', 0);
 
     svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+INNER_HEIGHT2/16 )
+    .attr("y", INNER_HEIGHT2+margin2.bottom/2 )
     .text("Year")
     .style('font-size', "1.25em")
     .attr("class", "lolliGrid");
 
+
   // Add Y axis label:
     svg2.append("text")
         .attr("text-anchor", "end")
-        .attr("x", 0-INNER_WIDTH2/20)
-        .attr("y", INNER_HEIGHT2/2 )
+        // .attr("x", 0-INNER_WIDTH2/20)
+        // .attr("y", INNER_HEIGHT2/2 )
+        .attr("x", -INNER_HEIGHT/4)
+        .attr("y", 0 - margin2.left/1.5 )
         .text("Percentage of 12th Graders")
         .style('font-size', "1.25em")
-        .attr("class", "lolliGrid");
+        .attr("class", "lolliGrid")
+        .attr("transform", "rotate(-90)");
 
     svg2.append("text")
         // .attr("text-anchor", "end")
@@ -830,13 +845,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   }
 
-  if (document.getElementById('container-2-4').className == "graph-scroll-active") {
-    d3.selectAll(".barGrid")
-    .remove()
+  // if (document.getElementById('container-2-4').className == "graph-scroll-active") {
+  //   d3.selectAll(".barGrid")
+  //   .remove()
 
-    d3.selectAll(".barRect")
-    .remove()
-    }
+  //   d3.selectAll(".barRect")
+  //   .remove()
+  //   }
 
   // Line Graph
 
@@ -852,7 +867,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     .transition();
 
   // background rectangles and label opacity
-  var backgroundOP = [.75, .60, 0 , 0, 0]
+  var backgroundOP = [0, .50, 0 , 0, 0]
 
   var backgroundselect = svg2.selectAll(".background")
   
@@ -898,6 +913,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .delay(function(d,i){ return 200*i; })
       .duration(2000)
       .attr("cy", function(d) { return y2(d.score); });
+
+  var lolliLabelSelect = svg2.selectAll(".lolliLabel")
+
+  lolliLabelSelect.transition().duration(4500)
+    .delay(function(d,i){ return 100*i; })
+    .style('opacity', lolliOP[i])
+    .ease(d3.easeExpIn);
 
   // Stacked Bar Graph
   var barOP = [0, 0, 0, 1, 0]
