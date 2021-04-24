@@ -17,17 +17,50 @@
 
 /*css for the readability calculations*/
 
+#readableCalcs{
+  table-layout: fixed;
+  width:70vw;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: top;
+  
+/*  overflow-y: auto;
+  overflow-x: auto;*/
+}
+
+#readableCalcs td{
+  vertical-align: top;
+  overflow: auto;
+}
+
+.typeArea{
+  max-height: 40vh;
+/*  overflow: auto;*/
+  display: block;
+  overflow-y: auto;
+  font-size: .66em;
+}
+
+.calcArea{
+  display: table-cell;
+  font-size: 1.22em;
+  vertical-align: top;
+}
+
 #readableOne {
   width: 40%;
   float: left;
   font-size: .66em;
-  overflow: auto;
+  overflow-y: auto;
+
+  /*display: block;*/
 }
 
 #charNum {
-  position: absolute;
-  top: 75%;
-  font-size: 1.5em;
+  /*position: absolute;*/
+  /*top: 75%;*/
+/*  vertical-align: top;
+  font-size: 1em;*/
 }
 /*section two*/
 
@@ -37,13 +70,14 @@
   float: right;
   font-size: .66em;
   overflow-y: auto;
-  display: block;
+  /*display: block;*/
 }
 
 #charNumTwo {
-  position: absolute;
-  top: 75%;
-  font-size: 1.5em;
+  /*position: absolute;*/
+  /*top: 75%;*/
+/*  vertical-align: top;
+  font-size: 1em;*/
 }
 
 /*#topbar{

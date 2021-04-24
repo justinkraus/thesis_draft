@@ -14,14 +14,30 @@
   <h2>Why is reading comprehension falling?</h2>
 
   <!-- <body onload="typeWriter();"> -->
-  <div id="readableOne">
+  <table id="readableCalcs">
+    <tr>
+      <td colspan="4"><h2>Readability Calculations</h2></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center"><h3>Simplified Wikipedia Article<h3></td>
+      <td colspan="2" style="text-align: center"><h3>Standard Wikipedia Article<h3></td>
+    </tr>
+    <tr>
+      <td><div class="typeArea" id="typeAreaOne" onload="countChars(this);"></div></td>
+      <td><div class="calcArea" id="charNum"></div></td>
+      <td><div class="calcArea" id="charNumTwo"></div></td>
+      <td><div class="typeArea" id="typeAreaTwo" onload="countCharsTwo(this);"></div></td>
+    </tr>
+  </table>
+
+<!--   <div id="readableOne">
     <div id="typeAreaOne" onload="countChars(this);"></div>
     <div id="charNum"></div>
   </div>
   <div id="readableTwo">
-    <div id="typeAreaTwo" onload="countCharsTwo(this);"></div>
     <div id="charNumTwo"></div>
-  </div>
+    <div id="typeAreaTwo" onload="countCharsTwo(this);"></div>
+  </div> -->
 </div>
 <div id='topbar'>&nbsp;</div>
 <div id='container' class='container-1'>
