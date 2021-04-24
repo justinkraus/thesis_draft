@@ -14,6 +14,46 @@ function render(){
     height = innerHeight*.7
   }
 
+  //wrap edited without dy
+// this answer pointed me to realize the dy was causing issues: 
+// https://stackoverflow.com/questions/35838058/breaking-text-into-two-lines-inside-circle-in-d3
+// the commonly shared example taken from the bostock original code here:
+// https://stackoverflow.com/questions/24784302/wrapping-text-in-d3
+// really only applies to a barchart axis, wrapping elsewhere requires customization to that particular graph
+  function wrap(text, width) {
+    text.each(function () {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1,
+            // addl_space = 5, // ems
+            x = text.attr("x"),
+            y = text.attr("y"),
+            dy = 0, //parseFloat(text.attr("dy")),
+            tspan = text.text(null)
+                        .append("tspan")
+                        .attr("x", x)
+                        .attr("y", y)
+                        .attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                            .text(word);
+            }
+        }
+    });
+}
+
   // --------------------------------------------
   // graph #1 - Readability
 
@@ -528,6 +568,18 @@ if (document.getElementById('container-2-0').className == "graph-scroll-active")
 
   d3.selectAll(".axisticks")
   .remove()
+
+  d3.selectAll(".lolliGrid")
+  .remove()
+
+  d3.selectAll(".lolliLine")
+  .remove()
+
+  d3.selectAll(".lolliCircle")
+  .remove()
+ 
+  d3.selectAll(".lolliLabel")
+  .remove()
   
   }
 
@@ -544,6 +596,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   d3.selectAll(".lolliCircle")
   .remove()
  
+  d3.selectAll(".lolliLabel")
+  .remove()
 
     // Add the x Axis
   svg2.append("g")
@@ -638,7 +692,12 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .call(d3.axisBottom(x2))
       .selectAll("text")
         .attr("transform", "translate(-10,0)rotate(-45)")
+        .style('font-size', "1.5em")
         .style("text-anchor", "end");
+
+    svg2.selectAll(".tick line")
+        .style("opacity", 0)
+      ;
 
     // Add Y axis
     var y2 = d3.scaleLinear()
@@ -687,7 +746,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+margin2.bottom/2 )
+    .attr("y", INNER_HEIGHT2+ (margin2.bottom/1.5) )
     .text("Year")
     .style('font-size', "1.25em")
     .attr("class", "lolliGrid");
@@ -715,18 +774,19 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   }
 
-  reading_profiles = [{"group": "Least Diversified", "below": 53.1, "above": 46.9},
-                      {"group": "Moderately Diversified", "below": 40.4, "above": 59.5},
-                      {"group": "Diversified in Short Texts", "below": 33.3, "above": 66.6},
-                      {"group": "Diversified in Long Texts", "below": 25.3, "above": 74.6}
+    reading_profiles = [{"group": "Magazines. ", "below": 53.1, "above": 46.9},
+                      {"group": "Magazines, Newpapers", "below": 40.4, "above": 59.5},
+                      {"group": "Magazines, Newpapers, Comics", "below": 33.3, "above": 66.6},
+                      {"group": "Magazines, Newpapers, Books", "below": 25.3, "above": 74.6}
                       ]
 
-  // reading_profiles = [
-  //                     '"group","Least Diversified","Moderately Diversified","Diversified in Short Texts","Diversified in Long Texts"',
-  //                     '"below","53.1","40.4","33.3","25.3"',
-  //                     '"above", "46.9", "59.5", "66.6", "74.6"'
-  // ].join('\n');
+  // reading_profiles = [{"group": "Least Diversified", "below": 53.1, "above": 46.9},
+  //                     {"group": "Moderately Diversified", "below": 40.4, "above": 59.5},
+  //                     {"group": "Diversified in Short Texts", "below": 33.3, "above": 66.6},
+  //                     {"group": "Diversified in Long Texts", "below": 25.3, "above": 74.6}
+  //                     ]
 
+  
 
   if (document.getElementById('container-2-3').className == "graph-scroll-active") {
    d3.selectAll(".lolliGrid")
@@ -736,6 +796,9 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   .remove()
 
   d3.selectAll(".lolliCircle")
+  .remove()
+
+  d3.selectAll(".lolliLabel")
   .remove()
 
   var columns = d3.keys(reading_profiles[0])
@@ -786,11 +849,18 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', 0);
 
     // add axises
+    // .tickSizeOuter([0]).tickSizeInner([5])
 
     svg2.append("g")
       .attr("class", "barGrid")
       .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
-      .call(d3.axisBottom(x3).tickFormat(function(d,i) { return reading_profiles[i].group}));
+      .call(d3.axisBottom(x3).tickFormat(function(d,i) { return reading_profiles[i].group}).tickSizeOuter([0]))
+      .selectAll(".tick text")
+        .call(wrap, 50)
+
+    svg2.selectAll(".tick line")
+        .style("opacity", 0)
+      ;
 
     // add axises
     svg2.append("g")
@@ -802,7 +872,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         svg2.append("text")
     .attr("text-anchor", "middle")
     .attr("x", INNER_WIDTH2/2)
-    .attr("y", INNER_HEIGHT2+margin2.bottom/2 )
+    .attr("y", INNER_HEIGHT2+ (margin2.bottom/1.5) )
     .text("Content Diversity")
     .style('font-size', "1.25em")
     .attr("class", "barGrid");
@@ -814,7 +884,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("x", 0-INNER_WIDTH2/20)
         // .attr("y", INNER_HEIGHT2/2 )
         .attr("y", 0 - margin2.left/2 )
-        .text("Percentage of Readers Below or Above Basic Proficiency")
+        .text("Reader Proficiency %")
         .style('font-size', "1.25em")
         .attr("class", "barGrid")
         .attr("transform", "rotate(-90)");
@@ -829,19 +899,16 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("class", "barGrid");
 
 
-    // svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/4).attr("width", 80).attr("height", 100).style("fill", "SteelBlue")
-    // svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/2).attr("width", 80).attr("height", 100).style("fill", "Crimson")
-    // // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50)).text("% Above Basic").style("font-size", "15px").attr("alignment-baseline","middle")
-    // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", INNER_HEIGHT2/2).text("% At or Below Basic").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/4).attr("width", 80).attr("height", 100).style("fill", "SteelBlue").attr("class", "barLegend")
+    svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/2).attr("width", 80).attr("height", 100).style("fill", "Crimson").attr("class", "barLegend")
+    // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50)).text("% Above Basic").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y",(((INNER_HEIGHT2 + 100)/4))).text("Above Basic").style("font-size", "15px").attr("alignment-baseline","start").call(wrap, 43)
 
 
-    // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50))
-    // .style("font-size", ".9em").attr("alignment-baseline","middle")
-    // .html(function (d){ 
-    // return "<tspan dx='0' dy ='1em''>" + "%" + "</tspan>"
-    //    + "<tspan dx='-10' dy ='1em'>" + "Above" + "</tspan>"
-    //    + "<tspan dx='-30' dy ='1em'>" + "Basic" + "</tspan>";
-    // });
+    svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", (((INNER_HEIGHT2 + 100)/2)))
+    .text("Basic or Below")
+    .style("font-size", ".9em").attr("alignment-baseline","middle")
+    .call(wrap, 80);
 
   }
 
@@ -936,6 +1003,11 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style('opacity', barOP[i])
       .transition();
 
+  var barLegendSelect = svg2.selectAll(".barLegend")
+
+  barLegendSelect.transition().duration(500)
+      .style('opacity', barOP[i])
+    .transition();
 
 
     function animateLine() {
@@ -991,7 +1063,7 @@ var squareSpace = (height/1.4)/4.5
 // additional offset of first polygon
 var poly1Yoffset = squareSpace/2.5
 
-var poly1 = [[{x: topLeftX, y:topY + poly1Yoffset}, {x: topRightX, y:topY + poly1Yoffset}, {x: botRightX, y:botY + poly1Yoffset}, {x: botLeftX, y:botY + poly1Yoffset}]]
+var poly1 = [[{x: topLeftX, y:topY + poly1Yoffset}, {x: topRightX, y:topY + poly1Yoffset}, {x: botRightX, y:botY + poly1Yoffset}, {x: botLeftX, y:botY + poly1Yoffset}, {x: topLeftX, y:topY + poly1Yoffset}]]
 var poly2 = [[{x: topLeftX, y:topY - (squareSpace)}, {x: topRightX, y:topY - (squareSpace)}, {x: botRightX, y:botY - (squareSpace)}, {x: botLeftX, y:botY - (squareSpace)}]]
 var poly3 = [[{x: topLeftX, y:topY - (squareSpace * 2)}, {x: topRightX, y:topY - (squareSpace * 2)}, {x: botRightX, y:botY - (squareSpace * 2)}, {x: botLeftX, y:botY - (squareSpace * 2)}]]
 var poly4 = [[{x: topLeftX, y:topY - (squareSpace * 3)}, {x: topRightX, y:topY - (squareSpace * 3)}, {x: botRightX, y:botY - (squareSpace * 3)}, {x: botLeftX, y:botY - (squareSpace * 3)}]]
@@ -1100,7 +1172,6 @@ svg3.selectAll('text')
 .text(function(d){return d.text})
 
 
-
 // comprehension level definitions
 
 var defs = [{"levelNumber":1, "text": "Words and sentence structure"},
@@ -1120,30 +1191,6 @@ svg3.selectAll('text')
 .style('font-size', "1em")
 .style('opacity', 0)
 .text(function(d){return d.text})
-
-
-// previous svg turtle frog  examples
-
-// var examples = [ {"levelNumber":1,"innerLevel":2, "img": './images/tfl_def.svg', "text": 'log', "width": 200, "height": 80},
-//                  {"levelNumber":2,"innerLevel":.5, "img": './images/turtle_fish.svg', "text": 'log', "width": 200, "height": 80},
-//                  {"levelNumber":3,"innerLevel":1, "img": './images/log_scene.svg', "text": 'log', "width": 200, "height": 90}
-//                  ]
-
-// svg3.selectAll('image')
-// .select('image')
-// .data(examples)
-// .enter()
-// .append('image')
-// .attr("id", function(d){return "exampleimgs"+d.levelNumber+d.innerLevel})
-// .attr("class", "exampleimgs")
-// .attr("x", topRightX)
-// .attr("y", function(d){return topY - (squareSpace * d.levelNumber) + (d.innerLevel * 22) })
-// // .attr("dy", function(d){return 2 * d.levelNumber + "em" })
-// .attr("width", function(d){return d.width})
-// .attr("height", function(d){return d.height})
-// .style('opacity', 0)
-// .attr("xlink:href", function(d){return d.img})
-// // .text(function(d){return d.text})
 
 // reading lines on white polygon
 var lines = [[0,1,2,3,4,5,6,7,8,9,10]]
@@ -1307,47 +1354,47 @@ var gs4 = d3.graphScroll()
 //polygon opacity transitions
 
 poly1OP = [1,1,1,1,1,1,1,1]
-poly23OP = [1,.66,.66,0,0,0,0]
-ploy4OP = [1,.66,.33,0,0,0,0]
+poly23OP = [1,.66,.66,.33,0,0,0,0]
+ploy4OP = [1,.66,.33,.66,0,0,0,0]
 
 // polygon size transition
 poly1size = [
-             [[topLeftX, topY - (squareSpace * 1.65)], [topRightX, topY - (squareSpace * 1.65)], [botRightX, botY - (squareSpace * 1.65)], [botLeftX, botY - (squareSpace * 1.65)]],
-             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset]],
-             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
-             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
-             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]],
-             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY]]
+             [[topLeftX, topY - (squareSpace * 1.65)], [topRightX, topY - (squareSpace * 1.65)], [botRightX, botY - (squareSpace * 1.65)], [botLeftX, botY - (squareSpace * 1.65)], [topLeftX, topY - (squareSpace * 1.65)]],
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset], [topLeftX, topY + poly1Yoffset]],
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset], [topLeftX, topY + poly1Yoffset]],
+             [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset], [topLeftX, topY + poly1Yoffset]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
 
 poly5size = [
-              [[topLeftX, topY - (squareSpace * 2.35)], [topRightX, topY - (squareSpace * 2.35)], [botRightX, botY - (squareSpace * 2.35)], [botLeftX, botY - (squareSpace * 2.35)]],
-              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
-              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
-              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
-              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]],
-              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset]]
+              [[topLeftX, topY - (squareSpace * 2.35)], [topRightX, topY - (squareSpace * 2.35)], [botRightX, botY - (squareSpace * 2.35)], [botLeftX, botY - (squareSpace * 2.35)], [topLeftX, topY - (squareSpace * 2.35)]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset], [topLeftX, topY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset], [topLeftX, topY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset], [topLeftX, topY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset], [topLeftX, topY - (squareSpace * 4) - poly1Yoffset]],
+              [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset], [topLeftX, topY - (squareSpace * 4) - poly1Yoffset]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
 poly2size = [
-             [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]],
-             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)]]
+             [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)], [topLeftX, topY - (squareSpace * 2)]],
+             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
+             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
+             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
+             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
+             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
 poly4size = [
-             [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]],
-             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)]]
+             [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)], [topLeftX, topY - (squareSpace * 2)]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)], [topLeftX, topY - (squareSpace * 3)]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)], [topLeftX, topY - (squareSpace * 3)]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)], [topLeftX, topY - (squareSpace * 3)]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)], [topLeftX, topY - (squareSpace * 3)]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)], [topLeftX, topY - (squareSpace * 3)]],
+             [[topLeftX, topY - (squareSpace * 3)], [topRightX, topY - (squareSpace * 3)], [botRightX, botY - (squareSpace * 3)], [botLeftX, botY - (squareSpace * 3)], [topLeftX, topY - (squareSpace * 3)]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
 poly1var.transition().duration(1000)
@@ -1394,7 +1441,7 @@ poly1titlesize = [
 
 
 // polys 1 and 5 text transition
-fixedtextOP = [0,1,1,0,0,0,0]
+fixedtextOP = [0,1,1,1,0,0,0,0]
 
 var polyText = svg3.selectAll(".polytitle")
 
@@ -1411,7 +1458,7 @@ poly1title.transition().duration(500)
 
 //poly 3 title text transition
 
-cititleOP = [1,0,0,0,0,0,0]
+cititleOP = [1,0,0,0,0,0,0,0]
 
 var ciText = svg3.selectAll(".cititle")
 
@@ -1421,7 +1468,7 @@ ciText.transition().duration(500)
 
 
 //transition for the level titles
-leveltitlesOP = [0,1,1,0,0,0,0]
+leveltitlesOP = [0,1,1,1,0,0,0,0]
 
 var leveltitles = svg3.selectAll(".leveltitle")
 
@@ -1432,7 +1479,7 @@ leveltitles.transition().duration(1500)
 
 //transition for the level definitions
 
-leveldefsOP = [0,1,1,0,0,0,0]
+leveldefsOP = [0,1,1,1,0,0,0,0]
 
 var leveldefs = svg3.selectAll(".leveldef")
 
@@ -1440,21 +1487,12 @@ leveldefs.transition().duration(1500)
             .style('opacity', leveldefsOP[i])
           .transition();
 
-// transition for the level examples
-levelexsOP = [0,0,1,0,0,0,0]
-
-var levelexs = svg3.selectAll(".exampleimgs")
-
-levelexs.transition().duration(1000)
-            .style('opacity', levelexsOP[i])
-          .transition();
-
 
 //animation of the "floating" text
 
-// if (document.getElementById('container-3-2').className == "graph-scroll-active") {
+if (document.getElementById('container-3-2').className == "graph-scroll-active") {
 
-//   var polygons = svg3.selectAll(".polygon")
+  var polygons = svg3.selectAll(".polygon")
 
 //   // polygons.transition().duration(100).delay(1000)
 
@@ -1463,37 +1501,37 @@ levelexs.transition().duration(1000)
 
 // // Floating text function loop 
 // // create arrays
-//   repeat();
+  repeat();
 //   //chained transition of floating text
 //   // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
-//     function repeat(){
+    function repeat(){
 
     
 
-//     polygons.transition().duration(800)
-//     .delay(function(d,i) { return (i * 800)})
-//     .style('opacity', 0.66)
-//     .transition().duration(100)
-//     .style('opacity', 0.33)
-//     .transition().duration(100)
-//     .style('opacity', 0.66)
-//     .delay(800)
-//     .on("start", repeat);
+    polygons.transition().duration(900)
+    .delay(function(d,i) { return (i * 900)})
+    .style('opacity', 0.66)
+    .transition().duration(100)
+    .style('opacity', 0.33)
+    .transition().duration(100)
+    .style('opacity', 0.66)
+    .delay(100)
+    .on("start", repeat);
 
-//   };
+  };
 
 // // examples 
 
-// }
-// else {
-//   d3.selectAll(".letters")
-//   .remove()
-// }
+}
+else {
+  d3.selectAll(".letters")
+  .remove()
+}
 
 
 
 //lines transitions
-linesOP = [0,0,0,1,1,1]
+linesOP = [0,0,0,0,0,1,1,0]
 
 var levelexs = svg3.selectAll(".readinglines")
 
@@ -1503,10 +1541,10 @@ levelexs.transition().duration(1500)
 
 
 //linear circles transition
-if (document.getElementById('container-3-5').className == "graph-scroll-active") {
+if (document.getElementById('container-3-6').className == "graph-scroll-active") {
 
 // linearcirclesOP = [0,0,0,0,1,0,0]
-linearcirclesOP = [1,1,1,1,1,1,1]
+linearcirclesOP = [1,1,1,1,1,1,1,1]
 
 var linearcircles = svg3.selectAll(".linearcircle")
 
@@ -1526,8 +1564,8 @@ linearcircles.transition().duration(100)
 
 
 // skim circles transition
-if (document.getElementById('container-3-6').className == "graph-scroll-active") {
-skimcirclesOP = [1,1,1,1,1,1,1]
+if (document.getElementById('container-3-7').className == "graph-scroll-active") {
+skimcirclesOP = [1,1,1,1,1,1,1,1]
 
 // skimcirclesOP = [0,0,0,0,0,1,0]
 
