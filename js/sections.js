@@ -902,12 +902,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/4).attr("width", 80).attr("height", 100).style("fill", "SteelBlue").attr("class", "barLegend")
     svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/2).attr("width", 80).attr("height", 100).style("fill", "Crimson").attr("class", "barLegend")
     // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50)).text("% Above Basic").style("font-size", "15px").attr("alignment-baseline","middle")
-    svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y",(((INNER_HEIGHT2 + 100)/4))).text("Above Basic").style("font-size", "15px").attr("alignment-baseline","start").call(wrap, 43)
+    svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y",(((INNER_HEIGHT2 + 100)/4))).text("Above Basic").style("font-size", "15px").attr("alignment-baseline","start").attr("class", "barLegend").call(wrap, 43)
 
 
     svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", (((INNER_HEIGHT2 + 100)/2)))
     .text("Basic or Below")
     .style("font-size", ".9em").attr("alignment-baseline","middle")
+    .attr("class", "barLegend")
     .call(wrap, 80);
 
   }
@@ -1378,8 +1379,10 @@ poly5size = [
               [[topLeftX, topY - (squareSpace * 4) - poly1Yoffset], [topRightX, topY - (squareSpace * 4) - poly1Yoffset], [botRightX, botY - (squareSpace * 4) - poly1Yoffset], [botLeftX, botY - (squareSpace * 4) - poly1Yoffset], [topLeftX, topY - (squareSpace * 4) - poly1Yoffset]]
             ].map(function(d){ return 'M' + d.join(' L ') })
 
+// 
 poly2size = [
              [[topLeftX, topY - (squareSpace * 2)], [topRightX, topY - (squareSpace * 2)], [botRightX, botY - (squareSpace * 2)], [botLeftX, botY - (squareSpace * 2)], [topLeftX, topY - (squareSpace * 2)]],
+             [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
              [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
              [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],
              [[topLeftX, topY - (squareSpace)], [topRightX, topY - (squareSpace)], [botRightX, botY - (squareSpace)], [botLeftX, botY - (squareSpace)], [topLeftX, topY - (squareSpace)]],

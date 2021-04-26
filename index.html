@@ -6,27 +6,33 @@
 <!--   <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
 <link rel="stylesheet" type="text/css" href="css/styleTest.css"/>
 <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Domine:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Domine:wght@700&family=Open+Sans&family=Vast+Shadow&family=Shrikhand&display=swap" rel="stylesheet">
 </head>
 <div id="titleSlide" class='impactText'>
-  <h1>TL;DR</h1>
+  <p id="title">TL;DR</p>
   <h2>Writen English is becoming more readable,</h2>
   <h2>Why is reading comprehension falling?</h2>
 
   <!-- <body onload="typeWriter();"> -->
   <table id="readableCalcs">
     <tr>
-      <td colspan="4"><h2>Readability Calculations</h2></td>
+      <td colspan="1" style="width:33%">&nbsp;</td>
+      <td colspan="1" style="width:11%">&nbsp;</td>
+      <td colspan="1" style="width:11%"><h2>Readability Calculations</h2></td>
+      <td colspan="1" style="width:11%">&nbsp;</td>
+      <td colspan="1" style="width:33%">&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="2" style="text-align: center"><h3>Simplified Wikipedia Article<h3></td>
-      <td colspan="2" style="text-align: center"><h3>Standard Wikipedia Article<h3></td>
+      <td colspan="2" style="text-align: right"><h3>Simplified Wikipedia Article<h3></td>
+      <td colspan="1">&nbsp;</td>
+      <td colspan="2" style="text-align: left"><h3>Standard Wikipedia Article<h3></td>
     </tr>
     <tr>
       <td><div class="typeArea" id="typeAreaOne" onload="countChars(this);"></div></td>
       <td><div class="calcArea" id="charNum"></div></td>
+      <td class="calcArea" id="calcTitlesTwo"><b>Characters<br>Words<br>Sentences<br>Score<br>Grade Level</b></td>
       <td><div class="calcArea" id="charNumTwo"></div></td>
-      <td><div class="typeArea" id="typeAreaTwo" onload="countCharsTwo(this);"></div></td>
+      <td><div class="typeArea" id="typeAreaTwo" style="float: left" onload="countCharsTwo(this);"></div></td>
     </tr>
   </table>
 
@@ -84,11 +90,6 @@
 
   <div id='sections'>
     <div id='container-2-0'>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
       <p>&nbsp;</p>
       <!-- <h3>The Nation's Report Card</h3>
       <p>The National Assessment of Educational Progress (NAEP), known as the Nation's Report Card, is the largest-scale test of what U.S. students know. Every few years, students read articles appropriate for their grade-level and answer questions to test their interpretative and critical understanding.</p>  -->
@@ -355,6 +356,90 @@ for(var i=0; i < textArray.length; i++) {
 //   setTimeout(typeWriter, speed);
 // }
 
+          // if (ari <= 1) {
+          //  var grade = "Kindergarten"
+          // }
+          // else if (ari > 1 && ari <= 2 ){
+          //  var grade = "First/Second Grade"
+          // }
+          // else if (ari > 2 && ari <= 3 ){
+          //  var grade = "Third Grade"
+          // }
+          // else if (ari > 3 && ari <= 4 ){
+          //  var grade = "Fourth Grade"
+          // }
+          // else if (ari > 4 && ari <= 5 ){
+          //  var grade = "Fifth Grade"
+          // }
+          // else if (ari > 5 && ari <= 6 ){
+          //  var grade = "Sixth Grade"
+          // }
+          // else if (ari > 6 && ari <= 7 ){
+          //  var grade = "Seventh Grade"
+          // }
+          // else if (ari > 7 && ari <= 8 ){
+          //  var grade = "Eighth Grade"
+          // }
+          // else if (ari > 8 && ari <= 9 ){
+          //  var grade = "Ninth Grade"
+          // }
+          // else if (ari > 8 && ari <= 9 ){
+          //  var grade = "Ninth Grade"
+          // }
+          // else var grade = "something else"
+
+
+
+
+function gradeLevel(ari){
+          if (ari <= 1) {
+           return "Kindergarten"
+          }
+          else if (ari > 1 && ari <= 2 ){
+           return"First/Second"
+          }
+          else if (ari > 2 && ari <= 3 ){
+           return "Third"
+          }
+          else if (ari > 3 && ari <= 4 ){
+           return "Fourth"
+          }
+          else if (ari > 4 && ari <= 5 ){
+           return "Fifth"
+          }
+          else if (ari > 5 && ari <= 6 ){
+           return "Sixth"
+          }
+          else if (ari > 6 && ari <= 7 ){
+           return "Seventh"
+          }
+          else if (ari > 7 && ari <= 8 ){
+           return "Eighth"
+          }
+          else if (ari > 8 && ari <= 9 ){
+           return "Ninth"
+          }
+          else if (ari > 8 && ari <= 9 ){
+           return "Ninth"
+          }
+          else if (ari > 9 && ari <= 10 ){
+           return "Tenth"
+          }
+          else if (ari > 10 && ari <= 11 ){
+           return "Eleventh"
+          }
+          else if (ari > 11 && ari <= 12 ){
+           return "Twelfth"
+          }
+          else if (ari > 12 && ari <= 13 ){
+           return "College Student"
+          }
+          else return "Professor"
+}
+
+
+
+
 
 
 
@@ -368,7 +453,9 @@ function countChars(){
     var chars = element.innerHTML.match(/[a-zA-Z]/g).length;
     var ari = Math.round(((4.71 * (chars / words)) + (0.5 * (words/sentences)) - 21.43) * 10) / 10
     // console.log(chars)
-    document.getElementById("charNum").innerHTML = chars +' characters' + '<br>' + words + ' words' + '<br>' + sentences + ' sentences' + '<br>' + ari + ' Automated Readability Index'
+    var grade = gradeLevel(ari)    
+
+    document.getElementById("charNum").innerHTML = chars + '<br>' + words + '<br>' + sentences + '<br>' + ari + '<br>' + grade
 
 })
 
@@ -382,8 +469,9 @@ function countCharsTwo(){
     var words = elementTwo.innerHTML.split(" ").length
     var chars = elementTwo.innerHTML.match(/[a-zA-Z]/g).length;
     var ari = Math.round(((4.71 * (chars / words)) + (0.5 * (words/sentences)) - 21.43) * 10) / 10
+    var grade = gradeLevel(ari)  
     // console.log(chars)
-    document.getElementById("charNumTwo").innerHTML = chars +' characters' + '<br>' + words + ' words' + '<br>' + sentences + ' sentences' + '<br>' + ari + ' Automated Readability Index'
+    document.getElementById("charNumTwo").innerHTML = chars + '<br>' + words + '<br>' + sentences + '<br>' + ari + '<br>' + grade
 
 })
 

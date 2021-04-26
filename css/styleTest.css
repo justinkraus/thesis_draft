@@ -1,5 +1,13 @@
 /*css for non-scrolling elements*/
 
+#title{
+  font-family:Vast Shadow;
+  text-shadow: 4px 4px 4px #aaa;
+  font-size:10em;
+  text-align: center;
+  margin:auto;
+}
+
 #titleSlide{
   height:100vh;
   background-color: white;
@@ -13,6 +21,7 @@
 
 .impactText {
   margin: auto 14vw auto 10vw;
+  height:50vh;
 }
 
 /*css for the readability calculations*/
@@ -23,6 +32,7 @@
   margin-left: auto;
   margin-right: auto;
   vertical-align: top;
+  border-collapse: collapse;
   
 /*  overflow-y: auto;
   overflow-x: auto;*/
@@ -47,16 +57,10 @@
   vertical-align: top;
 }
 
-#readableOne {
-  width: 40%;
-  float: left;
-  font-size: .66em;
-  overflow-y: auto;
-
-  /*display: block;*/
-}
 
 #charNum {
+  float:right;
+  text-align:right;
   /*position: absolute;*/
   /*top: 75%;*/
 /*  vertical-align: top;
@@ -64,21 +68,34 @@
 }
 /*section two*/
 
-#readableTwo {
-  width: 40%;
-  height: 35%;
-  float: right;
-  font-size: .66em;
-  overflow-y: auto;
-  /*display: block;*/
-}
 
 #charNumTwo {
+  float:left;
+  text-align:left;
   /*position: absolute;*/
   /*top: 75%;*/
 /*  vertical-align: top;
   font-size: 1em;*/
 }
+
+#calcTitlesTwo {
+  text-align:center;
+}
+
+/*#readableOne {
+  width: 40%;
+  float: left;
+  font-size: .66em;
+  overflow-y: auto;
+}*/
+
+/*#readableTwo {
+  width: 40%;
+  height: 35%;
+  float: right;
+  font-size: .66em;
+  overflow-y: auto;
+}*/
 
 /*#topbar{
   fill:black;
@@ -128,6 +145,7 @@ p {
 #sections{
   width: 30vw;
   margin-left: 10vw;
+  /*visibility: hidden;*/
 }
 
 #sections > div{
