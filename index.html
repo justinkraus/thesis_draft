@@ -9,11 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Domine:wght@700&family=Open+Sans&family=Vast+Shadow&family=Shrikhand&display=swap" rel="stylesheet">
 </head>
 <div id="titleSlide" class='impactText'>
-  <p id="title">TL;DR</p>
-  <h2>Writen English is becoming more readable,</h2>
-  <h2>Why is reading comprehension falling?</h2>
+  <p id="title">tl;dr</p>
+  <h2 id="SubTextOne"></h2>
+  <h2 id="SubTextTwo"></h2>
+  <h2>&nbsp;</h2>
+  <h3 id="nameText">Presented by Justin Kraus</h3>
 
-  <!-- <body onload="typeWriter();"> -->
+
+  <body onload="typeWriter();">
   <table id="readableCalcs">
     <tr>
       <td colspan="1" style="width:33%">&nbsp;</td>
@@ -50,8 +53,9 @@
   <div id='graph'></div>
   <div id='sections'>
     <div>
-      <h3>Introducing Readability</h3>
-      <p>Readability formulas measure how easy a piece of writing is to understand. The formulas take slighlty different approaches but generally measure sentence and word length to estimate text difficulty.</p>
+      <p>&nbsp;</p>
+<!--       <h3>Introducing Readability</h3>
+      <p>Readability formulas measure how easy a piece of writing is to understand. The formulas take slighlty different approaches but generally measure sentence and word length to estimate text difficulty.</p> -->
     </div>
 
     <div>
@@ -62,7 +66,7 @@
 
     <div>
       <h3>Readable Everything</h3>
-      <p>The readability trend has been studied in a vareity of formats outside of newspapers including the New York Times best seller list and High School English Curriculums. Certain states even mandate that their insurance forms must meet minimum readability levels.</p>
+      <p>The readability trend has been studied in numerous sources outside of newspapers including the New York Times best seller list and High School English Curriculums. Certain states even mandate that their insurance forms must meet minimum readability levels.</p>
       <p>Readability is especially important on social media where the most popular posts are often highly readable.</p>
     </div>
 
@@ -81,15 +85,20 @@
 
 </div>
 <div class='impactText'>
-<h2>The objective of readability is to improve the ease at which a reader can understand writing.</h2>
-<h2>With text being easier to understand, lets take a look at how reading comprehension has changed within students.</h2>
-&nbsp;
+<!-- <h2>The objective of readability is to improve the ease at which a reader can understand writing.</h2>
+<h2>With text being easier to understand, lets take a look at how reading comprehension has changed within students.</h2> -->
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
 </div>
 <div id='container' class='container-2'>
   <div id='graph'></div>
 
   <div id='sections'>
     <div id='container-2-0'>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
       <p>&nbsp;</p>
       <!-- <h3>The Nation's Report Card</h3>
       <p>The National Assessment of Educational Progress (NAEP), known as the Nation's Report Card, is the largest-scale test of what U.S. students know. Every few years, students read articles appropriate for their grade-level and answer questions to test their interpretative and critical understanding.</p>  -->
@@ -137,16 +146,32 @@
 </div>
 
 <div class='impactText'>
-<h2>Next we'll explore the mechanics of reading comprehension to understand why deep background knowledge can improve a persons understanding.</h2>
+<!-- <h2>Next we'll explore the mechanics of reading comprehension to understand why deep background knowledge can improve a persons understanding.</h2> -->
+&nbsp;
+&nbsp;
 &nbsp;
 </div>
 
 <div id='container' class='container-3'>
   <div id='graph'></div>
     <div id='sections'>
+      <div id='keynote_placeholder'>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+         <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+         <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+      </div>
       <div>
-      <h3>Reading Comprehension</h3>
-      <p>Reading comprehension is the process of reading text to understand its meaning.</p>
+        <h3>Reading Comprehension</h3>
+        <p>Reading comprehension is the process of reading text to understand its meaning.</p>
       </div>
       <div id='container-3-2'>
       <h3>Construction-Integration</h3> 
@@ -249,10 +274,21 @@
 </div>
 
 <div class='impactText'>
+    <table id="fin">
+      <tr>
+        <td style="width:40%">
+          <p style="font-size:15em">tl;dr</p>
+        </td>
+        <td style="width:60%;font-size:2em">
+          <p>For educators, establish good reading habits beyond the classroom.</p>
+          <p>For the rest of us, a friendly reminder to pick-up a good book.</p>
+        </td>
+      </tr>
+    <table>
+<!-- 
   <h2>TL;DR</h2>
-  <h2>For educators this is a message that one of the largest priorities to teaching is establish good reading habits beyond the classroom.</h2>
-  <h2>For the rest of us, let this be a friendly reminder to pick-up a good book every once and a while.</h2>
-  <h2>Thanks</h2>
+  
+  <h2>Thanks</h2> -->
 </div>
 </div>
 
@@ -343,18 +379,28 @@ for(var i=0; i < textArray.length; i++) {
 
 
 // original working for a single text string
+// subittle animation
 
-// var start = 0
-// var text = "This is my text with no other text. The quick brown fox jumps over the lazy dog. Here are some more words. And there are some other words, other words, and yet here we are again with other words!"
-// var speed = 150;
+var start1 = 0
+var start2 = 0
+var text1 = "Written English is becoming more readable,     "
+var text2 = "why is reading comprehension falling?"
+var speed = 125;
 
-// function typeWriter() {
-//   if (start < text.length) {
-//     document.querySelector('#typeArea').innerHTML += text.charAt(start);
-//     start++;
-//   }
-//   setTimeout(typeWriter, speed);
-// }
+function typeWriter() {
+  if (start1 < text1.length) {
+    document.querySelector('#SubTextOne').innerHTML += text1.charAt(start1);
+    start1++;
+  }
+  else if (start2 < text2.length) {
+    document.querySelector('#SubTextTwo').innerHTML += text2.charAt(start2);
+    start2++;
+  }
+  else {
+    document.querySelector('#nameText').style.opacity = 1;
+  }
+  setTimeout(typeWriter, speed);
+}
 
           // if (ari <= 1) {
           //  var grade = "Kindergarten"

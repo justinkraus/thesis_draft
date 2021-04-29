@@ -209,8 +209,9 @@ function render(){
 
     // grid opacity
     var gridOP = [0, 1, 1, 1, 1]
-    // Opacity array
-    var readableOP = [1, 0, 0, 0, 0]
+    // readability text description opacity array
+    // keynote change 1st value from 1 to 0
+    var readableOP = [0, 0, 0, 0, 0]
 
 
   // scrolling functionality
@@ -232,8 +233,8 @@ function render(){
           .transition();
 
         // Readable Title Transitions
-
-          var readabletitleOP = [1, 1, 1, 1, 1]
+          // keynote, change 1st opacity to 1
+          var readabletitleOP = [0, 1, 1, 1, 1]
           var readabletitleSize = ['1.5em', '1em', '1em', '1em', '1em']
 
           var moreReadableX = [[INNER_WIDTH/6 * 4],
@@ -260,16 +261,26 @@ function render(){
          var moreReadable = svg1.selectAll('#moreReadable')
          var lessReadable = svg1.selectAll('#lessReadable')
 
-         moreReadable.transition().duration(500)
+         moreReadable.transition()
+            //keynote change
+            // .duration(500)
             .style('opacity', readabletitleOP[i])
             .attr('font-size', readabletitleSize[i])
-            .attr("x", moreReadableX[i])
-            .attr("y", moreReadableY[i])
+            .attr("x", INNER_WIDTH/6 * 5)
+            .attr("y", (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5))
+            //keynote change
+            // .attr("x", moreReadableX[i])
+            // .attr("y", moreReadableY[i])
             .transition();
 
-         lessReadable.transition().duration(500)
-            .attr("x", lessReadableX[i])
-            .attr("y", lessReadableY[i])
+         lessReadable.transition()
+            //keynote change
+            // .duration(500)
+            .attr("x", INNER_WIDTH/6 * 1)
+            .attr("y", (INNER_HEIGHT/10 * 9) + (INNER_HEIGHT/10 * 1.5))
+            //keynote change
+            // .attr("x", lessReadableX[i])
+            // .attr("y", lessReadableY[i])
             .style('opacity', readabletitleOP[i])
             .attr('font-size', readabletitleSize[i])
           .transition();
@@ -304,9 +315,9 @@ function render(){
 
         var npimg = svg1.select('#NP')
 
-        npimg.transition().duration(500)
+        npimg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", newsPos);
 
         //AP
@@ -318,9 +329,9 @@ function render(){
 
         var apImg = svg1.select('#AP')
 
-        apImg.transition().duration(500)
+        apImg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", wirePos);
 
         // WSJ
@@ -332,9 +343,9 @@ function render(){
 
         var wsjImg = svg1.select('#WSJ')
 
-        wsjImg.transition().duration(500)
+        wsjImg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", wsjPos);
 
         //NYT
@@ -346,9 +357,9 @@ function render(){
 
         var nytImg = svg1.select('#NYT')
 
-        nytImg.transition().duration(500)
+        nytImg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", nytPos);
 
         // Group 2 - Secondary Sources
@@ -363,9 +374,9 @@ function render(){
 
         var nytbsImg = svg1.select('#NYTBS')
 
-        nytbsImg.transition().duration(500)
+        nytbsImg.transition().duration(1500)
             .style('opacity', secondaryOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", nytbsPos);
 
         // HS English
@@ -377,9 +388,9 @@ function render(){
 
         var hsImg = svg1.select('#HSENG')
 
-        hsImg.transition().duration(500)
+        hsImg.transition().duration(1500)
             .style('opacity', secondaryOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", hsengPos);
 
         // Insurance Policies
@@ -391,9 +402,9 @@ function render(){
 
         var insImg = svg1.select('#IP')
 
-        insImg.transition().duration(500)
+        insImg.transition().duration(1500)
             .style('opacity', secondaryOpacity[i])
-            .transition().duration(1000)
+            .transition().duration(1500)
             .attr("x", insPos);
 
         // Social Media 
@@ -405,14 +416,17 @@ function render(){
 
         var socialImg = svg1.selectAll('.group3')
 
-        socialImg.transition().duration(1000)
+        socialImg.transition().duration(3000)
             // .attr("x", socialPos)
             .style('opacity', secondaryOpacity[i])
+            //keynote
+            // remove the .ease for normal viz
+            .ease(d3.easeExpIn)
           .transition();
 
         var domainImg = svg1.selectAll('.group4')
 
-        domainImg.transition().duration(1000)
+        domainImg.transition().duration(1500)
             // .attr("x", socialPos)
             .style('opacity', domainOP[i])
           .transition();
@@ -502,10 +516,10 @@ svg2.append("text")
 
   // Add Y axis label:
 svg2.append("text")
-    .attr("text-anchor", "end")
+    .attr("text-anchor", "middle")
     // .attr("x", 0-INNER_WIDTH2/40)
     // .attr("y", INNER_HEIGHT2/2 )
-    .attr("x", -INNER_HEIGHT/4)
+    .attr("x", -INNER_HEIGHT2/2)
     .attr("y", 0 - margin2.left/1.5 )
     .text("Reading Comprehension Score")
     .style('font-size', "1.25em")
@@ -517,7 +531,8 @@ svg2.append("text")
     // .attr("text-anchor", "end")
     .attr("x", 0)
     .attr("y", 0-margin2.top/4)
-    .text("12th Grade Reading Comprehension")
+    .text("High School Senior Reading Comprehension")
+    .attr("font-family", "Domine")
     .style('font-size', "1.5em")
     .attr("class", "chartlabel");
 
@@ -563,7 +578,10 @@ d3.csv("NAEP_scores4.csv", function(data) {
   // natlOP = [0,1,1]
 // draw national average line
 if (document.getElementById('container-2-0').className == "graph-scroll-active") {
-  d3.selectAll(".line")
+  d3.selectAll(".lineLine")
+  .remove()
+
+  d3.selectAll(".lineLabel")
   .remove()
 
   d3.selectAll(".axisticks")
@@ -619,7 +637,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
 
   var path = svg2.selectAll(".bracket").append("path")
-      .attr("class", "line")
+      .attr("class", "lineLine")
       .attr("d", function(d) { return line(d.values); })
       .style("stroke-width", function(d) { if (d.name == "National Avg") 
                                         {return "6"}
@@ -633,12 +651,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .style("fill", "none")
       .transition()
       .delay(function(d, i) { return i * 0; })
-      .duration(2500)
+      .duration(4000)
       .ease(d3.easeSin)
       .attrTween("stroke-dasharray", animateLine)
       .style('opacity', 1);
       
   svg2.selectAll(".bracket").append("text")
+      .attr("class", "lineLabel")
       .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.score) + ")"; })
       .attr("x", 3)
@@ -648,9 +667,9 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
                                       else {return "0";}
                                          })
       .text(function(d) { return d.name; })
-      .transition()
-      .duration(2500)
-      .ease(d3.easeSin);
+      .style('opacity', 0);
+      // .transition()
+      // .duration(1000);
 
   }
 
@@ -675,6 +694,12 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   // lollipop graphic
   if (document.getElementById('container-2-2').className == "graph-scroll-active") {
 
+    d3.selectAll(".lineLine")
+  .remove()
+
+  d3.selectAll(".lineLabel")
+  .remove()
+  
     d3.selectAll(".barGrid")
     .remove()
 
@@ -689,7 +714,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     svg2.append("g")
       .attr("transform", "translate(0," + INNER_HEIGHT2 + ")")
       .attr("class", "lolliGrid")
-      .call(d3.axisBottom(x2))
+      .call(d3.axisBottom(x2).tickSizeOuter([0]))
       .selectAll("text")
         .attr("transform", "translate(-10,0)rotate(-45)")
         .style('font-size', "1.5em")
@@ -705,7 +730,15 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .range([ INNER_HEIGHT2, 0]);
     svg2.append("g")
       .attr("class", "lolliGrid")
-      .call(d3.axisLeft(y2));
+      .call(d3.axisLeft(y2).tickFormat(d => d + "%"))
+      .call(g => g.select(".domain").remove());
+
+    svg2.selectAll(".tick line")
+        .style("opacity", 0)
+
+    var lolliColor = d3.scaleLinear()
+    .domain([19,32])
+    .range(["Crimson","SteelBlue"]);
 
     // Lines
     svg2.selectAll("myline")
@@ -728,7 +761,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         .attr("cy", function(d) { return y2(10); })
         .attr("r", "22")
         .style("fill", "white")
-        .attr("stroke", "coral")
+        .style("opacity", 0)
+        .attr("stroke", "lightgrey")
 
     svg2.selectAll("mytext")
     .data(reading_time)
@@ -741,7 +775,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .attr("dy", ".25em")
       .text(function(d) { return d.score + "%"})
       .style('font-size', ".75em")
-      .style('opacity', 0);
+      .style('opacity', 0)
+      .style('stroke', "white");
 
     svg2.append("text")
     .attr("text-anchor", "middle")
@@ -754,12 +789,12 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   // Add Y axis label:
     svg2.append("text")
-        .attr("text-anchor", "end")
+        .attr("text-anchor", "middle")
         // .attr("x", 0-INNER_WIDTH2/20)
         // .attr("y", INNER_HEIGHT2/2 )
-        .attr("x", -INNER_HEIGHT/4)
+        .attr("x", -INNER_HEIGHT2/2)
         .attr("y", 0 - margin2.left/1.5 )
-        .text("Percentage of 12th Graders")
+        .text("Percentage of High School Seniors")
         .style('font-size', "1.25em")
         .attr("class", "lolliGrid")
         .attr("transform", "rotate(-90)");
@@ -768,7 +803,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         // .attr("text-anchor", "end")
         .attr("x", 0)
         .attr("y", 0-margin2.top/4)
-        .text("12th Graders Who Read for Fun")
+        .text("High School Seniors Who Read for Fun")
+        .attr("font-family", "Domine")
         .style('font-size', "1.5em")
         .attr("class", "lolliGrid");
 
@@ -858,14 +894,17 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .selectAll(".tick text")
         .call(wrap, 50)
 
-    svg2.selectAll(".tick line")
-        .style("opacity", 0)
-      ;
+    
 
     // add axises
     svg2.append("g")
     .attr("class", "barGrid")
-    .call(d3.axisLeft(y3));
+    .call(d3.axisLeft(y3).tickFormat(d => d + "%"))
+    .call(g => g.select(".domain").remove());
+      
+      svg2.selectAll(".tick line")
+        .style("opacity", 0)
+      ;
 
     // add axis labels
     // X axis label
@@ -879,12 +918,14 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   // Add Y axis label:
     svg2.append("text")
-        .attr("text-anchor", "end")
+        .attr("text-anchor", "middle")
         // .attr("x", 0-INNER_WIDTH2/20)
-        .attr("x", 0-INNER_WIDTH2/20)
         // .attr("y", INNER_HEIGHT2/2 )
-        .attr("y", 0 - margin2.left/2 )
-        .text("Reader Proficiency %")
+        // .attr("x", 0-INNER_WIDTH2/3.5)
+        // .attr("y", 0 - margin2.left/2 )
+        .attr("x", -INNER_HEIGHT2/2)
+        .attr("y", 0 - margin2.left/1.5 )
+        .text("Percentage of High School Students")
         .style('font-size', "1.25em")
         .attr("class", "barGrid")
         .attr("transform", "rotate(-90)");
@@ -894,7 +935,8 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
         // .attr("text-anchor", "end")
         .attr("x", 0)
         .attr("y", 0-margin2.top/4)
-        .text("Reading Proficiency by Content Diversity")
+        .text("High School Student Reading Proficiency by Content Diversity")
+        .attr("font-family", "Domine")
         .style('font-size', "1.5em")
         .attr("class", "barGrid");
 
@@ -902,14 +944,27 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
     svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/4).attr("width", 80).attr("height", 100).style("fill", "SteelBlue").attr("class", "barLegend")
     svg2.append("rect").attr("x",INNER_WIDTH2 + margin2.right/8).attr("y",INNER_HEIGHT2/2).attr("width", 80).attr("height", 100).style("fill", "Crimson").attr("class", "barLegend")
     // svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", ((INNER_HEIGHT2/4) + 50)).text("% Above Basic").style("font-size", "15px").attr("alignment-baseline","middle")
-    svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y",(((INNER_HEIGHT2 + 100)/4))).text("Above Basic").style("font-size", "15px").attr("alignment-baseline","start").attr("class", "barLegend").call(wrap, 43)
-
-
-    svg2.append("text").attr("x", INNER_WIDTH2 + margin2.right/8).attr("y", (((INNER_HEIGHT2 + 100)/2)))
-    .text("Basic or Below")
-    .style("font-size", ".9em").attr("alignment-baseline","middle")
+    
+    svg2.append("text")
+    .attr("x", INNER_WIDTH2 + margin2.right/3.5)
+    .attr("y",((INNER_HEIGHT2/4) + 50))
+    .text("Above Basic")
+    .style("font-size", ".9em")
+    .style("fill", "white")
+    .attr("alignment-baseline","middle")
     .attr("class", "barLegend")
-    .call(wrap, 80);
+    .call(wrap, 43)
+
+
+    svg2.append("text")
+    .attr("x", INNER_WIDTH2 + margin2.right/3.5)
+    .attr("y",((INNER_HEIGHT2/2) + 50))
+    .text("Basic or Below")
+    .style("font-size", ".9em")
+    .style("fill", "white")
+    .attr("alignment-baseline","middle")
+    .attr("class", "barLegend")
+    .call(wrap, 60);
 
   }
 
@@ -922,17 +977,25 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
   //   }
 
   // Line Graph
+  // opacity and transition
 
-  // grid opacity and transition
+  // line and line label
+  
   var lineOP = [0, 1, 0, 0, 0]
 
-  var linesSelect = svg2.selectAll(".bracket")
+  var linesSelect = svg2.selectAll(".line")
   // var linesSelect2 = svg2.selectAll(".gridLabel")
-
+  var lineLabelSelect = svg2.selectAll(".lineLabel")
 
   linesSelect.transition().duration(100)
       .style('opacity', lineOP[i])
     .transition();
+
+  lineLabelSelect.transition().duration(5000)
+      .style('opacity', lineOP[i])
+      .ease(d3.easeExpIn)
+    .transition();
+
 
   // background rectangles and label opacity
   var backgroundOP = [0, .50, 0 , 0, 0]
@@ -980,12 +1043,13 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
       .transition()
       .delay(function(d,i){ return 200*i; })
       .duration(2000)
-      .attr("cy", function(d) { return y2(d.score); });
+      .attr("cy", function(d) { return y2(d.score); })
+      .style("fill", function(d) { return lolliColor(d.score)});
 
   var lolliLabelSelect = svg2.selectAll(".lolliLabel")
 
   lolliLabelSelect.transition().duration(4500)
-    .delay(function(d,i){ return 100*i; })
+    .delay(function(d,i){ return 200*i; })
     .style('opacity', lolliOP[i])
     .ease(d3.easeExpIn);
 
@@ -1008,6 +1072,7 @@ if (document.getElementById('container-2-1').className == "graph-scroll-active")
 
   barLegendSelect.transition().duration(500)
       .style('opacity', barOP[i])
+      .ease(d3.easeExpIn)
     .transition();
 
 
@@ -1079,7 +1144,7 @@ var poly1var = svg3.append('path')
 .attr("class", "poly1")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'WhiteSmoke')
+.attr('fill', 'white')
 .style('opacity', .66);
 
 var poly2var = svg3.append('path')
@@ -1115,7 +1180,7 @@ var poly5var = svg3.append('path')
 // .attr("class", "polygon")
 .attr('d', lineFunc)
 .attr('stroke', 'black')
-.attr('fill', 'WhiteSmoke')
+.attr('fill', 'white')
 .style('opacity', .90);
 
 
@@ -1354,7 +1419,7 @@ var gs4 = d3.graphScroll()
 
 //polygon opacity transitions
 
-poly1OP = [1,1,1,1,1,1,1,1]
+poly1OP = [1,1,1,1,1,1,1,1,1]
 poly23OP = [1,.66,.66,.33,0,0,0,0]
 ploy4OP = [1,.66,.33,.66,0,0,0,0]
 
@@ -1364,6 +1429,7 @@ poly1size = [
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset], [topLeftX, topY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset], [topLeftX, topY + poly1Yoffset]],
              [[topLeftX, topY + poly1Yoffset], [topRightX, topY + poly1Yoffset], [botRightX, botY + poly1Yoffset], [botLeftX, botY + poly1Yoffset], [topLeftX, topY + poly1Yoffset]],
+             [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]],
              [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]],
              [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]],
              [[topLeftX, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, topY - (squareSpace * 4)], [topRightX + topRightX/1.5, botY], [topLeftX, botY], [topLeftX, topY - (squareSpace * 4)]]
@@ -1504,7 +1570,7 @@ if (document.getElementById('container-3-2').className == "graph-scroll-active")
 
 // // Floating text function loop 
 // // create arrays
-  repeat();
+  setTimeout( function() {repeat();}, 4000);
 //   //chained transition of floating text
 //   // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
     function repeat(){
@@ -1531,16 +1597,22 @@ else {
   .remove()
 }
 
+// if (document.getElementById('container-3-4').className == "graph-scroll-active") {
+//   d3.selectAll(".readinglines")
+//   .remove()
+// }
+
 
 
 //lines transitions
-linesOP = [0,0,0,0,0,1,1,0]
+linesOP = [0,0,0,0,1,1,1,1]
 
 var levelexs = svg3.selectAll(".readinglines")
 
-levelexs.transition().duration(1500)
+levelexs.transition().duration(2500)
             .style('opacity', linesOP[i])
-          .transition();
+            .ease(d3.easeExpIn)
+            .transition();
 
 
 //linear circles transition
