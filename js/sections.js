@@ -1214,7 +1214,7 @@ svg3.append('text')
 .attr("dy", '1em')
 .style('font-size', "1.5em")
 .style('fill', "grey")
-.text("Construction-Integration")
+.text("Reading Comprehension")
 
 
 // comprehension level titles
@@ -1348,10 +1348,10 @@ function skimData() {
     var data = new Array();
     var xpos = topLeftX + width/10; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
     var ypos = topY - (squareSpace * 4) + (height/20 * 2);
-    var radius = Math.random() * (6 - 15) + 15
+    var radius = Math.random() * (8 - 16) + 16
     var rowheight = 10
     var circleNum = 1;
-    var columnNum = 8
+    var columnNum = 10
 
     // iterate for rows 
     for (var row = 0; row < 11; row++) {
@@ -1366,7 +1366,7 @@ function skimData() {
                 c: circleNum
             })
             // increment the x position. I.e. move it over
-            xpos += Math.random() * (20 - 25) + width/16;
+            xpos += Math.random() * (20 - 25) + width/21;
             radius = Math.random() * (6 - 15) + 15
             circleNum += (row + column)
 
@@ -1376,7 +1376,7 @@ function skimData() {
         radius = Math.random() * (6 - 15) + 15;
         // increment the y position for the next row. Move it down 
         ypos += (height/30 * 2); 
-        columnNum -= 1
+        columnNum -= 1.25
         columnNum = (columnNum>0)? columnNum:1;
 
     }
@@ -1416,12 +1416,14 @@ var gs4 = d3.graphScroll()
   .on('active', function(i){
 
 
+// keynote
+// 2 placeholder divs were added for the presentation, need to redo and remove the extras for the final
 
 //polygon opacity transitions
 
-poly1OP = [1,1,1,1,1,1,1,1,1]
-poly23OP = [1,.66,.66,.33,0,0,0,0]
-ploy4OP = [1,.66,.33,.66,0,0,0,0]
+poly1OP = [1,1,1,1,1,1,1,1,0]
+poly23OP = [1,.66,.66,.2,0,0,0,0,0]
+ploy4OP = [1,.66,.2,.66,0,0,0,0]
 
 // polygon size transition
 poly1size = [
@@ -1510,7 +1512,7 @@ poly1titlesize = [
 
 
 // polys 1 and 5 text transition
-fixedtextOP = [0,1,1,1,0,0,0,0]
+fixedtextOP = [0,1,1,1,0,0,0,0,0]
 
 var polyText = svg3.selectAll(".polytitle")
 
@@ -1527,7 +1529,7 @@ poly1title.transition().duration(500)
 
 //poly 3 title text transition
 
-cititleOP = [1,0,0,0,0,0,0,0]
+cititleOP = [1,0,0,0,0,0,0,0,0]
 
 var ciText = svg3.selectAll(".cititle")
 
@@ -1537,7 +1539,7 @@ ciText.transition().duration(500)
 
 
 //transition for the level titles
-leveltitlesOP = [0,1,1,1,0,0,0,0]
+leveltitlesOP = [0,1,1,1,0,0,0,0,0]
 
 var leveltitles = svg3.selectAll(".leveltitle")
 
@@ -1548,7 +1550,7 @@ leveltitles.transition().duration(1500)
 
 //transition for the level definitions
 
-leveldefsOP = [0,1,1,1,0,0,0,0]
+leveldefsOP = [0,1,1,1,0,0,0,0,0]
 
 var leveldefs = svg3.selectAll(".leveldef")
 
@@ -1557,45 +1559,41 @@ leveldefs.transition().duration(1500)
           .transition();
 
 
-//animation of the "floating" text
+//animation of pulsating reading comprehension levels
 
-if (document.getElementById('container-3-2').className == "graph-scroll-active") {
+// if (document.getElementById('container-3-2').className == "graph-scroll-active") {
 
-  var polygons = svg3.selectAll(".polygon")
-
-//   // polygons.transition().duration(100).delay(1000)
+//   var polygons = svg3.selectAll(".polygon")
 
 
-// // Floating text array
+// // // Floating text array
 
-// // Floating text function loop 
-// // create arrays
-  setTimeout( function() {repeat();}, 4000);
-//   //chained transition of floating text
-//   // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
-    function repeat(){
+// // // Floating text function loop 
+// // // create arrays
+//   setTimeout( function() {repeat();}, 4000);
+// //   //chained transition of floating text
+// //   // a take on chained transition to loop https://bl.ocks.org/mbostock/1125997
+//     function repeat(){
 
-    
+//     polygons.transition().duration(900)
+//     .delay(function(d,i) { return (i * 900)})
+//     .style('opacity', 0.66)
+//     .transition().duration(100)
+//     .style('opacity', 0.33)
+//     .transition().duration(100)
+//     .style('opacity', 0.66)
+//     .delay(100)
+//     .on("start", repeat);
 
-    polygons.transition().duration(900)
-    .delay(function(d,i) { return (i * 900)})
-    .style('opacity', 0.66)
-    .transition().duration(100)
-    .style('opacity', 0.33)
-    .transition().duration(100)
-    .style('opacity', 0.66)
-    .delay(100)
-    .on("start", repeat);
+//   };
 
-  };
+// // // examples 
 
-// // examples 
-
-}
-else {
-  d3.selectAll(".letters")
-  .remove()
-}
+// }
+// else {
+//   d3.selectAll(".letters")
+//   .remove()
+// }
 
 // if (document.getElementById('container-3-4').className == "graph-scroll-active") {
 //   d3.selectAll(".readinglines")
@@ -1605,12 +1603,13 @@ else {
 
 
 //lines transitions
-linesOP = [0,0,0,0,1,1,1,1]
+linesOP = [0,0,0,0,1,1,1,1,0]
 
 var levelexs = svg3.selectAll(".readinglines")
 
 levelexs.transition().duration(2500)
             .style('opacity', linesOP[i])
+            // keynote possibly remove this for the final version
             .ease(d3.easeExpIn)
             .transition();
 
@@ -1619,7 +1618,7 @@ levelexs.transition().duration(2500)
 if (document.getElementById('container-3-6').className == "graph-scroll-active") {
 
 // linearcirclesOP = [0,0,0,0,1,0,0]
-linearcirclesOP = [1,1,1,1,1,1,1,1]
+linearcirclesOP = [1,1,1,1,1,1,1,1,0]
 
 var linearcircles = svg3.selectAll(".linearcircle")
 
@@ -1627,7 +1626,7 @@ linearcircles.transition().duration(1500)
           .style('opacity', linearcirclesOP[i])
           .transition()
            .delay(function(d, i) { return (i * 100) + (d.r); })
-           .style("fill", "blue");
+           .style("fill", "SteelBlue");
 }
 else {
 var linearcircles = svg3.selectAll(".linearcircle")
@@ -1640,7 +1639,7 @@ linearcircles.transition().duration(100)
 
 // skim circles transition
 if (document.getElementById('container-3-7').className == "graph-scroll-active") {
-skimcirclesOP = [1,1,1,1,1,1,1,1]
+skimcirclesOP = [1,1,1,1,1,1,1,1,0]
 
 // skimcirclesOP = [0,0,0,0,0,1,0]
 
@@ -1650,7 +1649,7 @@ skimcircles.transition().duration(1500)
           .style('opacity', skimcirclesOP[i])
           .transition()
            .delay(function(d, i) { return (i * 100) + (d.r); })
-           .style("fill", "blue");
+           .style("fill", "SteelBlue");
 }
 else {
 var linearcircles = svg3.selectAll(".skimcircle")
@@ -1659,6 +1658,16 @@ linearcircles.transition().duration(100)
           .style('opacity', 0)
           .style("fill", "white");
 }
+
+// keynote 
+// remove this for final, messed up drawing lines
+
+if (document.getElementById('keynote_placeholder1').className == "graph-scroll-active") {
+  d3.selectAll(".readinglines")
+  .remove()
+
+}
+
 
 })
 

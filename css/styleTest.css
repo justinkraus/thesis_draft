@@ -186,8 +186,8 @@ p {
 }
 
 #graph{
-  margin-right: 30vw;
-  margin-left: 28vw;
+  margin-right: 27.5vw;
+  margin-left: 27.5vw;
   width: 42vw;
   position: -webkit-sticky;
   position: sticky;
@@ -210,6 +210,11 @@ p {
 #nameText{
   opacity: 0;
   transition: opacity 5s ease 0s;
+}
+
+.impactText {
+  margin: auto 10vw auto 10vw;
+  height:50vh;
 }
 
 /*end keynote vid*/
@@ -260,7 +265,7 @@ p {
 
 /*laptop upto widescreen*/
 @media (max-width: 1680px)  {
-#graph{
+/*#graph{
   margin-right: 10vw;
   margin-left: 42.5vw;
   width: 47.5vw;
@@ -268,7 +273,7 @@ p {
   position: sticky;
   top: 5%; 
   float: left;
-}
+}*/
 
 #sections{
   width: 30vw;
