@@ -151,6 +151,22 @@ function render(){
   .style('opacity', 0)
   .attr("xlink:href", function(d){return d.img})
 
+  // Load readability before image dataset
+  svg1.selectAll('image')
+  .select('image')
+  .data(readImgs)
+  .enter()
+  .append('image')
+  .attr("id", function(d){return d.name + "Before"})
+  .attr("class", function(d){return "groupBefore"+ d.group})
+  // .attr("x", function(d){return (width/30 * 26) * d.x})
+  .attr("x", function(d){return width/30 * d.x})
+  .attr("y", function(d){return d.y * INNER_HEIGHT/10})
+  .attr("width", INNER_WIDTH/10)
+  .attr("height", INNER_HEIGHT/10)
+  .style('opacity', 0)
+  .attr("xlink:href", function(d){return d.img})
+
   // Create gridlines
   // gridlines dataset
   var gridLineData = [{"lineNum": 0, "x1": 0, "y1": 0, "x2": 0, "y2": .5, "stroke": "darkgrey", "strokewidth": 1, "dasharray": "1,0"},
@@ -297,8 +313,10 @@ function render(){
 
         // Opacity of news Sources
         var newsOpacity = [0, 1, 1, 1]
+        var newsBeforeOpacity = [0, .1, 0, 0]
         // Opacity of secondary sources
         var secondaryOpacity = [0, 0, 1, 1]
+        var secondaryBeforeOpacity = [0, 0, .1, 0]
         // Opacity of Social Media
         var domainOP = [0, 0, 0, 1]
 
@@ -317,8 +335,16 @@ function render(){
 
         npimg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1500)
+            .transition().duration(3000)
             .attr("x", newsPos);
+
+        //General Newspapers Before
+        var npimgBefore = svg1.select('#NPBefore')
+
+        npimgBefore.transition().duration(1500)
+            .style('opacity', newsBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 16);
 
         //AP
         var wirePos = [width/30 * 6,
@@ -331,8 +357,16 @@ function render(){
 
         apImg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1500)
+            .transition().duration(3000)
             .attr("x", wirePos);
+
+        //AP Before
+        var apImgBefore = svg1.select('#APBefore')
+
+        apImgBefore.transition().duration(1500)
+            .style('opacity', newsBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 6);
 
         // WSJ
         var wsjPos = [width/30 * 16,
@@ -345,8 +379,16 @@ function render(){
 
         wsjImg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1500)
+            .transition().duration(3000)
             .attr("x", wsjPos);
+        //WSJ Before
+
+        var wsjImgBefore = svg1.select('#WSJBefore')
+
+        wsjImgBefore.transition().duration(1500)
+            .style('opacity', newsBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 16);
 
         //NYT
         var nytPos = [width/30 * 16,
@@ -359,8 +401,17 @@ function render(){
 
         nytImg.transition().duration(1500)
             .style('opacity', newsOpacity[i])
-            .transition().duration(1500)
+            .transition().duration(3000)
             .attr("x", nytPos);
+
+        //NYT Before
+        var nytImgBefore = svg1.select('#NYTBefore')
+
+        nytImgBefore.transition().duration(1500)
+            .style('opacity', newsBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 16);
+
 
         // Group 2 - Secondary Sources
         // --------------------------
@@ -376,8 +427,16 @@ function render(){
 
         nytbsImg.transition().duration(1500)
             .style('opacity', secondaryOpacity[i])
-            .transition().duration(1500)
+            .transition().duration(3000)
             .attr("x", nytbsPos);
+        //NYTBS Before
+        var nytbsImgBefore = svg1.select('#NYTBSBefore')
+
+        nytbsImgBefore.transition().duration(1500)
+            .style('opacity', secondaryBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 21);
+
 
         // HS English
         var hsengPos = [width/30 * 21,
@@ -390,8 +449,15 @@ function render(){
 
         hsImg.transition().duration(1500)
             .style('opacity', secondaryOpacity[i])
-            .transition().duration(1500)
+            .transition().duration(3000)
             .attr("x", hsengPos);
+        //HS English Before
+        var hsImgBefore = svg1.select('#HSENGBefore')
+
+        hsImgBefore.transition().duration(1500)
+            .style('opacity', secondaryBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 21);
 
         // Insurance Policies
         var insPos = [width/30 * 6,
@@ -402,10 +468,18 @@ function render(){
 
         var insImg = svg1.select('#IP')
 
-        insImg.transition().duration(1500)
+        insImg.transition().duration(3000)
             .style('opacity', secondaryOpacity[i])
             .transition().duration(1500)
             .attr("x", insPos);
+
+        // Insurance Policies Before
+        var insImgBefore = svg1.select('#IPBefore')
+
+        insImgBefore.transition().duration(1500)
+            .style('opacity', secondaryBeforeOpacity[i])
+            .transition().duration(1500)
+            .attr("x", width/30 * 6);
 
         // Social Media 
         // var socialPos = [width/30 * 26,
@@ -416,7 +490,7 @@ function render(){
 
         var socialImg = svg1.selectAll('.group3')
 
-        socialImg.transition().duration(3000)
+        socialImg.transition().duration(4500)
             // .attr("x", socialPos)
             .style('opacity', secondaryOpacity[i])
             //keynote
